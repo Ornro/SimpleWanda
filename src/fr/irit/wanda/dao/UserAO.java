@@ -31,7 +31,7 @@ public class UserAO extends DAO {
 			throw new AlreadyRegistredException("User named " + u.getName()
 					+ " already is registered in database.");
 
-		set("INSERT INTO wanda_user(role, name, forename, mail) VALUES (?,?,?,?);",
+		set("INSERT INTO wuser(role, name, forename, mail) VALUES (?,?,?,?);",
 				Statement.RETURN_GENERATED_KEYS); // Retrieve the generated id
 		setInt(1, u.getRole().getValue());
 		setString(2, u.getName());
@@ -39,7 +39,7 @@ public class UserAO extends DAO {
 		setString(4, u.getMail());
 		executeUpdate();
 		getGeneratedKeys();
-		u.setId(getInt("certificate"));
+		u.setId(getInt("idwuser"));
 		return u.getId();
 	}
 
@@ -49,7 +49,7 @@ public class UserAO extends DAO {
 	 * Extracts an user object. Object returned can be null.
 	 */
 	protected User extract() {
-		return new User(getInt("certificate"), getString("name"),
+		return new User(getInt("idwuser"), getString("name"),
 				getString("forename"), User.ROLE.fromInt(getInt("role")),
 				getString("mail"));
 	}
@@ -75,7 +75,7 @@ public class UserAO extends DAO {
 	 * @return boolean
 	 */
 	public boolean exists(String mail) {
-		set("SELECT certificate FROM wanda_user WHERE mail=?;");
+		set("SELECT idwuser FROM wuser WHERE mail=?;");
 		setString(1, mail);
 		return executeQuery();
 	}
@@ -88,7 +88,7 @@ public class UserAO extends DAO {
 	 * @return boolean
 	 */
 	public boolean exists(int id) {
-		set("SELECT certificate FROM wanda_user WHERE certificate=?;");
+		set("SELECT idwuser FROM wuser WHERE idwuser=?;");
 		setInt(1, id);
 		return executeQuery();
 	}
@@ -124,7 +124,7 @@ public class UserAO extends DAO {
 	 * @return User object, may be null when unexpected error occurs.
 	 */
 	public User getUser(String mail) throws NotFoundInDatabaseException {
-		set("SELECT * FROM wanda_user WHERE mail=?;");
+		set("SELECT * FROM wuser WHERE mail=?;");
 		setString(1, mail);
 		if (!executeQuery()) {
 			throw new NotFoundInDatabaseException("User with mail " + mail
@@ -141,7 +141,7 @@ public class UserAO extends DAO {
 	 * @return User object, may be null.
 	 */
 	public User getUser(int id) throws NotFoundInDatabaseException {
-		set("SELECT * FROM wanda_user WHERE certificate=?;");
+		set("SELECT * FROM wuser WHERE idwuser=?;");
 		setInt(1, id);
 		executeQuery();
 		User u = extract();
@@ -187,14 +187,14 @@ public class UserAO extends DAO {
 			throw new InvalidParameterException("Entity does not exist.");
 
 		String entity_name = entity.getEntityName();
-		String table_name = "user" + entity_name + "access";
+		String table_name = "wuser" + entity_name + "access";
 
 		if (isRightSet(entity, user)) {
 			set("UPDATE " + table_name
-					+ " SET rights=? WHERE wanda_user=? AND " + entity_name
+					+ " SET rights=? WHERE wuser=? AND " + entity_name
 					+ "=?;");
 		} else {
-			set("INSERT INTO " + table_name + "(rights,wanda_user,"
+			set("INSERT INTO " + table_name + "(rights,wuser,"
 					+ entity_name + ") VALUES (?,?,?);");
 		}
 
@@ -217,8 +217,8 @@ public class UserAO extends DAO {
 	public ACCESS_RIGHT getAccessRight(Entity entity, User user)
 			throws NotFoundInDatabaseException {
 		String entity_name = entity.getEntityName();
-		String table_name = "user" + entity_name + "access";
-		set("SELECT rights FROM " + table_name + " WHERE wanda_user=? AND "
+		String table_name = "wuser" + entity_name + "access";
+		set("SELECT rights FROM " + table_name + " WHERE wuser=? AND "
 				+ entity_name + "=?;");
 		setInt(1, user.getId());
 		setInt(2, entity.getId());
@@ -241,8 +241,8 @@ public class UserAO extends DAO {
 	 */
 	private boolean isRightSet(Entity entity, User user) {
 		String entity_name = entity.getEntityName();
-		String table_name = "user" + entity_name + "access";
-		set("SELECT * FROM " + table_name + " WHERE wanda_user=? AND "
+		String table_name = "wuser" + entity_name + "access";
+		set("SELECT * FROM " + table_name + " WHERE wuser=? AND "
 				+ entity_name + "=?;");
 		setInt(1, user.getId());
 		setInt(2, entity.getId());
@@ -258,7 +258,7 @@ public class UserAO extends DAO {
 	 * @throws NotFoundInDatabaseException
 	 */
 	public ROLE getRole(String email) throws NotFoundInDatabaseException {
-		set("SELECT role FROM wanda_user WHERE mail=?");
+		set("SELECT role FROM wuser WHERE mail=?");
 		setString(1, email);
 		if (!executeQuery())
 			throw new NotFoundInDatabaseException("The user " + email
@@ -279,16 +279,21 @@ public class UserAO extends DAO {
 	 */
 	public boolean isAuthorized(User user, Entity entity)
 			throws NotFoundInDatabaseException {
+		
 		if (getRole(user.getMail()) == ROLE.ADMIN)
 			return true; // if admin true
+		
 		NamedEntityAO nao = new NamedEntityAO();
+		
 		if (getAccessRight(entity, user) == ACCESS_RIGHT.OWN)
 			return true; // if owner true
 
 		if (!entity.getEntityName().equals("video")
 				&& !entity.getEntityName().equals("annotation")) {
+			
 			ArrayList<Entity> fathers = (ArrayList<Entity>) nao
 					.getUpperHierarchy(entity);
+			
 			for (Entity father : fathers) { // if owner of a father
 				if (getAccessRight(father, user) == ACCESS_RIGHT.OWN)
 					return true;

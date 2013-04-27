@@ -69,6 +69,10 @@ public class ContainerAO extends DAO {
 	public final boolean isContainer(final Entity entity) {
 		return hc.getHierarchy().containsKey(entity.getEntityName());
 	}
+	
+	public final ArrayList<String> getSonsNames(final NamedEntity container){
+		return hc.getHierarchy().get(container.getEntityName());
+	}
 
 	/**
 	 * Creates a new container (site, corpus, session, view)
@@ -118,7 +122,6 @@ public class ContainerAO extends DAO {
 					+ container.getEntityName() + ":" + container.getName()
 					+ " and " + father.getEntityName() + ":" + father.getName()
 					+ " doesn't seem to exist");
-
 		return true;
 	}
 }

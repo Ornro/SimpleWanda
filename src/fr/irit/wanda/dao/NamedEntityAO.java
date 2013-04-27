@@ -32,7 +32,7 @@ public class NamedEntityAO extends DAO {
 		ArrayList<NamedEntity> namedEntities = new ArrayList<NamedEntity>();
 
 		set("SELECT * FROM " + tableName + ";");
-		executeQuery();
+		if (!executeQuery()) return namedEntities;
 		do {
 			NamedEntity ne = new NamedEntity(getInt("id" + tableName),
 					tableName, getString("name"));
@@ -49,6 +49,13 @@ public class NamedEntityAO extends DAO {
 		executeQuery();
 		ne.setId(getInt("id" + ne.getEntityName()));
 		return ne;
+	}
+	
+	public NamedEntity getName(int id, String tableName) {
+		set("SELECT * FROM " + tableName + " WHERE id=?;");
+		setInt(1, id);
+		executeQuery();
+		return new NamedEntity(id,tableName,getString("Name"));
 	}
 
 	/**

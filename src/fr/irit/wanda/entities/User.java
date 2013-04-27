@@ -78,7 +78,7 @@ public class User extends Entity {
 
 	public User(int certificate, String name, String forename, ROLE role,
 			String mail) {
-		super(certificate, "user");
+		super(certificate, "wuser");
 		this.name = name;
 		this.mail = mail;
 		this.role = role;
@@ -86,7 +86,7 @@ public class User extends Entity {
 	
 	public User(int certificate, String name, String forename, ROLE role,
 			String mail, User creator) {
-		super(certificate, "user");
+		super(certificate, "wuser");
 		this.name = name;
 		this.mail = mail;
 		this.role = role;
@@ -94,7 +94,7 @@ public class User extends Entity {
 	}
 
 	public User(String name, String forename, ROLE role, String mail) {
-		super(-1, "user");
+		super(-1, "wuser");
 		this.name = name;
 		this.mail = mail;
 		this.role = role;

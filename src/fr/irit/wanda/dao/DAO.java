@@ -139,7 +139,7 @@ public abstract class DAO {
 	protected void set(String request) {
 		try {
 			stmt = con.prepareStatement(request);
-		} catch (SQLException ex) {
+		} catch (Exception ex) {
 			logger.severe("Unable to prepare querry.");
 			logger.fine("Current request: " + request);
 			logger.finer("Returned error: " + ex);

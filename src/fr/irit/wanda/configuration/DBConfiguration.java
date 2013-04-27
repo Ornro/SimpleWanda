@@ -25,8 +25,8 @@ import java.util.logging.Logger;
 public final class DBConfiguration { /* Singleton pattern for configuration file. */
 
 	private static Logger logger = Logger.getLogger("DBConfiguration");
-	private static final String CONFIGURATION_FILE_PATH = "db.connect";
-	private static final String DEFAULT_URL = "jdbc:postgresql://localhost:5432/Wanda";
+	private static final String CONFIGURATION_FILE_PATH = "/db.connect";
+	private static final String DEFAULT_URL = "jdbc:postgresql://localhost:5432/SimpleWanda";
 	private static final String DEFAULT_DRIVER = "org.postgresql.Driver";
 	private static final String DEFAULT_LOGIN = "postgres";
 	private static final String DEFAULT_PASSWORD = "12556633";

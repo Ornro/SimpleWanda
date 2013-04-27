@@ -47,4 +47,6 @@ public class NamedEntity extends Entity {
 			return false;
 		return true;
 	}
+	
+
 }

@@ -79,4 +79,20 @@ public class Entity {
 	public String getTableId(){
 		return "id"+this.entityName;
 	}
+	
+	public boolean isSite(){
+		return this.entityName.equals("site");
+	}
+	
+	public boolean isCorpus(){
+		return this.entityName.equals("corpus");
+	}
+	
+	public boolean isSession(){
+		return this.entityName.equals("session");
+	}
+	
+	public boolean isView(){
+		return this.entityName.equals("view");
+	}
 }
