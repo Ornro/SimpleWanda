@@ -52,10 +52,10 @@ public class NamedEntityAO extends DAO {
 	}
 	
 	public NamedEntity getName(int id, String tableName) {
-		set("SELECT * FROM " + tableName + " WHERE id=?;");
+		set("SELECT * FROM " + tableName + " WHERE id"+tableName+"=?;");
 		setInt(1, id);
 		executeQuery();
-		return new NamedEntity(id,tableName,getString("Name"));
+		return new NamedEntity(id,tableName,getString("name"));
 	}
 
 	/**

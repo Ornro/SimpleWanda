@@ -221,7 +221,7 @@ public class RequestImpl implements IRequest {
 		}
 		if (caller != null) {
 			if (caller.getRole() == ROLE.ADMIN){
-				chaine += "<li><a id=\"Createsite\" onclick=\"window_change(this.id)\"><img src=\"/SimpleWanda/img/add.png \" class=\"icon\"/><small> Add site </small></a></li>";
+				chaine += "<li>"+ printAJAXCreateLink("_site")+"<img src=\"/SimpleWanda/img/add.png \" class=\"icon\"/><small> Add site </small></a></li>";
 			}
 		}
 		chaine += "</ol>";
@@ -266,9 +266,14 @@ public class RequestImpl implements IRequest {
 	}
 	
 	private String printAJAXLink(NamedEntity container,String action){
-		return "<a id=\"" + container.getId() + "\" name=\"" + action
-				+ container.getEntityName()
-				+ " \" onclick=\"change_div(this.id,this.name)\">";
+		return "<a id=\"" + container.getId() + "_" + container.getEntityName() 
+				+ "\" name=\"" + action
+				+ "\" onclick=\"change_div(this.name,this.id)\">";
+	}
+	
+	private String printAJAXCreateLink(String id){
+			return "<a id=\"" + id 
+					+ "\" name=\"Form.jsp\" onclick=\"change_div(this.name,this.id)\">";
 	}
 
 	private String addIcons(NamedEntity container) {
@@ -285,13 +290,7 @@ public class RequestImpl implements IRequest {
 
 	private String endContainer(NamedEntity container) {
 		String chaine = "";
-		
-		try {
-			if (isAllowedToProceed(container)) {
-				chaine += "<li>" + printAJAXLink(container, "create")+ "<img src=\"/SimpleWanda/img/add.png \" class=\"icon\"/\\><small>Add son</small> </a></li>";
-			}
-		} catch (NotAllowedToProceedException e) {
-		}
+		chaine += addSons(container);
 		chaine += "</ol>"; // on ferme la liste des fils
 		chaine += "</li>"; // on clos cet élément
 
@@ -305,6 +304,21 @@ public class RequestImpl implements IRequest {
 		chaine += "<a href=\"#\"><img src=\"/SimpleWanda/img/download.png \" </a>";
 		chaine += "</li>";
 
+		return chaine;
+	}
+	
+	private String addSons(NamedEntity container){
+		
+		String chaine="";
+		try {
+			if (isAllowedToProceed(container)) {
+				for (String son:new ContainerAO().getSonsNames(container)){
+					chaine += "<li>" + printAJAXCreateLink(container.getId()+"_"+son+"_"+container.getEntityName())+ "<img src=\"/SimpleWanda/img/add.png \" class=\"icon\"/\\><small>Add "+son+"</small> </a></li>";
+				}
+			}
+		} catch (NotAllowedToProceedException e) {
+			System.err.println("ERROR");
+		}
 		return chaine;
 	}
 }

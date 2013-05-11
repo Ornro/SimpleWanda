@@ -35,27 +35,15 @@
 		}
 		return xhr
 	}
-
-	function window_change(id) {
+	
+	function change_div(name,id) {
 		var xhr = getXhr(); // On défini ce qu'on va faire quand on aura la réponse
 		xhr.onreadystatechange = function() { // si on a tout reçu et que le serveur est ok
 			if (xhr.readyState == 4 && xhr.status == 200) {
 				document.getElementById('home_page').innerHTML = xhr.responseText;
 			}
 		};
-		xhr.open("GET", id+'.jsp', true);
-		xhr.send(null);
-	}
-	
-	
-	function window_change(name,id) {
-		var xhr = getXhr(); // On défini ce qu'on va faire quand on aura la réponse
-		xhr.onreadystatechange = function() { // si on a tout reçu et que le serveur est ok
-			if (xhr.readyState == 4 && xhr.status == 200) {
-				document.getElementById('home_page').innerHTML = xhr.responseText;
-			}
-		};
-		xhr.open("GET", name+'.jsp?id='+id, true);
+		xhr.open("GET", name+"?id="+id, true);
 		xhr.send(null);
 	}
 </script>

@@ -17,9 +17,9 @@ import fr.irit.wanda.exception.NotFoundInDatabaseException;
 /**
  * Servlet implementation class New_entities
  */
-@WebServlet("/New_entities")
-public class New_entities extends Servlet {
-	enum Type_entities {
+@WebServlet("/Create")
+public class Create extends Servlet {
+	enum ENTITIES {
 		METADATA, USER, RULE, ROLE, SITE, SESSION, WORKFLOW, TYPE, CORPUS, VIDEO, VIEW, ANNOTATION, MONTAGE
 	}
 
@@ -29,7 +29,7 @@ public class New_entities extends Servlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public New_entities() {
+	public Create() {
 		super("benjamin.babic@hotmail.fr");
 	}
 
@@ -48,8 +48,8 @@ public class New_entities extends Servlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String message = null;
-		Type_entities ent = Type_entities.valueOf(getString(request,
-				"hidden_field").toUpperCase());
+		ENTITIES ent = ENTITIES.valueOf(getString(request,
+				"entity").toUpperCase());
 
 		switch (ent) {
 		/*case METADATA:
@@ -176,7 +176,7 @@ public class New_entities extends Servlet {
 
 	private String handlerSite(HttpServletRequest request) {
 		try {
-			ccfg.remoteRequest.createSite(new NamedEntity("site",getString(request,"name_site")));
+			ccfg.remoteRequest.createSite(new NamedEntity("site",getString(request,"name")));
 		} catch (NotAllowedToProceedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -194,7 +194,7 @@ public class New_entities extends Servlet {
 	private String handlerSession(HttpServletRequest request) {
 		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"id"), "corpus");
 		try {
-			ccfg.remoteRequest.createSession(new NamedEntity("session",getString(request,"name_session")),ne);
+			ccfg.remoteRequest.createSession(new NamedEntity("session",getString(request,"name")),ne);
 		} catch (AlreadyRegistredException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -210,9 +210,9 @@ public class New_entities extends Servlet {
 	}
 
 	private String handleCorpus(HttpServletRequest request) {
-		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"id"), "site");
+		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"fatherId"), getString(request,"fatherEntityName"));
 		try {
-			ccfg.remoteRequest.createSession(new NamedEntity("corpus",getString(request,"name_corpus")),ne);
+			ccfg.remoteRequest.createCorpus(new NamedEntity("corpus",getString(request,"name")),ne);
 		} catch (AlreadyRegistredException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -230,7 +230,7 @@ public class New_entities extends Servlet {
 	private String handleView(HttpServletRequest request) {
 		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"id"), "session");
 		try {
-			ccfg.remoteRequest.createSession(new NamedEntity("view",getString(request,"name_view")),ne);
+			ccfg.remoteRequest.createView(new NamedEntity("view",getString(request,"name")),ne);
 		} catch (AlreadyRegistredException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -262,8 +262,5 @@ public class New_entities extends Servlet {
 
 		return "Votre type a bien été ajouté";
 	}*/
-
-
-
 
 }
