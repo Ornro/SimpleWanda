@@ -91,7 +91,7 @@ CREATE TABLE corpus
 (
   idcorpus serial NOT NULL,
   _site integer,
-  owner integer NOT NULL,
+  owner integer,
   _corpus integer,
   name character varying,
   CONSTRAINT corpus_pkey PRIMARY KEY (idcorpus),
@@ -125,7 +125,7 @@ CREATE TABLE session
 (
   idsession serial NOT NULL,
   _corpus integer NOT NULL,
-  owner integer NOT NULL,
+  owner integer,
   name character varying,
   CONSTRAINT session_pkey PRIMARY KEY (idsession),
   CONSTRAINT session_corpus_fkey FOREIGN KEY (_corpus)
@@ -149,7 +149,7 @@ CREATE INDEX ssfk_creator
 CREATE TABLE montage
 (
   idmontage serial NOT NULL,
-  owner integer NOT NULL,
+  owner integer,
   _session integer,
   link character varying,
   name character varying,
@@ -169,7 +169,7 @@ CREATE TABLE view
 (
   idview serial NOT NULL,
   type integer NOT NULL,
-  owner integer NOT NULL,
+  owner integer,
   _session integer NOT NULL,
   _montage integer,
   name character varying,
