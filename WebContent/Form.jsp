@@ -100,7 +100,7 @@
 		</p>
 	</div>
 	<div class="space"></div>
-	<form class="form" method="post" action="Create" id="add_video" name="video"><br>
+	<form class="form" method="post" action="Create" id="add_video" name="video" enctype="multipart/form-data">><br>
 		<input type="hidden"  name="entity"  value="video">
 		<input type="hidden"  name="fatherId"  value="<%=fatherId%>">
 		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
@@ -113,6 +113,7 @@
 		  <option value="1">Restricted</option>
 		  <option value="2">Public</option>
 		</select>
+		<input type="file" name="nom" />
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
 		</p>
