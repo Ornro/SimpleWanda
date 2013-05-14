@@ -107,14 +107,23 @@ public class ContainerAO extends DAO {
 
 			if (!nao.exists(father))
 				throw new AlreadyRegistredException(
-						"The fathers does not exist");
+						"The father does not exist");
 
 			String containerTable = container.getEntityName();
 			String fatherTable = "_" + father.getEntityName();
-			set("INSERT INTO " + containerTable + "(name," + fatherTable
-					+ ") VALUES (?,?);");
-			setString(1, container.getName());
-			setInt(2, father.getId());
+			
+			if (container.getOwner() != null){
+				set("INSERT INTO " + containerTable + "(name," + fatherTable
+						+ ",owner) VALUES (?,?,?);");
+				setString(1, container.getName());
+				setInt(2, father.getId());
+				setInt(3,container.getOwner().getId());
+			}else{
+				set("INSERT INTO " + containerTable + "(name," + fatherTable
+						+ ") VALUES (?,?);");
+				setString(1, container.getName());
+				setInt(2, father.getId());
+			}
 		}
 
 		if (!executeUpdate()) // if creation failed

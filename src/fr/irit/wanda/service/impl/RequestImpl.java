@@ -170,7 +170,7 @@ public class RequestImpl implements IRequest {
 	}
 
 	@Override
-	public boolean editPrivacy(NamedEntity entity, boolean privacy)
+	public boolean editPrivacy(NamedEntity entity, int privacy)
 			throws NotFoundInDatabaseException, NotAllowedToProceedException {
 		if (isAllowedToProceed(entity)) {
 			return registeredUserRequest.editPrivacy(entity, privacy);
@@ -179,9 +179,11 @@ public class RequestImpl implements IRequest {
 	}
 
 	@Override
-	public boolean createVideo(Video video) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean createVideo(NamedEntity video,NamedEntity father, int privacy)
+			throws AlreadyRegistredException, NotAllowedToProceedException,
+			NotFoundInDatabaseException	{
+		video.setOwner(caller);
+		return registeredUserRequest.createVideo(video, father, privacy);
 	}
 
 	@Override

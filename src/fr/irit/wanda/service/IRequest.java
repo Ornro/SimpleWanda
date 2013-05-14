@@ -10,7 +10,6 @@ import fr.irit.wanda.entities.MetadataContent;
 import fr.irit.wanda.entities.Montage;
 import fr.irit.wanda.entities.NamedEntity;
 import fr.irit.wanda.entities.User;
-import fr.irit.wanda.entities.Video;
 import fr.irit.wanda.exception.AlreadyRegistredException;
 import fr.irit.wanda.exception.NotAllowedToProceedException;
 import fr.irit.wanda.exception.NotFoundInDatabaseException;
@@ -19,7 +18,8 @@ public interface IRequest {
 
 	int addA3(A3 a3) throws NotAllowedToProceedException;
 
-	boolean createSite(NamedEntity site) throws NotAllowedToProceedException, AlreadyRegistredException, NotFoundInDatabaseException;
+	boolean createSite(NamedEntity site) throws NotAllowedToProceedException,
+			AlreadyRegistredException, NotFoundInDatabaseException;
 
 	boolean addSiteManager(NamedEntity site, User manager)
 			throws NotAllowedToProceedException;
@@ -27,10 +27,12 @@ public interface IRequest {
 	boolean addMetadata(MetadataContent metadata)
 			throws AlreadyRegistredException, NotAllowedToProceedException;
 
-	int createUser(User user) throws AlreadyRegistredException, NotAllowedToProceedException;
+	int createUser(User user) throws AlreadyRegistredException,
+			NotAllowedToProceedException;
 
 	boolean createSession(NamedEntity session, NamedEntity father)
-			throws AlreadyRegistredException, NotFoundInDatabaseException, NotAllowedToProceedException;
+			throws AlreadyRegistredException, NotFoundInDatabaseException,
+			NotAllowedToProceedException;
 
 	boolean createView(NamedEntity view, NamedEntity father)
 			throws AlreadyRegistredException, NotFoundInDatabaseException,
@@ -52,15 +54,19 @@ public interface IRequest {
 	FileItem getVideo(String videoName);
 
 	boolean createCorpus(NamedEntity corpus, NamedEntity father)
-			throws AlreadyRegistredException, NotAllowedToProceedException, NotFoundInDatabaseException;
+			throws AlreadyRegistredException, NotAllowedToProceedException,
+			NotFoundInDatabaseException;
 
-	boolean editPrivacy(NamedEntity entity, boolean privacy)
+	boolean editPrivacy(NamedEntity entity, int privacy)
 			throws NotFoundInDatabaseException, NotAllowedToProceedException;
 
-	boolean addCorpusManager(NamedEntity corpus, User manager) throws NotAllowedToProceedException;
+	boolean addCorpusManager(NamedEntity corpus, User manager)
+			throws NotAllowedToProceedException;
 
 	String printHierarchy();
 
-	boolean createVideo(Video video);
+	boolean createVideo(NamedEntity video, NamedEntity father, int privacy)
+			throws AlreadyRegistredException, NotAllowedToProceedException,
+			NotFoundInDatabaseException;
 
 }

@@ -3,6 +3,7 @@ package fr.irit.wanda.entities;
 public class NamedEntity extends Entity {
 
 	protected String name = null;
+	private User owner = null;
 
 	public NamedEntity(String entityName, String name) {
 		super(entityName);
@@ -46,6 +47,14 @@ public class NamedEntity extends Entity {
 		if (id != other.id && id != -1 && other.id != -1)
 			return false;
 		return true;
+	}
+
+	public User getOwner() {
+		return owner;
+	}
+
+	public void setOwner(User owner) {
+		this.owner = owner;
 	}
 	
 

@@ -5,7 +5,7 @@ package fr.irit.wanda.entities;
 
 public class Annotation extends NamedEntity {
     private User owner = null;
-    private Video related = null;
+    private NamedEntity related = null;
     private int view = -1;
     private String link = null;
     private WORKFLOW workflow;
@@ -49,14 +49,14 @@ public class Annotation extends NamedEntity {
      * @param link
      *            the link
      */   
-    public Annotation(int id, WORKFLOW workflow, Video related, String name) {
+    public Annotation(int id, WORKFLOW workflow, NamedEntity related, String name) {
         super(id,"annotation",name);
         
         this.workflow = workflow;
         this.related = related;
     }
     
-    public Annotation(WORKFLOW workflow, Video related, int view, String name, User owner) {
+    public Annotation(WORKFLOW workflow, NamedEntity related, int view, String name, User owner) {
         super(-1,"annotation",name);
         this.workflow = workflow;
         this.related = related;
@@ -65,7 +65,7 @@ public class Annotation extends NamedEntity {
         this.view = view;
     }
     
-    public Annotation(WORKFLOW workflow, Video related, int view, String name) {
+    public Annotation(WORKFLOW workflow, NamedEntity related, int view, String name) {
         super(-1,"annotation",name);
         this.workflow = workflow;
         this.related = related;
@@ -114,7 +114,7 @@ public class Annotation extends NamedEntity {
      *
      * @return the value of related
      */
-    public Video getRelated() {
+    public NamedEntity getRelated() {
         return related;
     }
 
@@ -123,7 +123,7 @@ public class Annotation extends NamedEntity {
      *
      * @param related new value of related
      */
-    public void setRelated(Video related) {
+    public void setRelated(NamedEntity related) {
         this.related = related;
     }
 

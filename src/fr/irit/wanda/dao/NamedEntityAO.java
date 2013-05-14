@@ -69,16 +69,16 @@ public class NamedEntityAO extends DAO {
 	 * @return true if success
 	 * @throws NotFoundInDatabaseException
 	 */
-	public boolean editPrivacy(NamedEntity ne, boolean newValue)
+	public boolean editPrivacy(NamedEntity ne, int newValue)
 			throws NotFoundInDatabaseException {
 		if (ne.getId() != -1) {
 			set("UPDATE " + ne.getEntityName() + " SET privacy=? WHERE "
 					+ ne.getTableId() + "=?");
-			setBoolean(1, newValue);
+			setInt(1, newValue);
 			setInt(2, ne.getId());
 		} else {
 			set("UPDATE " + ne.getEntityName() + " SET privacy=? WHERE name=?");
-			setBoolean(1, newValue);
+			setInt(1, newValue);
 			setString(2, ne.getName());
 		}
 		if (!executeUpdate())

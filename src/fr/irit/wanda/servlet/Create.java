@@ -79,9 +79,9 @@ public class Create extends Servlet {
 		case CORPUS:
 			message = handleCorpus(request);
 			break;
-		/*case VIDEO:
+		case VIDEO:
 			message = handlerVideo(request);
-			break;*/
+			break;
 		case VIEW:
 			message = handleView(request);
 			break;
@@ -174,6 +174,24 @@ public class Create extends Servlet {
 	}*/
 
 
+	private String handlerVideo(HttpServletRequest request) {
+		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"fatherId"), getString(request,"fatherEntityName"));
+		try {
+			ccfg.remoteRequest.createVideo(new NamedEntity("video",getString(request,"name")),ne,getInt(request,"privacy"));
+		} catch (NotAllowedToProceedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (AlreadyRegistredException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotFoundInDatabaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "Votre site a bien été ajoutée";
+	}
+	
 	private String handlerSite(HttpServletRequest request) {
 		try {
 			ccfg.remoteRequest.createSite(new NamedEntity("site",getString(request,"name")));

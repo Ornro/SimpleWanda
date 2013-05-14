@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.apache.commons.fileupload.FileItem;
 
+import fr.irit.wanda.dao.ContainerAO;
 import fr.irit.wanda.dao.MetadataAO;
 import fr.irit.wanda.dao.NamedEntityAO;
 import fr.irit.wanda.dao.UserAO;
@@ -12,11 +13,11 @@ import fr.irit.wanda.entities.MetadataContent;
 import fr.irit.wanda.entities.NamedEntity;
 import fr.irit.wanda.entities.User;
 import fr.irit.wanda.entities.User.ACCESS_RIGHT;
-import fr.irit.wanda.entities.Video;
+import fr.irit.wanda.exception.AlreadyRegistredException;
+import fr.irit.wanda.exception.NotAllowedToProceedException;
 import fr.irit.wanda.exception.NotFoundInDatabaseException;
 
 public class RegisteredUserImpl {
-
 
 	protected RegisteredUserImpl() {
 	}
@@ -37,7 +38,7 @@ public class RegisteredUserImpl {
 		return null;
 	}
 
-	protected boolean editPrivacy(NamedEntity entity, boolean privacy)
+	protected boolean editPrivacy(NamedEntity entity, int privacy)
 			throws NotFoundInDatabaseException {
 		NamedEntityAO nao = new NamedEntityAO();
 		return nao.editPrivacy(entity, privacy);
@@ -50,9 +51,12 @@ public class RegisteredUserImpl {
 		return metadataAO.getMetadatas(concerned);
 	}
 
-	protected boolean createVideo(Video video) {
-		// TODO createVideo
-		return false;
+	protected boolean createVideo(NamedEntity video, NamedEntity father, int privacy)
+			throws AlreadyRegistredException, NotAllowedToProceedException,
+			NotFoundInDatabaseException {
+		new ContainerAO().createContainer(video, father);
+		return editPrivacy(video,privacy);
+		
 	}
 
 }
