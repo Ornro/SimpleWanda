@@ -16,3 +16,11 @@ function dT() {
 }
 var fr = 0;
 oT = "tS().getHours()+':'+lZ(tS().getMinutes())";
+
+function hideDisplay(id) {
+	var id_tohide = $('.current').attr('id');
+	$('#' + id_tohide).removeClass('current');
+	$('#' + id_tohide).addClass('hidden');
+	$('#' + id).removeClass('hidden');
+	$('#' + id).addClass('current');
+}

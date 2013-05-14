@@ -43,9 +43,11 @@
 				document.getElementById('home_page').innerHTML = xhr.responseText;
 			}
 		};
+		alert(name+"?id="+id);
 		xhr.open("GET", name+"?id="+id, true);
 		xhr.send(null);
 	}
+	
 </script>
 	</head>
 	
@@ -68,15 +70,6 @@
 					</form>
 				</div>
 			</div>
-			<div class="dotted_line"></div>
-			
-			<div class="clear"></div>
-			<div id="container">
-				<ul class="dark_menu">
-					<li><a href="Home.jsp">Home</a></li>
-				</ul>
-			</div>
-			
 			<div class="dotted_line"></div>
 			<div id="content">
 				<div id="contenu">
@@ -115,7 +108,7 @@
 			</div>
 			<div class="clear"></div>
 			<div class="dotted_line"></div>
-			<div id="copyright">Copyright Wanda 2013.</div>
+			<div id="copyright">Copyright © Wanda 2013.</div>
 		</div>
 		<div id="footer">
 			<div id="footer-menu">

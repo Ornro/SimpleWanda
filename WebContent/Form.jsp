@@ -10,7 +10,6 @@
 	String fatherEntityName = rawId.split("_")[2];
 	String entityName = rawId.split("_")[1];
 	String fatherId = rawId.split("_")[0]; 
-	System.err.println("Done");
 %>
 
 <% if (entityName.equals("site")){ %>
@@ -31,6 +30,7 @@
 		</p>
 	</form>
 </div>
+
 <% }else if (entityName.equals("corpus")){ %>
 <div id="createForm" class="">
 	<h2>Create a corpus</h2>
@@ -39,7 +39,8 @@
 			This section allows you to create a corpus.
 		</p>
 	</div>
-	<form  class="form" method="post" action="Create" id="add_corpus" name="corpus"><br>
+	<div class="space"></div>
+	<form class="form" method="post" action="Create" id="add_corpus" name="corpus">
 		<input type="hidden"  name="entity"  value="corpus">
 		<input type="hidden"  name="fatherId"  value="<%=fatherId%>">
 		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
@@ -50,5 +51,45 @@
 		</p>
 	</form>
 </div>
-<%}%>
+<%}else if (entityName.equals("session")){%>
+<div id="createForm" class="">
+	<h2>Create a session</h2>
+	<div style="margin-bottom: 5px" class="description">
+		<p>
+			This section allows you to create a session.
+		</p>
+	</div>
+	<div class="space"></div>
+	<form class="form" method="post" action="Create" id="add_session" name="session">
+		<input type="hidden"  name="entity"  value="session">
+		<input type="hidden"  name="fatherId"  value="<%=fatherId%>">
+		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
+		<label for="name"><span>Name</span></label>
+		<input name="name" type="text" size="40" placeholder="Name" autofocus="" required=""/>
+		<p class="validate">
+			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
+		</p>
+	</form><br>
+</div>
+<%}else if (entityName.equals("view")){%>
+<div id="createForm" class="">
+	<h2>Create a view</h2>
+	<div style="margin-bottom: 5px" class="description">
+		<p>
+			This section allows you to create a view.
+		</p>
+	</div>
+	<div class="space"></div>
+	<form class="form" method="post" action="Create" id="add_view" name="view">
+		<input type="hidden"  name="entity"  value="view">
+		<input type="hidden"  name="fatherId"  value="<%=fatherId%>">
+		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
+		<label for="name"><span>Name</span></label>
+		<input name="name" type="text" size="40" placeholder="Name" autofocus="" required=""/>
+		<p class="validate">
+			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
+		</p>
+	</form><br>
+</div>
+<%} %>
 

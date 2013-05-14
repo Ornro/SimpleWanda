@@ -16,6 +16,10 @@ ol.tree
 		width:16px;
 	}
 	
+	.add_entities{
+		cursor:pointer;
+	}	
+	
 	li.file
 	{
 		margin-left: -1px !important;

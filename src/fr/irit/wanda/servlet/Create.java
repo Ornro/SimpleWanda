@@ -192,7 +192,7 @@ public class Create extends Servlet {
 	}
 	
 	private String handlerSession(HttpServletRequest request) {
-		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"id"), "corpus");
+		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"fatherId"), getString(request,"fatherEntityName"));
 		try {
 			ccfg.remoteRequest.createSession(new NamedEntity("session",getString(request,"name")),ne);
 		} catch (AlreadyRegistredException e) {
@@ -228,7 +228,7 @@ public class Create extends Servlet {
 	}
 	
 	private String handleView(HttpServletRequest request) {
-		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"id"), "session");
+		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"fatherId"), getString(request,"fatherEntityName"));
 		try {
 			ccfg.remoteRequest.createView(new NamedEntity("view",getString(request,"name")),ne);
 		} catch (AlreadyRegistredException e) {

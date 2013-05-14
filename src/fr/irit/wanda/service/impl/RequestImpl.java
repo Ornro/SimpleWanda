@@ -221,7 +221,7 @@ public class RequestImpl implements IRequest {
 		}
 		if (caller != null) {
 			if (caller.getRole() == ROLE.ADMIN){
-				chaine += "<li>"+ printAJAXCreateLink("_site")+"<img src=\"/SimpleWanda/img/add.png \" class=\"icon\"/><small> Add site </small></a></li>";
+				chaine += "<li>"+ printAJAXCreateLink("-1_site_site")+"<img src=\"/SimpleWanda/img/add.png \" class=\"icon\"/><small> Add site </small></a></li>";
 			}
 		}
 		chaine += "</ol>";
@@ -254,10 +254,9 @@ public class RequestImpl implements IRequest {
 		String chaine = "";
 		chaine += "<li>"; // on cree son element de liste
 
-		chaine += "<label for=\"folder\">"; // on l'identifie
+		chaine += "&nbsp; &nbsp;"; // on l'identifie
 		chaine += printAJAXLink(container, "view")+container.getName()+"</a>";
 		chaine += addIcons(container);
-		chaine += "</label>";
 
 		chaine += "<input type=\"checkbox\" id=\"folder\" \\>"; // syle
 		chaine += "<ol>"; // on commence une sous liste
@@ -266,13 +265,13 @@ public class RequestImpl implements IRequest {
 	}
 	
 	private String printAJAXLink(NamedEntity container,String action){
-		return "<a id=\"" + container.getId() + "_" + container.getEntityName() 
+		return "<a class=\"add_entities\" id=\"" + container.getId() + "_" + container.getEntityName() 
 				+ "\" name=\"" + action
 				+ "\" onclick=\"change_div(this.name,this.id)\">";
 	}
 	
-	private String printAJAXCreateLink(String id){
-			return "<a id=\"" + id 
+	public String printAJAXCreateLink(String id){
+			return "<a class=\"add_entities\" id=\"" + id 
 					+ "\" name=\"Form.jsp\" onclick=\"change_div(this.name,this.id)\">";
 	}
 
@@ -282,6 +281,8 @@ public class RequestImpl implements IRequest {
 			if (isAllowedToProceed(container)) {
 				chaine += printAJAXLink(container, "edit")
 						+ " &nbsp<img src=\"/SimpleWanda/img/edit.png\" class=\"icon\" \\> </a>";
+				chaine += printAJAXLink(container, "Choose.jsp")
+						+ " &nbsp<img src=\"/SimpleWanda/img/add.png\" class=\"icon\" \\> </a>";				
 			}
 		} catch (NotAllowedToProceedException e) {
 		}
