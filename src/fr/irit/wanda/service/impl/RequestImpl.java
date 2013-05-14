@@ -67,6 +67,7 @@ public class RequestImpl implements IRequest {
 			return adminRequest.createSite(site);
 		else
 			throw new NotAllowedToProceedException();
+		
 	}
 
 	@Override
@@ -221,12 +222,13 @@ public class RequestImpl implements IRequest {
 		for (NamedEntity s : sites) {
 			chaine += printHierarchy(s);
 		}
+		chaine += "</ol>";
 		if (caller != null) {
 			if (caller.getRole() == ROLE.ADMIN){
-				chaine += "<li>"+ printAJAXCreateLink("-1_site_site")+"<img src=\"/SimpleWanda/img/add.png \" class=\"icon\"/><small> Add site </small></a></li>";
+				chaine += "<br><span style=\"float:right\">"+ printAJAXCreateLink("-1_site_site")+"<img title=\"Add Site\" src=\"/SimpleWanda/img/add.png \" class=\"icon\"/><small> Add site </small></a></span>";
 			}
 		}
-		chaine += "</ol>";
+		
 		return chaine;
 	}
 
@@ -257,10 +259,12 @@ public class RequestImpl implements IRequest {
 		chaine += "<li>"; // on cree son element de liste
 
 		chaine += "&nbsp; &nbsp;"; // on l'identifie
+		chaine += "<span id=\"dynamicMenu\" onmouseover=\"quickMenu('"+ container.getId() + "_" + container.getEntityName() +"_icons"+"')\" onmouseout=\"quickMenu2('"+ container.getId() + "_" + container.getEntityName() +"_icons"+"')\" >";
 		chaine += printAJAXLink(container, "view")+container.getName()+"</a>";
-		chaine += addIcons(container);
+		chaine += "<span id=\""+ container.getId() + "_" + container.getEntityName() +"_icons"+"\" class=\"hidden\">"+addIcons(container)+addSons(container)+"</span>";
+		chaine += "</span>";
 
-		chaine += "<input type=\"checkbox\" id=\"folder\" \\>"; // syle
+		chaine += "<input type=\"checkbox\" id=\"folder\" \\>"; // style
 		chaine += "<ol>"; // on commence une sous liste
 
 		return chaine;
@@ -282,9 +286,7 @@ public class RequestImpl implements IRequest {
 		try {
 			if (isAllowedToProceed(container)) {
 				chaine += printAJAXLink(container, "edit")
-						+ " &nbsp<img src=\"/SimpleWanda/img/edit.png\" class=\"icon\" \\> </a>";
-				chaine += printAJAXLink(container, "Choose.jsp")
-						+ " &nbsp<img src=\"/SimpleWanda/img/add.png\" class=\"icon\" \\> </a>";				
+						+ " &nbsp<img title=\"Edit\" src=\"/SimpleWanda/img/edit.png\" class=\"icon\" \\> </a>";				
 			}
 		} catch (NotAllowedToProceedException e) {
 		}
@@ -293,7 +295,6 @@ public class RequestImpl implements IRequest {
 
 	private String endContainer(NamedEntity container) {
 		String chaine = "";
-		chaine += addSons(container);
 		chaine += "</ol>"; // on ferme la liste des fils
 		chaine += "</li>"; // on clos cet élément
 
@@ -316,7 +317,8 @@ public class RequestImpl implements IRequest {
 		try {
 			if (isAllowedToProceed(container)) {
 				for (String son:new ContainerAO().getSonsNames(container)){
-					chaine += "<li>" + printAJAXCreateLink(container.getId()+"_"+son+"_"+container.getEntityName())+ "<img src=\"/SimpleWanda/img/add.png \" class=\"icon\"/\\><small>Add "+son+"</small> </a></li>";
+					chaine += printAJAXCreateLink(container.getId()+"_"+son+"_"+container.getEntityName())+ "<img title=\"Add "+son+"\" src=\"/SimpleWanda/img/add.png \" class=\"icon\"/\\></a>";
+					chaine += "&nbsp;";
 				}
 			}
 		} catch (NotAllowedToProceedException e) {

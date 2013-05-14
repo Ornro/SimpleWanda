@@ -17,10 +17,12 @@ function dT() {
 var fr = 0;
 oT = "tS().getHours()+':'+lZ(tS().getMinutes())";
 
-function hideDisplay(id) {
-	var id_tohide = $('.current').attr('id');
-	$('#' + id_tohide).removeClass('current');
-	$('#' + id_tohide).addClass('hidden');
+function quickMenu(id) {
 	$('#' + id).removeClass('hidden');
-	$('#' + id).addClass('current');
+	$('#' + id).addClass('display');
+}
+
+function quickMenu2(id) {
+	$('#' + id).removeClass('display');
+	$('#' + id).addClass('hidden');
 }
