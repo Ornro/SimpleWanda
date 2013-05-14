@@ -63,7 +63,7 @@
 		
 			<div class="dotted_line"></div>
 			<div id="header_container">
-				<img src="img/logo_app.png" alt="Wanda" title="Wanda" width="350" height="100" style="margin-left: 29px; float: left;">
+				<a href="Home.jsp"><img src="img/logo_app.png" alt="Wanda" title="Wanda" width="350" height="100" style="margin-left: 29px; float: left;"></a>
 				<div id="search_tool">
 					<form method="get" action="/search" id="search">
 						<input id="search_barre" name="search_barre" type="text" size="40" placeholder="Search..." />

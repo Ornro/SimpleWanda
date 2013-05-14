@@ -18,7 +18,17 @@ ol.tree
 	
 	.add_entities{
 		cursor:pointer;
-	}	
+	}
+	
+	.hidden{
+		display:none;
+	}
+	
+	.display{
+		display:inline;
+	}
+	
+	span.dynamicMenu{}
 	
 	li.file
 	{
