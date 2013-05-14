@@ -89,12 +89,16 @@ public class ContainerAO extends DAO {
 	public final boolean createContainer(NamedEntity container,
 			NamedEntity father) throws AlreadyRegistredException,
 			NotFoundInDatabaseException {
+		
 		if (!isContainer(container))
 			return false; // if that is not a container
+		
 		NamedEntityAO nao = new NamedEntityAO();
+		
 		if (nao.exists(container)) // if the entity already exists
 			throw new AlreadyRegistredException(
 					"The container to create already exists");
+		
 		if (container.getEntityName().equals("site")) {
 			set("INSERT INTO site(name) VALUES (?);");
 			setString(1, container.getName());
