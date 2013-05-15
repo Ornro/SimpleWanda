@@ -1,6 +1,7 @@
 package fr.irit.wanda.configuration;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Hashtable;
 
 import fr.irit.wanda.dao.DatabaseMetadataAO;
@@ -9,14 +10,23 @@ public final class HirarchyConfiguration {
 
 	private static volatile HirarchyConfiguration instance = null;
 	private Hashtable<String, ArrayList<String>> hierarchy = new Hashtable<String, ArrayList<String>>();
-
+	private Collection<String> containers = new ArrayList<String>();
+	private Collection<String> linkedEntities = new ArrayList<String>();
+	
 	private HirarchyConfiguration() {
-		getConfiguration();
+		setHierarchyContent();
+		setConfiguration();
+	}
+	
+	private void setHierarchyContent(){
+		DatabaseMetadataAO DMAO = new DatabaseMetadataAO();
+		containers = DMAO.getContainersNames();
+		linkedEntities = DMAO.getLinkedEntitiesNames();
 	}
 
-	private void getConfiguration() {
+	private void setConfiguration() {
 		DatabaseMetadataAO DMAO = new DatabaseMetadataAO();
-		for (String container_name : DMAO.getContainersNames()) {
+		for (String container_name : containers) {
 			hierarchy.put(container_name,
 					(ArrayList<String>) DMAO.getContainerContentNames(container_name));
 		}
@@ -40,4 +50,7 @@ public final class HirarchyConfiguration {
 		return hierarchy;
 	}
 
+	public Collection<String> getLinkedEntities() {
+		return linkedEntities;
+	}
 }

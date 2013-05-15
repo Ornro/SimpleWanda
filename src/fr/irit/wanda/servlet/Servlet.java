@@ -12,21 +12,17 @@ import javax.servlet.http.HttpServletRequest;
 public abstract class Servlet extends HttpServlet {
 
 	protected static final long serialVersionUID = 1L;
-	protected ClientConfiguration ccfg;
 	
-	public Servlet(String userEmail){
-		this.ccfg = new ClientConfiguration(userEmail);
-	}
 	
-	public String getString(HttpServletRequest request, String s){
+	public static String getString(HttpServletRequest request, String s){
 		return (String)request.getParameter(s);	
 	}
 	
-	public Boolean getBoolean(HttpServletRequest request, String s){
+	public static Boolean getBoolean(HttpServletRequest request, String s){
 		return Boolean.parseBoolean(request.getParameter(s));	
 	}
 	
-	public int getInt(HttpServletRequest request, String s){
+	public static int getInt(HttpServletRequest request, String s){
 		return Integer.parseInt(request.getParameter(s));	
 	}	
 }

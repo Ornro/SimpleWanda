@@ -3,7 +3,7 @@ package fr.irit.wanda.entities;
 public class NamedEntity extends Entity {
 
 	protected String name = null;
-	private User owner = null;
+	protected User owner = null;
 
 	public NamedEntity(String entityName, String name) {
 		super(entityName);

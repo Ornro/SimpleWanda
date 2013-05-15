@@ -8,7 +8,7 @@ import fr.irit.wanda.dao.ContainerAO;
 import fr.irit.wanda.dao.NamedEntityAO;
 import fr.irit.wanda.dao.UserAO;
 import fr.irit.wanda.entities.*;
-import fr.irit.wanda.entities.User.ACCESS_RIGHT;
+import fr.irit.wanda.entities.LinkedEntity.PRIVACY;
 import fr.irit.wanda.entities.User.ROLE;
 
 import fr.irit.wanda.exception.AlreadyRegistredException;
@@ -31,6 +31,7 @@ public class RequestImpl implements IRequest {
 			this.caller = new UserAO().getUser(userEmail);
 		} catch (NotFoundInDatabaseException e) {
 			this.caller = null;
+			System.err.println("USER NOT FOUND WITH EMAIL "+userEmail);
 		}
 	}
 
@@ -141,7 +142,7 @@ public class RequestImpl implements IRequest {
 	}
 
 	@Override
-	public boolean submitAnnotation(Annotation annotation,
+	public boolean submitAnnotation(LinkedEntity annotation,
 			FileItem annotationFile) throws NotAllowedToProceedException {
 		// TODO Auto-generated method stub
 		return false;
@@ -171,7 +172,7 @@ public class RequestImpl implements IRequest {
 	}
 
 	@Override
-	public boolean editPrivacy(NamedEntity entity, int privacy)
+	public boolean editPrivacy(NamedEntity entity, PRIVACY privacy)
 			throws NotFoundInDatabaseException, NotAllowedToProceedException {
 		if (isAllowedToProceed(entity)) {
 			return registeredUserRequest.editPrivacy(entity, privacy);
@@ -180,11 +181,19 @@ public class RequestImpl implements IRequest {
 	}
 
 	@Override
-	public boolean createVideo(NamedEntity video,NamedEntity father, int privacy)
+	public boolean createVideo(NamedEntity video,NamedEntity father, PRIVACY privacy)
 			throws AlreadyRegistredException, NotAllowedToProceedException,
 			NotFoundInDatabaseException	{
 		video.setOwner(caller);
 		return registeredUserRequest.createVideo(video, father, privacy);
+	}
+	
+	@Override
+	public boolean createAnnotation(NamedEntity annotation,NamedEntity father, PRIVACY privacy)
+			throws AlreadyRegistredException, NotAllowedToProceedException,
+			NotFoundInDatabaseException	{
+		annotation.setOwner(caller);
+		return registeredUserRequest.createAnnotation(annotation, father, privacy);
 	}
 
 	@Override
@@ -248,7 +257,7 @@ public class RequestImpl implements IRequest {
 			}
 			chaine += endContainer(container);
 		} else {
-			displayEntity(container);
+			chaine += displayEntity(container);
 		}
 
 		return chaine; // on retourne le texte html a afficher
@@ -271,7 +280,7 @@ public class RequestImpl implements IRequest {
 	}
 	
 	private String printAJAXLink(NamedEntity container,String action){
-		return "<a class=\"add_entities\" id=\"" + container.getId() + "_" + container.getEntityName() 
+		return "<a class=\"add_entities\" style=\"display:inline\" id=\"" + container.getId() + "_" + container.getEntityName() 
 				+ "\" name=\"" + action
 				+ "\" onclick=\"change_div(this.name,this.id)\">";
 	}
@@ -304,8 +313,10 @@ public class RequestImpl implements IRequest {
 	private String displayEntity(NamedEntity entity) {
 		String chaine = "";
 		chaine += "<li class=\"file\">";
-		chaine += printAJAXLink(entity, "view")+entity.getName()+"</a>";
-		chaine += "<a href=\"#\"><img src=\"/SimpleWanda/img/download.png \" </a>";
+		chaine += "<span id=\"dynamicMenu\" onmouseover=\"quickMenu('"+ entity.getId() + "_" + entity.getEntityName() +"_icons"+"')\" onmouseout=\"quickMenu2('"+ entity.getId() + "_" + entity.getEntityName() +"_icons"+"')\" >";
+		chaine += printAJAXLink(entity, "view")+entity.getName()+"</a>&nbsp";
+		chaine += "<span id=\""+ entity.getId() + "_" + entity.getEntityName() +"_icons"+"\" class=\"hidden\"><img class=\"icon\" src=\"/SimpleWanda/img/download.png \"/></span>";
+		chaine += "</span>";
 		chaine += "</li>";
 
 		return chaine;

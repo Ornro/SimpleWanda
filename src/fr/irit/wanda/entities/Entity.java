@@ -25,7 +25,7 @@ public class Entity {
 	}
 
 	protected String entityName;
-	protected int id;
+	protected int id = -1;
 	protected Collection<Metadata> meta = null; // for supressing LinkedMetadata
 	
 	public Entity(int id,String name){
@@ -34,7 +34,6 @@ public class Entity {
 	}
 	
 	public Entity(String name){
-		this.id=-1;
 		this.entityName=name;
 	}
 	

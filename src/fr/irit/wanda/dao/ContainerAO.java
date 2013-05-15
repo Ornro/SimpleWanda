@@ -69,8 +69,8 @@ public class ContainerAO extends DAO {
 	public final boolean isContainer(final Entity entity) {
 		return hc.getHierarchy().containsKey(entity.getEntityName());
 	}
-	
-	public final ArrayList<String> getSonsNames(final NamedEntity container){
+
+	public final ArrayList<String> getSonsNames(final NamedEntity container) {
 		return hc.getHierarchy().get(container.getEntityName());
 	}
 
@@ -89,37 +89,39 @@ public class ContainerAO extends DAO {
 	public final boolean createContainer(NamedEntity container,
 			NamedEntity father) throws AlreadyRegistredException,
 			NotFoundInDatabaseException {
-		
+
 		if (!isContainer(container))
 			return false; // if that is not a container
-		
+
 		NamedEntityAO nao = new NamedEntityAO();
 		
-		if (nao.exists(container)) // if the entity already exists
-			throw new AlreadyRegistredException(
-					"The container to create already exists");
-		
 		if (container.getEntityName().equals("site")) {
+			if (nao.exists(container,null)) // if the entity already exists
+				throw new AlreadyRegistredException(
+						"The container to create already exists");
 			set("INSERT INTO site(name) VALUES (?);");
 			setString(1, container.getName());
 		} else {
+			if (nao.exists(container,null)) // if the entity already exists
+				throw new AlreadyRegistredException(
+						"The container to create already exists");
+			
 			if (!isContainer(father))
 				return false; // if that is not a container
 
-			if (!nao.exists(father))
-				throw new AlreadyRegistredException(
-						"The father does not exist");
+			if (!nao.exists(father,null)) // id must be declared in father
+				throw new AlreadyRegistredException("The father does not exist");
 
 			String containerTable = container.getEntityName();
 			String fatherTable = "_" + father.getEntityName();
-			
-			if (container.getOwner() != null){
+
+			if (container.getOwner() != null) {
 				set("INSERT INTO " + containerTable + "(name," + fatherTable
 						+ ",owner) VALUES (?,?,?);");
 				setString(1, container.getName());
 				setInt(2, father.getId());
-				setInt(3,container.getOwner().getId());
-			}else{
+				setInt(3, container.getOwner().getId());
+			} else {
 				set("INSERT INTO " + containerTable + "(name," + fatherTable
 						+ ") VALUES (?,?);");
 				setString(1, container.getName());

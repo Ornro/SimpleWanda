@@ -108,7 +108,7 @@ public class MetadataAO extends DAO {
 	 * @see fr.irit.wanda.dao.NamedEntityAO
 	 */
 	public boolean exists(Metadata m) {
-		return new NamedEntityAO().exists(m);
+		return new NamedEntityAO().exists(m,null);
 	}
 
 	/*

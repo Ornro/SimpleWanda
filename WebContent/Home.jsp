@@ -53,10 +53,12 @@
 	
 	<body>
 		<%@ page import="fr.irit.wanda.entities.*"%>
-		<%@ page import="fr.irit.wanda.servlet.ClientConfiguration"%>
 		<%@ page import="fr.irit.wanda.dao.*"%>
+		<%@ page import="fr.irit.wanda.service.IRequest" %>
+		<%@ page import="fr.irit.wanda.service.impl.RequestImpl" %>
 		<%@ page import="java.util.Collection"%>
 		<%@ page import="java.io.*"%>
+		<%  IRequest remoteRequest = new RequestImpl("benjamin.babic@hotmail.fr");%>
 	
 		<div id="main_container">
 		
@@ -101,8 +103,7 @@
 			</div>		
 			<div id="sidebar">
 				<%
-					ClientConfiguration ccfg = new ClientConfiguration("benjamin.babic@hotmail.fr");
-					out.print(ccfg.remoteRequest.printHierarchy());
+					out.print(remoteRequest.printHierarchy());
 				%>
 			</div>
 			<div class="clear"></div>

@@ -5,14 +5,14 @@ import java.util.Collection;
 import org.apache.commons.fileupload.FileItem;
 
 import fr.irit.wanda.dao.ContainerAO;
+import fr.irit.wanda.dao.LinkedEntityAO;
 import fr.irit.wanda.dao.MetadataAO;
 import fr.irit.wanda.dao.NamedEntityAO;
-import fr.irit.wanda.dao.UserAO;
-import fr.irit.wanda.entities.Annotation;
+import fr.irit.wanda.entities.LinkedEntity;
+import fr.irit.wanda.entities.LinkedEntity.PRIVACY;
+import fr.irit.wanda.entities.LinkedEntity.WORKFLOW;
 import fr.irit.wanda.entities.MetadataContent;
 import fr.irit.wanda.entities.NamedEntity;
-import fr.irit.wanda.entities.User;
-import fr.irit.wanda.entities.User.ACCESS_RIGHT;
 import fr.irit.wanda.exception.AlreadyRegistredException;
 import fr.irit.wanda.exception.NotAllowedToProceedException;
 import fr.irit.wanda.exception.NotFoundInDatabaseException;
@@ -22,7 +22,7 @@ public class RegisteredUserImpl {
 	protected RegisteredUserImpl() {
 	}
 
-	protected boolean submitAnnotation(Annotation annotation,
+	protected boolean submitAnnotation(LinkedEntity annotation,
 			FileItem annotationFile) {
 		// TODO submitAnnotation
 		return false;
@@ -38,9 +38,9 @@ public class RegisteredUserImpl {
 		return null;
 	}
 
-	protected boolean editPrivacy(NamedEntity entity, int privacy)
+	protected boolean editPrivacy(NamedEntity entity, PRIVACY privacy)
 			throws NotFoundInDatabaseException {
-		NamedEntityAO nao = new NamedEntityAO();
+		LinkedEntityAO nao = new LinkedEntityAO();
 		return nao.editPrivacy(entity, privacy);
 	}
 
@@ -51,12 +51,20 @@ public class RegisteredUserImpl {
 		return metadataAO.getMetadatas(concerned);
 	}
 
-	protected boolean createVideo(NamedEntity video, NamedEntity father, int privacy)
+	protected boolean createVideo(NamedEntity video, NamedEntity father, PRIVACY privacy)
 			throws AlreadyRegistredException, NotAllowedToProceedException,
 			NotFoundInDatabaseException {
-		new ContainerAO().createContainer(video, father);
+		LinkedEntity realVideo = new LinkedEntity(video,privacy,WORKFLOW.WAITING);
+		new LinkedEntityAO().createLinkedEntity(realVideo, father);
 		return editPrivacy(video,privacy);
-		
+	}
+	
+	protected boolean createAnnotation(NamedEntity annotation, NamedEntity father, PRIVACY privacy)
+			throws AlreadyRegistredException, NotAllowedToProceedException,
+			NotFoundInDatabaseException {
+		LinkedEntity realAnnotation = new LinkedEntity(annotation,privacy,WORKFLOW.WAITING);
+		new LinkedEntityAO().createLinkedEntity(realAnnotation, father);
+		return editPrivacy(annotation,privacy);
 	}
 
 }

@@ -52,7 +52,23 @@ public class DatabaseMetadataAO extends DAO {
 	 */
 	public Collection<String> getContainersNames() {
 		ArrayList<String> result = new ArrayList<String>();
-		set("SELECT table_name FROM containers");
+		set("SELECT table_name FROM containers;");
+		if (!executeQuery())
+			return result;
+		do {
+			result.add(getString("table_name"));
+		} while (next());
+		return result;
+	}
+	
+	/**
+	 * Returns the names of all linkedEntities
+	 * 
+	 * @return the names
+	 */
+	public Collection<String> getLinkedEntitiesNames() {
+		ArrayList<String> result = new ArrayList<String>();
+		set("SELECT table_name FROM linkedentites;");
 		if (!executeQuery())
 			return result;
 		do {

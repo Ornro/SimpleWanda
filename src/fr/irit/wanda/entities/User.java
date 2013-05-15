@@ -44,7 +44,7 @@ public class User extends Entity {
          * @return
          */
         public boolean isAccessible(ACCESS_RIGHT right){
-        	return (right.getValue()<=this.getValue());
+        	return (right.getValue() <= this.getValue());
         }
 	}
 	

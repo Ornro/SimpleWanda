@@ -1,18 +1,31 @@
 package fr.irit.wanda.servlet;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 import fr.irit.wanda.dao.NamedEntityAO;
+import fr.irit.wanda.entities.LinkedEntity.PRIVACY;
 import fr.irit.wanda.entities.NamedEntity;
 import fr.irit.wanda.exception.AlreadyRegistredException;
 import fr.irit.wanda.exception.NotAllowedToProceedException;
 import fr.irit.wanda.exception.NotFoundInDatabaseException;
+import fr.irit.wanda.service.IRequest;
+import fr.irit.wanda.service.impl.RequestImpl;
 
 /**
  * Servlet implementation class New_entities
@@ -23,14 +36,16 @@ public class Create extends Servlet {
 		METADATA, USER, RULE, ROLE, SITE, SESSION, WORKFLOW, TYPE, CORPUS, VIDEO, VIEW, ANNOTATION, MONTAGE
 	}
 
+	private static final long MaxMemorySize = 1073741824; // 1go
 	private static final long serialVersionUID = 1L;
-
+	IRequest remoteRequest;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public Create() {
-		super("benjamin.babic@hotmail.fr");
+		super();
+		remoteRequest = new RequestImpl("benjamin.babic@hotmail.fr");
 	}
 
 	/**
@@ -48,8 +63,7 @@ public class Create extends Servlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String message = null;
-		ENTITIES ent = ENTITIES.valueOf(getString(request,
-				"entity").toUpperCase());
+		ENTITIES ent = ENTITIES.valueOf(getString(request,"entity").toUpperCase());
 
 		switch (ent) {
 		/*case METADATA:
@@ -57,12 +71,6 @@ public class Create extends Servlet {
 			break;
 		case USER:
 			message = handlerUser(request);
-			break;
-		case RULE:
-			message = handlerRule(request);
-			break;
-		case ROLE:
-			message = handlerRole(request);
 			break;*/
 		case SITE:
 			message = handlerSite(request);
@@ -70,12 +78,6 @@ public class Create extends Servlet {
 		case SESSION:
 			message = handlerSession(request);
 			break;
-		/*case WORKFLOW:
-			message = handlerWorkflow(request);
-			break;
-		case TYPE:
-			message = handlerType(request);
-			break;*/
 		case CORPUS:
 			message = handleCorpus(request);
 			break;
@@ -85,10 +87,10 @@ public class Create extends Servlet {
 		case VIEW:
 			message = handleView(request);
 			break;
-		/*case ANNOTATION:
+		case ANNOTATION:
 			message = handlerAnnotation(request);
 			break;
-		case MONTAGE:
+		/*case MONTAGE:
 			message = handlerMontage(request);
 			break;*/
 
@@ -177,7 +179,7 @@ public class Create extends Servlet {
 	private String handlerVideo(HttpServletRequest request) {
 		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"fatherId"), getString(request,"fatherEntityName"));
 		try {
-			ccfg.remoteRequest.createVideo(new NamedEntity("video",getString(request,"name")),ne,getInt(request,"privacy"));
+			remoteRequest.createVideo(new NamedEntity("video",getString(request,"name")),ne,PRIVACY.fromInt(getInt(request,"privacy")));
 		} catch (NotAllowedToProceedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -189,12 +191,30 @@ public class Create extends Servlet {
 			e.printStackTrace();
 		}
 
-		return "Votre site a bien été ajoutée";
+		return "Votre video a bien été ajoutée";
+	}
+	
+	private String handlerAnnotation(HttpServletRequest request) {
+		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"fatherId"), getString(request,"fatherEntityName"));
+		try {
+			remoteRequest.createAnnotation(new NamedEntity("annotation",getString(request,"name")),ne,PRIVACY.fromInt(getInt(request,"privacy")));
+		} catch (NotAllowedToProceedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (AlreadyRegistredException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotFoundInDatabaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "Votre video a bien été ajoutée";
 	}
 	
 	private String handlerSite(HttpServletRequest request) {
 		try {
-			ccfg.remoteRequest.createSite(new NamedEntity("site",getString(request,"name")));
+			remoteRequest.createSite(new NamedEntity("site",getString(request,"name")));
 		} catch (NotAllowedToProceedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -212,7 +232,7 @@ public class Create extends Servlet {
 	private String handlerSession(HttpServletRequest request) {
 		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"fatherId"), getString(request,"fatherEntityName"));
 		try {
-			ccfg.remoteRequest.createSession(new NamedEntity("session",getString(request,"name")),ne);
+			remoteRequest.createSession(new NamedEntity("session",getString(request,"name")),ne);
 		} catch (AlreadyRegistredException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -230,7 +250,7 @@ public class Create extends Servlet {
 	private String handleCorpus(HttpServletRequest request) {
 		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"fatherId"), getString(request,"fatherEntityName"));
 		try {
-			ccfg.remoteRequest.createCorpus(new NamedEntity("corpus",getString(request,"name")),ne);
+			remoteRequest.createCorpus(new NamedEntity("corpus",getString(request,"name")),ne);
 		} catch (AlreadyRegistredException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -248,7 +268,7 @@ public class Create extends Servlet {
 	private String handleView(HttpServletRequest request) {
 		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"fatherId"), getString(request,"fatherEntityName"));
 		try {
-			ccfg.remoteRequest.createView(new NamedEntity("view",getString(request,"name")),ne);
+			remoteRequest.createView(new NamedEntity("view",getString(request,"name")),ne);
 		} catch (AlreadyRegistredException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -281,4 +301,38 @@ public class Create extends Servlet {
 		return "Votre type a bien été ajouté";
 	}*/
 
+	public void upload(HttpServletRequest request){
+    	boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+    	
+    	FileItemFactory factory = new DiskFileItemFactory();
+
+    	// Configure a repository (to ensure a secure temp location is used)
+    	ServletContext servletContext = this.getServletConfig().getServletContext();
+    	File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
+    	((DiskFileItemFactory) factory).setRepository(repository);
+
+    	// Create a new file upload handler
+    	ServletFileUpload upload = new ServletFileUpload(factory);
+    	
+    	// Set max size for uploaded file
+    	upload.setSizeMax(MaxMemorySize);
+
+    	// Parse the request
+    	try {
+			List<FileItem> items = upload.parseRequest(request);
+			
+			Iterator<FileItem> iter = items.iterator();
+	    	while (iter.hasNext()) {
+	    	    FileItem item = iter.next();
+
+	    	    if (!item.isFormField()) {
+	    	    	//FileAO.save(item,); unfinished
+                }
+	    	}
+		} catch (FileUploadException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}    	
+    }
 }

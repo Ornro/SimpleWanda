@@ -5,7 +5,8 @@ import java.util.Collection;
 import org.apache.commons.fileupload.FileItem;
 
 import fr.irit.wanda.entities.A3;
-import fr.irit.wanda.entities.Annotation;
+import fr.irit.wanda.entities.LinkedEntity;
+import fr.irit.wanda.entities.LinkedEntity.PRIVACY;
 import fr.irit.wanda.entities.MetadataContent;
 import fr.irit.wanda.entities.Montage;
 import fr.irit.wanda.entities.NamedEntity;
@@ -42,7 +43,7 @@ public interface IRequest {
 
 	boolean validate(NamedEntity entity) throws NotAllowedToProceedException;
 
-	boolean submitAnnotation(Annotation annotation, FileItem annotationFile)
+	boolean submitAnnotation(LinkedEntity annotation, FileItem annotationFile)
 			throws NotAllowedToProceedException;
 
 	FileItem getAnnotation(String annotationName)
@@ -57,7 +58,7 @@ public interface IRequest {
 			throws AlreadyRegistredException, NotAllowedToProceedException,
 			NotFoundInDatabaseException;
 
-	boolean editPrivacy(NamedEntity entity, int privacy)
+	boolean editPrivacy(NamedEntity entity, PRIVACY privacy)
 			throws NotFoundInDatabaseException, NotAllowedToProceedException;
 
 	boolean addCorpusManager(NamedEntity corpus, User manager)
@@ -65,8 +66,12 @@ public interface IRequest {
 
 	String printHierarchy();
 
-	boolean createVideo(NamedEntity video, NamedEntity father, int privacy)
+	boolean createVideo(NamedEntity video, NamedEntity father, PRIVACY privacy)
 			throws AlreadyRegistredException, NotAllowedToProceedException,
 			NotFoundInDatabaseException;
+
+	boolean createAnnotation(NamedEntity annotation, NamedEntity father,
+			PRIVACY privacy) throws AlreadyRegistredException,
+			NotAllowedToProceedException, NotFoundInDatabaseException;
 
 }

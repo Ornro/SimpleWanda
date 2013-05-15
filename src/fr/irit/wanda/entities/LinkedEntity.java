@@ -56,17 +56,49 @@ public class LinkedEntity extends NamedEntity {
     		return PRIVACY.RESTRICTED;
         }
 	}
-	
-	
 
-	public LinkedEntity(int id, String entityName, String name) {
+	public LinkedEntity(int id, String entityName, String name,PRIVACY privacy,WORKFLOW workflow) {
 		super(id, entityName, name);
-
+		this.privacy = privacy;
+		this.workflow = workflow;
 	}
 	
-	public LinkedEntity(String entityName, String name) {
+	public LinkedEntity(String entityName, String name,PRIVACY privacy,WORKFLOW workflow) {
 		super(entityName, name);
-
+		this.privacy = privacy;
+		this.workflow = workflow;
 	}
+	
+	public LinkedEntity(NamedEntity ne,PRIVACY privacy,WORKFLOW workflow) {
+		super(ne.getId(),ne.getEntityName(),ne.getName());
+		this.privacy = privacy;
+		this.workflow = workflow;
+		this.owner = ne.getOwner();
+	}
+
+	public String getLink() {
+		return link;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
+	}
+
+	public PRIVACY getPrivacy() {
+		return privacy;
+	}
+
+	public void setPrivacy(PRIVACY privacy) {
+		this.privacy = privacy;
+	}
+
+	public WORKFLOW getWorkflow() {
+		return workflow;
+	}
+
+	public void setWorkflow(WORKFLOW workflow) {
+		this.workflow = workflow;
+	}
+	
 
 }

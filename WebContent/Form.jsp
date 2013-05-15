@@ -1,5 +1,4 @@
 <%@ page import="fr.irit.wanda.entities.*"%>
-<%@ page import="fr.irit.wanda.servlet.ClientConfiguration"%>
 <%@ page import="fr.irit.wanda.dao.*"%>
 <%@ page import="java.util.Collection"%>
 <%@ page import="java.io.*"%>
@@ -100,7 +99,7 @@
 		</p>
 	</div>
 	<div class="space"></div>
-	<form class="form" method="post" action="Create" id="add_video" name="video" enctype="multipart/form-data"><br>
+	<form class="form" method="post" action="Create" id="add_video" name="video"><br>
 		<input type="hidden"  name="entity"  value="video">
 		<input type="hidden"  name="fatherId"  value="<%=fatherId%>">
 		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
@@ -113,8 +112,35 @@
 		  <option value="1">Restricted</option>
 		  <option value="2">Public</option>
 		</select>
-		<label for="videofile"><span>Select your video file</span></label>
-		<input name="videofile" type="file" />
+		<p class="validate">
+			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
+		</p>
+	</form>
+</div>
+<%} else if (entityName.equals("annotation")){%>
+<div id="createForm" class="">
+	<h2>Create a video</h2>
+	<div style="margin-bottom: 5px" class="description">
+		<p>
+			This section allows you to upload an annotation for a video.
+		</p>
+	</div>
+	<div class="space"></div>
+	<form class="form" method="post" action="Create" id="add_annotation" name="annotation"><br>
+		<input type="hidden"  name="entity"  value="annotation">
+		<input type="hidden"  name="fatherId"  value="<%=fatherId%>">
+		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
+		<label for="name_video"><span>Name</span></label>
+		<input name="name" type="text" placeholder="Name" autofocus required/>
+		<br>
+		<label for="privacy"><span>Privacy</span></label>
+		<select name="privacy">
+		  <option value="0">Private</option>
+		  <option value="1">Restricted</option>
+		  <option value="2">Public</option>
+		</select>
+		<label for="annotationfile"><span>File</span></label>
+		<input name="annotationfile" type="file" />
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
 		</p>
