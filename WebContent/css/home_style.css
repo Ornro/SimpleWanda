@@ -7,15 +7,19 @@
 	outline:none;
 }
 
-html,body{
+html{
 	height:100%;
 }
 
 /***************************************************************************/
-/*Couleur et police de la page*/
+/*COULEURS ET POLICES DE LA PAGE*/
 body{
 	font-family: 'Georgia';
 	font-size:18px;
+	background-color:black;
+	background-image:linear-gradient(white,black);
+	background-repeat:no-repeat;
+	height:100%;
 }
 
 .color1{
@@ -36,34 +40,20 @@ h2{
 	text-decoration:underline;
 }
 
-#main_container {
-	width: 968px;
-	background-color: #fff;
-	margin: 0 auto;
-}
-
+/***********************************************************************************/
+/*HEADER*/
 #header_container {
-  height: 95px;
-  margin-right:29px;
-  padding-top:10px
-}
-
-.dotted_line {
-  background: url(../img/dotted-background.jpg) repeat-x;
-  width: 968px;
-  height: 4px;
-  float:let;
-  margin-top:20px;
+  	height: 100px;
+  	margin-right:29px;
+  	padding-top:10px;
+  	width: 968px;
+	margin: 0 auto;
+	margin-bottom:30px;
+	margin-top:10px;
 }
 
 .clear {
 	clear: both;
-}
-
-.clear1{
-	height:2px;
-	margin:20px 0;
-	background: url(../img/dotted-background.jpg);
 }
 
 .space{
@@ -75,6 +65,7 @@ h2{
 #search_tool{
 	float:right;
 	margin-top:30px;
+	margin-right:10px;
 }
 
 #search input[type="text"] {
@@ -101,15 +92,19 @@ h2{
     outline: 0;
 }
 
-/** Content **/
-#container{
-	height:60px;
+/***********************************************************************************/
+/** CONTENT **/
+#main_container {
+	width: 968px;
+	margin: 0 auto;
 }
 
 #content { 
+	background-color:white;
 	width: 630px; 
 	float: left; 
-	margin-top: 15px; 
+	padding: 10px 10px 10px 10px;
+	box-shadow: 1px 1px 12px #555;
 }
 
 #content div {
@@ -125,14 +120,6 @@ h2{
     font-style: italic;
     margin: 10px 0 40px;
     width: 600px;
-}
-
-.current{
-	display:block;
-}
-
-.hidden{
-	display:none;
 }
 
 .form {
@@ -203,9 +190,9 @@ cursor:pointer;
 #sidebar {
 	width: 285px;
 	float: right;
-	margin-right: 20px;
-	margin-top: 15px;
-
+	padding: 15px 20px 0 0;
+	background-color:white;
+	box-shadow: 1px 1px 12px #555;
 }
 
 #sidebar h3 {
@@ -215,7 +202,10 @@ cursor:pointer;
 	margin-bottom:20px;
 }
 
+/***********************************************************************************/
+/*COPYRIGHT*/
 #copyright {
+	margin: 0 auto;
 	width: 958px;
 	text-align: center;
 	margin-top: 10px;
@@ -224,7 +214,8 @@ cursor:pointer;
 	padding: 5px 5px 25px 5px;
 }
 
-/*headband*/
+/***********************************************************************************/
+/*HEADBAND*/
 #footer {
 	font-family: 'Cambria';
 	font-size:18px;
@@ -257,7 +248,7 @@ cursor:pointer;
 }
 
 #footer-menu ul a:hover, #footer-menu ul a:focus, #footer-menu ul a:active {
-    color: black;
+    color: white;
 }
 
 #time{

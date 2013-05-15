@@ -18,6 +18,8 @@
 	$(document).ready(function() {
 		$('#MainBack').load('html-content-file.html');
 	});
+	
+	//window.addEventListener("click",ajuste,false);
 
 	function getXhr() {
 		var xhr = null;
@@ -33,7 +35,7 @@
 			alert("Le navigateur ne supporte pas les objetsXMLHTTPRequest...");
 			xhr = false;
 		}
-		return xhr
+		return xhr;
 	}
 	
 	function change_div(name,id) {
@@ -43,33 +45,53 @@
 				document.getElementById('home_page').innerHTML = xhr.responseText;
 			}
 		};
-		alert(name+"?id="+id);
+		//alert(name+"?id="+id);
 		xhr.open("GET", name+"?id="+id, true);
 		xhr.send(null);
+		  var hauteurL = document.getElementById('content').offsetHeight;
+	        var hauteurR = document.getElementById('sidebar').offsetHeight;
+	        if (hauteurL>=hauteurR){
+	        		hauteurL=hauteurL-15;
+	                document.getElementById('sidebar').style.height=hauteurL+"px";
+	        }else{
+	                hauteurR=hauteurR-20;
+	                document.getElementById('content').style.height=hauteurR+"px";
+	        };
 	}
+	
+	function ajuste(){
+        var hauteurL = document.getElementById('content').offsetHeight;
+        var hauteurR = document.getElementById('sidebar').offsetHeight;
+        if (hauteurL>=hauteurR){
+        		hauteurL=hauteurL-15;
+                document.getElementById('sidebar').style.height=hauteurL+"px";
+        }else{
+                hauteurR=hauteurR-20;
+                document.getElementById('content').style.height=hauteurR+"px";
+        };
+}
+
 	
 </script>
 	</head>
 	
-	<body>
+	<body onLoad="ajuste();">
 		<%@ page import="fr.irit.wanda.entities.*"%>
 		<%@ page import="fr.irit.wanda.servlet.ClientConfiguration"%>
 		<%@ page import="fr.irit.wanda.dao.*"%>
 		<%@ page import="java.util.Collection"%>
 		<%@ page import="java.io.*"%>
 	
-		<div id="main_container">
-		
-			<div class="dotted_line"></div>
-			<div id="header_container">
-				<a href="Home.jsp"><img src="img/logo_app.png" alt="Wanda" title="Wanda" width="350" height="100" style="margin-left: 29px; float: left;"></a>
-				<div id="search_tool">
-					<form method="get" action="/search" id="search">
-						<input id="search_barre" name="search_barre" type="text" size="40" placeholder="Search..." />
-					</form>
-				</div>
+
+		<div id="header_container">
+			<a href="Home.jsp"><img src="img/logo_app.png" alt="Wanda" title="Wanda" width="350" height="100" style="margin-left: 29px; float: left;"></a>
+			<div id="search_tool">
+				<form method="get" action="/search" id="search">
+					<input id="search_barre" name="search_barre" type="text" size="40" placeholder="Search..." />
+				</form>
 			</div>
-			<div class="dotted_line"></div>
+		</div>
+		<div id="main_container">
 			<div id="content">
 				<div id="contenu">
 					<div id="home_page" class="caller">Ex his quidam aeternitati
@@ -95,9 +117,9 @@
 						norat expeditionibus crebris fortunam eius in malis tantum
 						civilibus vigilasse, cum autem bella moverentur externa, accidisse
 						plerumque luctuosa, icto post haec foedere gentium ritu perfectaque
-						sollemnitate imperator Mediolanum ad hiberna discessit.</div>
-	
-			</div>
+						sollemnitate imperator Mediolanum ad hiberna discessit.
+					</div>
+				</div>
 			</div>		
 			<div id="sidebar">
 				<%
@@ -106,9 +128,8 @@
 				%>
 			</div>
 			<div class="clear"></div>
-			<div class="dotted_line"></div>
-			<div id="copyright">Copyright © Wanda 2013.</div>
 		</div>
+		<div id="copyright">Copyright © Wanda 2013.</div>
 		<div id="footer">
 			<div id="footer-menu">
 				<ul>
@@ -124,4 +145,4 @@
 			</div>
 		</div>
 	</body>
-</html>
+</html>    

@@ -121,3 +121,7 @@
 	</form>
 </div>
 <%} %>
+
+<script>
+	ajuste();
+</script>

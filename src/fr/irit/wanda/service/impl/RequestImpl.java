@@ -7,6 +7,7 @@ import org.apache.commons.fileupload.FileItem;
 import fr.irit.wanda.dao.ContainerAO;
 import fr.irit.wanda.dao.NamedEntityAO;
 import fr.irit.wanda.dao.UserAO;
+import fr.irit.wanda.dao.MetadataAO;
 import fr.irit.wanda.entities.*;
 import fr.irit.wanda.entities.User.ACCESS_RIGHT;
 import fr.irit.wanda.entities.User.ROLE;
@@ -325,5 +326,17 @@ public class RequestImpl implements IRequest {
 			System.err.println("ERROR");
 		}
 		return chaine;
+	}
+	
+	public Collection<Metadata> getMetadata(Entity e){
+		MetadataAO metaAO = new MetadataAO();
+		try {
+			return metaAO.getConcernedMetadata(e);
+		} catch (NotFoundInDatabaseException e1) {
+			// Why the f*** would that happen ?
+			e1.printStackTrace();
+			return null;
+		}
+	
 	}
 }
