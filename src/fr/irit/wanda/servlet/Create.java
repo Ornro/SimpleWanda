@@ -14,17 +14,6 @@ import fr.irit.wanda.exception.AlreadyRegistredException;
 import fr.irit.wanda.exception.NotAllowedToProceedException;
 import fr.irit.wanda.exception.NotFoundInDatabaseException;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
-
 /**
  * Servlet implementation class New_entities
  */
@@ -91,7 +80,7 @@ public class Create extends Servlet {
 			message = handleCorpus(request);
 			break;
 		case VIDEO:
-			message = handlerVideo(request, response);
+			message = handlerVideo(request);
 			break;
 		case VIEW:
 			message = handleView(request);
@@ -185,25 +174,10 @@ public class Create extends Servlet {
 	}*/
 
 
-	private String handlerVideo(HttpServletRequest request, HttpServletResponse response) {
+	private String handlerVideo(HttpServletRequest request) {
 		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"fatherId"), getString(request,"fatherEntityName"));
 		try {
 			ccfg.remoteRequest.createVideo(new NamedEntity("video",getString(request,"name")),ne,getInt(request,"privacy"));
-			response.setContentType("text/html;charset=UTF-8");
-			PrintWriter out = response.getWriter();
-
-			Part part = request.getPart("file");
-
-			Matcher m = Pattern.compile("filename=\"(.*)\"", Pattern.CASE_INSENSITIVE).matcher(
-			part.getHeader("content-disposition"));
-			String filename;
-			if (m.find()) {
-			filename = m.group(1);
-			} else {
-			filename = "upload" + System.currentTimeMillis();
-			}
-			part.write("C:/path/" + filename);
-			out.println("File '" + filename + "' uploaded.");
 		} catch (NotAllowedToProceedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -211,15 +185,6 @@ public class Create extends Servlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NotFoundInDatabaseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ServletException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

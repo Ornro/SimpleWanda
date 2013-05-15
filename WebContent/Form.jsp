@@ -24,7 +24,7 @@
 	<form class="form" method="post" action="Create" id="add_site" name="site">
 		<input type="hidden" name="entity" value="site"> 
 		<label for="name"><span>Name</span></label> 
-		<input type="text" name="name" placeholder="Name" autofocus="" required="" /> 
+		<input type="text" name="name" placeholder="Name" autofocus required /> 
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Validate" />
 		</p>
@@ -45,7 +45,7 @@
 		<input type="hidden"  name="fatherId"  value="<%=fatherId%>">
 		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
 		<label for="name"><span>Name</span></label>
-		<input name="name" type="text" size="40" placeholder="Name" autofocus="" required=""/>
+		<input name="name" type="text" size="40" placeholder="Name" autofocus required/>
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
 		</p>
@@ -65,7 +65,7 @@
 		<input type="hidden"  name="fatherId"  value="<%=fatherId%>">
 		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
 		<label for="name"><span>Name</span></label>
-		<input name="name" type="text" size="40" placeholder="Name" autofocus="" required=""/>
+		<input name="name" type="text" size="40" placeholder="Name" autofocus required/>
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
 		</p>
@@ -85,7 +85,7 @@
 		<input type="hidden"  name="fatherId"  value="<%=fatherId%>">
 		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
 		<label for="name"><span>Name</span></label>
-		<input name="name" type="text" size="40" placeholder="Name" autofocus="" required=""/>
+		<input name="name" type="text" size="40" placeholder="Name" autofocus required/>
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
 		</p>
@@ -100,12 +100,12 @@
 		</p>
 	</div>
 	<div class="space"></div>
-	<form class="form" method="post" action="Create" id="add_video" name="video" enctype="multipart/form-data">><br>
+	<form class="form" method="post" action="Create" id="add_video" name="video" enctype="multipart/form-data"><br>
 		<input type="hidden"  name="entity"  value="video">
 		<input type="hidden"  name="fatherId"  value="<%=fatherId%>">
 		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
 		<label for="name_video"><span>Name</span></label>
-		<input name="name" type="text" size="40" placeholder="Name" autofocus="" required=""/>
+		<input name="name" type="text" placeholder="Name" autofocus required/>
 		<br>
 		<label for="privacy"><span>Privacy</span></label>
 		<select name="privacy">
@@ -113,7 +113,8 @@
 		  <option value="1">Restricted</option>
 		  <option value="2">Public</option>
 		</select>
-		<input type="file" name="nom" />
+		<label for="videofile"><span>Select your video file</span></label>
+		<input name="videofile" type="file" />
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
 		</p>

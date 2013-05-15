@@ -156,7 +156,7 @@ label
 }
 
 .form textarea, .form input {
-    width: 480px;
+    width: 300px;
 }
 
 .form select{
@@ -178,6 +178,9 @@ label
 	display:inline;
 }
 
+.form select{
+	border: 1px solid #AAAAAA;
+}
 
 p.validate {
     margin-top: 20px;
