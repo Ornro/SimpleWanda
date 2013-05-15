@@ -1,5 +1,7 @@
 package fr.irit.wanda.entities;
 
+import fr.irit.wanda.entities.LinkedEntity.WORKFLOW;
+
 
 
 
@@ -7,35 +9,8 @@ public class Annotation extends NamedEntity {
     private User owner = null;
     private NamedEntity related = null;
     private int view = -1;
-    private String link = null;
+    private String link = null; 
     private WORKFLOW workflow;
-    
-    public enum WORKFLOW{
-		VALID(0),INVALID(1),WAITING(2),SEEN(3);
-		private int value;
-
-        private WORKFLOW(int value) {
-                this.value = value;
-        }
-        
-        public int getValue(){
-        	return this.value;
-        }
-        
-        public static WORKFLOW fromInt(int i){
-        	switch(i){
-    		case 0: // is currently validated by manager
-    			return WORKFLOW.VALID;
-    		case 1: // was validated by manager but isn't anymore
-    			return WORKFLOW.INVALID;
-    		case 2: // waiting for manager approbation
-    			return WORKFLOW.WAITING;
-    		case 3: // seen but not validated yet
-    			return WORKFLOW.SEEN;
-    		}
-    		return WORKFLOW.WAITING;
-        }
-	}
     
     /**
      * Default constructor used to create an annotation object.

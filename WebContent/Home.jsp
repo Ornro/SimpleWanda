@@ -58,7 +58,6 @@
 		<%@ page import="java.util.Collection"%>
 		<%@ page import="java.io.*"%>
 	
-		<p id="top"></p>
 		<div id="main_container">
 		
 			<div class="dotted_line"></div>
