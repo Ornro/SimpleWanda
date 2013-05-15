@@ -96,14 +96,8 @@ public class Create extends Servlet {
 
 		default:
 		}
-		try {
-			request.setAttribute("confirm", message);
-			getServletContext().getRequestDispatcher("/Home.jsp")
-					.forward(request, response);
-		} catch (ServletException e) {
-			response.sendError(HttpServletResponse.SC_NOT_FOUND);
-			e.printStackTrace();
-		}
+		
+		response.sendRedirect("");
 	}
 
 	/*private String handlerAnnotation(HttpServletRequest request) {
