@@ -355,4 +355,11 @@ public class RequestImpl implements IRequest {
 		}
 	
 	}
+
+	@Override
+	public int createMetadata(Metadata m) {
+		if (caller.getRole() == ROLE.ADMIN)
+			return adminRequest.createMetadata(m);
+		return 0;
+	}
 }

@@ -26,8 +26,6 @@ public class Metadata extends NamedEntity{
 	 *            the name
 	 * @param obligation
 	 *            true if this meta is essential
-	 * @param hoover
-	 *            text displayed when mouse hoovers the metadata
 	 * @param description
 	 *            detailed description of what is this metadata used for
 	 */
@@ -46,8 +44,6 @@ public class Metadata extends NamedEntity{
 	 *            the name
 	 * @param obligation
 	 *            true if this meta is essential
-	 * @param hoover
-	 *            text displayed when mouse hoovers the metadata
 	 * @param description
 	 *            detailed description of what is this metadata used for
 	 */

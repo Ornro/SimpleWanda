@@ -2,8 +2,10 @@ package fr.irit.wanda.service.impl;
 
 import fr.irit.wanda.dao.A3AO;
 import fr.irit.wanda.dao.ContainerAO;
+import fr.irit.wanda.dao.MetadataAO;
 import fr.irit.wanda.dao.UserAO;
 import fr.irit.wanda.entities.A3;
+import fr.irit.wanda.entities.Metadata;
 import fr.irit.wanda.entities.NamedEntity;
 import fr.irit.wanda.entities.User;
 import fr.irit.wanda.entities.User.ACCESS_RIGHT;
@@ -57,5 +59,15 @@ public class AdminImpl{
 		return true;
 	}
 	
-	//TODO add metadata creation by admin
+	protected int createMetadata(Metadata m){
+		MetadataAO mao = new MetadataAO();
+		try {
+			return mao.addMetadata(m);
+		} catch (AlreadyRegistredException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+		
+	}
 }
