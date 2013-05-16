@@ -1,5 +1,7 @@
 package fr.irit.wanda.dao;
 
+import java.sql.Statement;
+
 import fr.irit.wanda.configuration.HirarchyConfiguration;
 import fr.irit.wanda.entities.Entity;
 import fr.irit.wanda.entities.LinkedEntity;
@@ -55,10 +57,10 @@ public class LinkedEntityAO extends NamedEntityAO {
 		return hc.getLinkedEntities().contains(entity.getEntityName());
 	}
 	
-	public boolean createLinkedEntity(final LinkedEntity linkedEntity,
+	public int createLinkedEntity(final LinkedEntity linkedEntity,
 			final NamedEntity father) throws AlreadyRegistredException, NotFoundInDatabaseException {
 		if (!isLinkedEntity(linkedEntity))
-			return false;
+			return -1;
 		
 		NamedEntityAO nao = new NamedEntityAO();
 		ContainerAO cao = new ContainerAO();
@@ -83,12 +85,44 @@ public class LinkedEntityAO extends NamedEntityAO {
 		String thisTable = linkedEntity.getEntityName();
 		String fatherTable = "_" + father.getEntityName();
 		
-		set("INSERT INTO " + thisTable + "(name,"+fatherTable+",privacy,workflow,owner) VALUES (?,?,?,?,?);");
+		set("INSERT INTO " + thisTable + "(name,"+fatherTable+",privacy,workflow,owner) VALUES (?,?,?,?,?);",Statement.RETURN_GENERATED_KEYS);
 		setString(1,linkedEntity.getName());
 		setInt(2,father.getId());
 		setInt(3,linkedEntity.getPrivacy().getValue());
 		setInt(4,linkedEntity.getWorkflow().getValue());
 		setInt(5,linkedEntity.getOwner().getId());
-		return executeQuery();
+		
+		if (executeUpdate()){
+			getGeneratedKeys();
+			int id = getInt("id"+thisTable);
+			return addLink(id, thisTable);
+		}
+		return -1;
+	}
+	
+	public int addLink(int entity_id, String entity_table_name){
+		set("INSERT INTO links(entity_id,entity_table_name) VALUES (?,?);",Statement.RETURN_GENERATED_KEYS);
+		setInt(1,entity_id);
+		setString(2,entity_table_name);
+		
+		if (executeUpdate()){
+			getGeneratedKeys();
+			return getInt("idlinks");
+		}
+		return -1;
+	}
+	
+	public String getSingleLink(int entity_id){
+		set("SELECT link FROM links WHERE entity_id=?;");
+		setInt(1,entity_id);
+		executeQuery();
+		return getString("link");
+	}
+	
+	public boolean setLink(int id, String link){
+		set("UPDATE links SET link=? WHERE idlinks=?;");
+		setString(1,link);
+		setInt(2,id);
+		return executeUpdate();
 	}
 }

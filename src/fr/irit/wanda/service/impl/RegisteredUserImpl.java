@@ -51,20 +51,20 @@ public class RegisteredUserImpl {
 		return metadataAO.getMetadatas(concerned);
 	}
 
-	protected boolean createVideo(NamedEntity video, NamedEntity father, PRIVACY privacy)
+	protected int createVideo(NamedEntity video, NamedEntity father, PRIVACY privacy)
 			throws AlreadyRegistredException, NotAllowedToProceedException,
 			NotFoundInDatabaseException {
 		LinkedEntity realVideo = new LinkedEntity(video,privacy,WORKFLOW.WAITING);
-		new LinkedEntityAO().createLinkedEntity(realVideo, father);
-		return editPrivacy(video,privacy);
+		
+		return new LinkedEntityAO().createLinkedEntity(realVideo, father);
 	}
 	
-	protected boolean createAnnotation(NamedEntity annotation, NamedEntity father, PRIVACY privacy)
+	protected int createAnnotation(NamedEntity annotation, NamedEntity father, PRIVACY privacy)
 			throws AlreadyRegistredException, NotAllowedToProceedException,
 			NotFoundInDatabaseException {
 		LinkedEntity realAnnotation = new LinkedEntity(annotation,privacy,WORKFLOW.WAITING);
-		new LinkedEntityAO().createLinkedEntity(realAnnotation, father);
-		return editPrivacy(annotation,privacy);
+		
+		return new LinkedEntityAO().createLinkedEntity(realAnnotation, father);
 	}
 
 }

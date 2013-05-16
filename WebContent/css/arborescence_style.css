@@ -34,10 +34,9 @@ ol.tree
 	{
 		margin-left: -1px !important;
 	}
-		li.file a
+		li.file a.add_entities
 		{
 			background: url(../img/document.png) 0 0 no-repeat;
-			color: white;
 			padding-left: 21px;
 			text-decoration: none;
 			display: inline;

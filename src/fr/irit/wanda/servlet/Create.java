@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,6 +19,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import fr.irit.wanda.dao.LinkedEntityAO;
 import fr.irit.wanda.dao.NamedEntityAO;
 import fr.irit.wanda.entities.LinkedEntity.PRIVACY;
 import fr.irit.wanda.entities.NamedEntity;
@@ -63,39 +65,41 @@ public class Create extends Servlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String message = null;
-		ENTITIES ent = ENTITIES.valueOf(getString(request,"entity").toUpperCase());
+		if (!ServletFileUpload.isMultipartContent(request)){
+			ENTITIES ent = ENTITIES.valueOf(getString(request,"entity").toUpperCase());
 
-		switch (ent) {
-		/*case METADATA:
-			message = handlerMetadata(request);
-			break;
-		case USER:
-			message = handlerUser(request);
-			break;*/
-		case SITE:
-			message = handlerSite(request);
-			break;
-		case SESSION:
-			message = handlerSession(request);
-			break;
-		case CORPUS:
-			message = handleCorpus(request);
-			break;
-		case VIDEO:
-			message = handlerVideo(request);
-			break;
-		case VIEW:
-			message = handleView(request);
-			break;
-		case ANNOTATION:
-			message = handlerAnnotation(request);
-			break;
-		/*case MONTAGE:
-			message = handlerMontage(request);
-			break;*/
+			switch (ent) {
+			/*case METADATA:
+				message = handlerMetadata(request);
+				break;
+			case USER:
+				message = handlerUser(request);
+				break;*/
+			case SITE:
+				message = handlerSite(request);
+				break;
+			case SESSION:
+				message = handlerSession(request);
+				break;
+			case CORPUS:
+				message = handleCorpus(request);
+				break;
+			case VIDEO:
+				message = handlerVideo(request);
+				break;
+			case VIEW:
+				message = handleView(request);
+				break;
+			case ANNOTATION:
+				message = handlerAnnotation(request);
+				break;
+			/*case MONTAGE:
+				message = handlerMontage(request);
+				break;*/
 
-		default:
-		}
+			default:
+			}
+		}else message = upload(request);		
 		
 		response.sendRedirect("");
 	}
@@ -189,21 +193,9 @@ public class Create extends Servlet {
 	}
 	
 	private String handlerAnnotation(HttpServletRequest request) {
-		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"fatherId"), getString(request,"fatherEntityName"));
-		try {
-			remoteRequest.createAnnotation(new NamedEntity("annotation",getString(request,"name")),ne,PRIVACY.fromInt(getInt(request,"privacy")));
-		} catch (NotAllowedToProceedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (AlreadyRegistredException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotFoundInDatabaseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return "Votre video a bien été ajoutée";
+		upload(request);
+			
+		return "Votre annotation a bien été ajoutée";
 	}
 	
 	private String handlerSite(HttpServletRequest request) {
@@ -294,9 +286,15 @@ public class Create extends Servlet {
 
 		return "Votre type a bien été ajouté";
 	}*/
+	
+	
 
-	public void upload(HttpServletRequest request){
-    	boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+	public String upload(HttpServletRequest request){
+    	String name = "";
+    	String entity = "";
+    	String father = "";
+    	int fatherId = -1;
+    	int privacy = -1;
     	
     	FileItemFactory factory = new DiskFileItemFactory();
 
@@ -319,14 +317,45 @@ public class Create extends Servlet {
 	    	while (iter.hasNext()) {
 	    	    FileItem item = iter.next();
 
-	    	    if (!item.isFormField()) {
-	    	    	//FileAO.save(item,); unfinished
+	    	    if (item.isFormField()) {
+	    	    	String currentField = item.getFieldName();
+	    	    	if (currentField.equals("name")){
+                		name = item.getString();
+                	}else if (currentField.equals("entity")){
+                		entity = item.getString(); 
+                	}else if (currentField.equals("fatherId")){
+                		fatherId = Integer.parseInt(item.getString());
+                	}else if (currentField.equals("fatherEntityName")){
+                		father = item.getString(); 
+                	}else if (currentField.equals("privacy")){
+                		privacy = Integer.parseInt(item.getString());
+                	}
+                }else { // should be last because iterator conserves sending order
+                	NamedEntity ne = new NamedEntityAO().getName(fatherId, father);
+        	    	int id = remoteRequest.createAnnotation(new NamedEntity(entity,name),ne,PRIVACY.fromInt(privacy));
+        	    	String contentType = item.getContentType();
+        	    	String givenName = item.getName();
+        	        String path = servletContext.getRealPath("/");
+        	        
+        	    	String givenExt = givenName.substring(givenName.lastIndexOf("."));
+        	    	String destination = "Wanda"+File.separator+entity+File.separator+id+givenExt;
+        	    	
+                	System.out.println(destination);
+                	new LinkedEntityAO().setLink(id, destination);
+                	File destinationFile = new File(path+destination);
+
+            		destinationFile.getParentFile().mkdirs();
+        			if (!destinationFile.exists()) {
+        				destinationFile.createNewFile();
+        			}
+                	item.write(destinationFile);
                 }
 	    	}
 		} catch (FileUploadException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}    	
+		} 
+    	return "Uploaded";
     }
 }

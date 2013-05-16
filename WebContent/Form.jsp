@@ -118,14 +118,14 @@
 </div>
 <%} else if (entityName.equals("annotation")){%>
 <div id="createForm" class="">
-	<h2>Create a video</h2>
+	<h2>Create an annotation</h2>
 	<div style="margin-bottom: 5px" class="description">
 		<p>
 			This section allows you to upload an annotation for a video.
 		</p>
 	</div>
 	<div class="space"></div>
-	<form class="form" method="post" action="Create" id="add_annotation" name="annotation"><br>
+	<form class="form" method="post" action="Create" id="add_annotation" name="annotation" enctype="multipart/form-data"><br>
 		<input type="hidden"  name="entity"  value="annotation">
 		<input type="hidden"  name="fatherId"  value="<%=fatherId%>">
 		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
