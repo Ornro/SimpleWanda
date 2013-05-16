@@ -2,6 +2,7 @@ package fr.irit.wanda.servlet;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -21,7 +22,9 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import fr.irit.wanda.dao.LinkedEntityAO;
 import fr.irit.wanda.dao.NamedEntityAO;
+import fr.irit.wanda.entities.Entity;
 import fr.irit.wanda.entities.LinkedEntity.PRIVACY;
+import fr.irit.wanda.entities.Metadata;
 import fr.irit.wanda.entities.NamedEntity;
 import fr.irit.wanda.exception.AlreadyRegistredException;
 import fr.irit.wanda.exception.NotAllowedToProceedException;
@@ -69,10 +72,10 @@ public class Create extends Servlet {
 			ENTITIES ent = ENTITIES.valueOf(getString(request,"entity").toUpperCase());
 
 			switch (ent) {
-			/*case METADATA:
+			case METADATA:
 				message = handlerMetadata(request);
 				break;
-			case USER:
+			/*case USER:
 				message = handlerUser(request);
 				break;*/
 			case SITE:
@@ -132,7 +135,7 @@ public class Create extends Servlet {
 		
 	}*/
 
-	/*private String handlerMetadata(HttpServletRequest request) {
+	private String handlerMetadata(HttpServletRequest request) {
 		ArrayList<Entity> ear = new ArrayList<Entity>();
 		if (getString(request, "Video_meta") != null) {
 			ear.add(new Entity("video"));
@@ -153,15 +156,14 @@ public class Create extends Servlet {
 			ear.add(new Entity("session"));
 		}
 		Metadata m = new Metadata(getString(request, "name_meta"), getBoolean(
-				request, "obligation_meta"), getString(request, "hoover_meta"),
+				request, "obligation_meta"), getBoolean(request, "private_meta"),
 				getString(request, "description_meta"));
 		m.setConcerns(ear);
 
 		// Ajout de la metadata
-		ccfg.remoteRequest.addMetadata(m);
-
+		remoteRequest.createMetadata(m);
 		return "Votre metadonnee a bien été ajoutée";
-	}*/
+	}
 
 	/*private String handlerUser(HttpServletRequest request) {
 		Role r = instanciator.role(getString(request, "role_user"));

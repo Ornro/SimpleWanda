@@ -154,8 +154,8 @@
 		</p>
 	</div>
 	<div class="space"></div>
-	<form class="form" method="post" action="Create" id="add_annotation" name="annotation">
-		<input type="hidden"  name="entity"  value="annotation">
+	<form class="form" method="post" action="Create" id="add_metadata" name="metadata">
+		<input type="hidden"  name="entity"  value="metadata">
 		<input type="hidden"  name="fatherId"  value="<%=fatherId%>">
 		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
 		<label for="name_meta"><span>Name</span></label>
