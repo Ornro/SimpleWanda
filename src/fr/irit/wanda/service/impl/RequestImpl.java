@@ -235,7 +235,8 @@ public class RequestImpl implements IRequest {
 		chaine += "</ol>";
 		if (caller != null) {
 			if (caller.getRole() == ROLE.ADMIN){
-				chaine += "<br><span style=\"float:right\">"+ printAJAXCreateLink("-1_site_site")+"<img title=\"Add Site\" src=\"/SimpleWanda/img/add.png \" class=\"icon\"/><small> Add site </small></a></span>";
+				chaine += "<br><span style=\"float:left\">"+ printAJAXCreateLink("-1_metadata_metadata")+"<img title=\"Add Metadata\" src=\"/SimpleWanda/img/add.png \" class=\"icon\"/><small> Add metadata </small></a></span>";
+				chaine += "<span style=\"float:right\">"+ printAJAXCreateLink("-1_site_site")+"<img title=\"Add Site\" src=\"/SimpleWanda/img/add.png \" class=\"icon\"/><small> Add site </small></a></span><br>";
 			}
 		}
 		

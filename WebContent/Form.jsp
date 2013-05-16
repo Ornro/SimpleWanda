@@ -145,4 +145,41 @@
 		</p>
 	</form>
 </div>
-<%} %>
+<%} else if (entityName.equals("metadata")){%>
+<div id="createForm" class="">
+	<h2>Create a metadata</h2>
+	<div style="margin-bottom: 5px" class="description">
+		<p>
+			This section allows you to upload an annotation for a metadata.
+		</p>
+	</div>
+	<div class="space"></div>
+	<form class="form" method="post" action="Create" id="add_annotation" name="annotation">
+		<input type="hidden"  name="entity"  value="annotation">
+		<input type="hidden"  name="fatherId"  value="<%=fatherId%>">
+		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
+		<label for="name_meta"><span>Name</span></label>
+		<input name="name_meta" type="text" placeholder="Name" autofocus required/>
+		<label for="description_meta"><span>Description</span></label>
+		<input name="description_meta" type="text" placeholder="Description" required/><br>
+		<label for="obligation"><span>Obligation</span></label>
+		<select name="obligation" style="margin-bottom:15px;">
+		  <option value="True">Obligation</option>
+		  <option value="False">Falcutatif</option>
+		</select>
+		<div id="conteneur_box">
+		<%
+			String ts[] = {"Video","Annotation","Vue","Session","Corpus","Site"};
+			for (String s : ts){
+				%>
+				<input type="checkbox" name="<% out.print(s+"_meta");%>" value="<%out.print(s);%>"><% out.print(s);%>
+				<%
+			}
+		%>
+		</div>
+		<p class="validate">
+			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
+		</p>
+	</form>
+</div>
+<%}%>

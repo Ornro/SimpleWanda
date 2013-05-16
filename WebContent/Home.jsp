@@ -47,7 +47,6 @@
 		xhr.open("GET", name+"?id="+id, true);
 		xhr.send(null);
 	}
-}
 
 	
 </script>
@@ -113,7 +112,7 @@
 			<div id="footer-menu">
 				<ul>
 					<li><a title="Home" href="Home.jsp" class="color1">Home</a></li>
-					<li><a title="About us" href="" class="color1">About us</a></li>
+					<li><a id="about" name="About.jsp" style="cursor:pointer" title="About us" class="color1" onclick="change_div(this.name, this.id)">About us</a></li>
 					<li><a title="Top page" href="#top" class="color1">Top page</a></li>
 				</ul>
 			</div>
