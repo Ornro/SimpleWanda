@@ -269,6 +269,7 @@ public class RequestImpl implements IRequest {
 		chaine += "<li>"; // on cree son element de liste
 
 		chaine += "&nbsp; &nbsp;"; // on l'identifie
+		chaine += "<img class=\"icon\" src=\"/SimpleWanda/img/folder-horizontal.png\"/>&nbsp;";
 		chaine += "<span id=\"dynamicMenu\" onmouseover=\"quickMenu('"+ container.getId() + "_" + container.getEntityName() +"_icons"+"')\" onmouseout=\"quickMenu2('"+ container.getId() + "_" + container.getEntityName() +"_icons"+"')\" >";
 		chaine += printAJAXLink(container, "view")+container.getName()+"</a>";
 		chaine += "<span id=\""+ container.getId() + "_" + container.getEntityName() +"_icons"+"\" class=\"hidden\">"+addIcons(container)+addSons(container)+"</span>";
@@ -281,7 +282,7 @@ public class RequestImpl implements IRequest {
 	}
 	
 	private String printAJAXLink(NamedEntity container,String action){
-		return "<a class=\"add_entities\" style=\"display:inline\" id=\"" + container.getId() + "_" + container.getEntityName() 
+		return "<a class=\"add_entities\" id=\"" + container.getId() + "_" + container.getEntityName() 
 				+ "\" name=\"" + action
 				+ "\" onclick=\"change_div(this.name,this.id)\">";
 	}

@@ -96,7 +96,9 @@
 		<div id="main_container">
 			<div id="content">
 				<div id="contenu">
-					<div id="home_page" class="caller">Ex his quidam aeternitati
+					<div id="home_page" class="caller">
+					<h3>Page d'acceuil</h3>
+						Ex his quidam aeternitati
 						se commendari posse per statuas aestimantes eas ardenter adfectant
 						quasi plus praemii de figmentis aereis sensu carentibus adepturi,
 						quam ex conscientia honeste recteque factorum, easque auro curant
@@ -121,6 +123,7 @@
 						plerumque luctuosa, icto post haec foedere gentium ritu perfectaque
 						sollemnitate imperator Mediolanum ad hiberna discessit.
 					</div>
+					<div class="space"></div>
 				</div>
 			</div>		
 			<div id="sidebar">

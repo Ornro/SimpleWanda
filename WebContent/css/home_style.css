@@ -16,8 +16,8 @@ html{
 body{
 	font-family: 'Georgia';
 	font-size:18px;
-	background-color:black;
-	background-image:linear-gradient(white,black);
+	background-color: black;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#000));
 	background-repeat:no-repeat;
 	height:100%;
 }
@@ -100,11 +100,11 @@ h2{
 }
 
 #content { 
-	background-color:white;
+	background-color: #ddd;
 	width: 630px; 
 	float: left; 
 	padding: 10px 10px 10px 10px;
-	box-shadow: 1px 1px 12px #555;
+	box-shadow: 1px 1px 12px #222;
 }
 
 #content div {
@@ -191,11 +191,11 @@ cursor:pointer;
 	width: 285px;
 	float: right;
 	padding: 15px 20px 0 0;
-	background-color:white;
-	box-shadow: 1px 1px 12px #555;
+	background-color: #ddd;
+	box-shadow: 1px 1px 12px #222;
 }
 
-#sidebar h3 {
+h3 {
 	text-align:center;
 	font-variant: small-caps;
 	text-decoration:underline;
@@ -210,7 +210,7 @@ cursor:pointer;
 	text-align: center;
 	margin-top: 10px;
 	font-size: 10px;
-	color: #aaa;
+	color: #eee;
 	padding: 5px 5px 25px 5px;
 }
 
@@ -240,7 +240,7 @@ cursor:pointer;
 }
 	
 #footer-menu ul a {
-    color: #7C7C7C;
+    color: #ccc;
     font-size: 1.4em;
     font-variant: small-caps;
     font-weight: bold;
@@ -255,5 +255,5 @@ cursor:pointer;
 	float:right;
 	margin-right:10px;
 	font-size:30px;
-	color:#7C7C7C;
+	color: #ccc;
 }

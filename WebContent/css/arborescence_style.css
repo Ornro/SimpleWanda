@@ -37,10 +37,10 @@ ol.tree
 		li.file a
 		{
 			background: url(../img/document.png) 0 0 no-repeat;
-			color: #AC9A95;
+			color: white;
 			padding-left: 21px;
 			text-decoration: none;
-			display: block;
+			display: inline;
 		}
 		li.file a[href *= '.pdf']	{ background: url(../img/document.png) 0 0 no-repeat; }
 		li.file a[href *= '.html']	{ background: url(../img/document.png) 0 0 no-repeat; }
