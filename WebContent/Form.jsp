@@ -3,7 +3,6 @@
 <%@ page import="java.util.Collection"%>
 <%@ page import="java.io.*"%>
 
-
 <%
 	String rawId = (String)request.getParameter("id");
 	String fatherEntityName = rawId.split("_")[2];
@@ -147,7 +146,3 @@
 	</form>
 </div>
 <%} %>
-
-<script>
-	ajuste();
-</script>

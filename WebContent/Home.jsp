@@ -18,8 +18,6 @@
 	$(document).ready(function() {
 		$('#MainBack').load('html-content-file.html');
 	});
-	
-	//window.addEventListener("click",ajuste,false);
 
 	function getXhr() {
 		var xhr = null;
@@ -48,34 +46,14 @@
 		//alert(name+"?id="+id);
 		xhr.open("GET", name+"?id="+id, true);
 		xhr.send(null);
-		  var hauteurL = document.getElementById('content').offsetHeight;
-	        var hauteurR = document.getElementById('sidebar').offsetHeight;
-	        if (hauteurL>=hauteurR){
-	        		hauteurL=hauteurL-15;
-	                document.getElementById('sidebar').style.height=hauteurL+"px";
-	        }else{
-	                hauteurR=hauteurR-20;
-	                document.getElementById('content').style.height=hauteurR+"px";
-	        };
 	}
-	
-	function ajuste(){
-        var hauteurL = document.getElementById('content').offsetHeight;
-        var hauteurR = document.getElementById('sidebar').offsetHeight;
-        if (hauteurL>=hauteurR){
-        		hauteurL=hauteurL-15;
-                document.getElementById('sidebar').style.height=hauteurL+"px";
-        }else{
-                hauteurR=hauteurR-20;
-                document.getElementById('content').style.height=hauteurR+"px";
-        };
 }
 
 	
 </script>
 	</head>
 	
-	<body onLoad="ajuste();">
+	<body>
 		<%@ page import="fr.irit.wanda.entities.*"%>
 		<%@ page import="fr.irit.wanda.dao.*"%>
 		<%@ page import="fr.irit.wanda.service.IRequest" %>
@@ -84,7 +62,6 @@
 		<%@ page import="java.io.*"%>
 		<%  IRequest remoteRequest = new RequestImpl("benjamin.babic@hotmail.fr");%>
 	
-
 		<div id="header_container">
 			<a href="Home.jsp"><img src="img/logo_app.png" alt="Wanda" title="Wanda" width="350" height="100" style="margin-left: 29px; float: left;"></a>
 			<div id="search_tool">
@@ -95,8 +72,7 @@
 		</div>
 		<div id="main_container">
 			<div id="content">
-				<div id="contenu">
-					<div id="home_page" class="caller">
+					<div id="home_page">
 					<h3>Page d'acceuil</h3>
 						Ex his quidam aeternitati
 						se commendari posse per statuas aestimantes eas ardenter adfectant
@@ -124,7 +100,6 @@
 						sollemnitate imperator Mediolanum ad hiberna discessit.
 					</div>
 					<div class="space"></div>
-				</div>
 			</div>		
 			<div id="sidebar">
 				<%

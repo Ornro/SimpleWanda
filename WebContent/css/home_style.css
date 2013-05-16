@@ -1,95 +1,104 @@
 @CHARSET "ISO-8859-1";
 
 /* RESET : pour supprimer tous les paddings et autres margins suceptibles de nous déranger*/
-*{
-	margin:0px;
-	padding:0px;
-	outline:none;
+* {
+	margin: 0px;
+	padding: 0px;
+	outline: none;
 }
 
-html{
-	height:100%;
+html {
+	height: 100%;
 }
 
 /***************************************************************************/
 /*COULEURS ET POLICES DE LA PAGE*/
-body{
+body {
 	font-family: 'Georgia';
-	font-size:18px;
+	font-size: 18px;
 	background-color: black;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#000));
-	background-repeat:no-repeat;
-	height:100%;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#FFF),to(#000));
+	background-image: -webkit-linear-gradient(top, #fff, #000);
+	background-image: -moz-linear-gradient(top, #fff, #000);
+	background-image: -ms-linear-gradient(top, #fff, #000);
+	background-image: -o-linear-gradient(top, #fff, #000);
+	background-image: linear-gradient(to bottom, #fff, #000);
+	/* standard actuel, non implémenté */
+	background-repeat: repeat-x;
+	height: 100%;
 }
 
-.color1{
-	color:#AC9A95;
+.color1 {
+	color: #AC9A95;
 }
 
-.color2{
-	color:#99847D;
+.color2 {
+	color: #99847D;
 }
 
-.color3{
-	color:#8C766F;
+.color3 {
+	color: #8C766F;
 }
 
-h2{
-	font-size:18px;
-	margin:10px 0;
-	text-decoration:underline;
+h2 {
+	font-size: 18px;
+	margin: 10px 0;
+	text-decoration: underline;
 }
 
 /***********************************************************************************/
 /*HEADER*/
 #header_container {
-  	height: 100px;
-  	margin-right:29px;
-  	padding-top:10px;
-  	width: 968px;
+	height: 100px;
+	margin-right: 29px;
+	padding-top: 10px;
+	width: 968px;
 	margin: 0 auto;
-	margin-bottom:30px;
-	margin-top:10px;
+	margin-bottom: 50px;
+	margin-top: 10px;
 }
 
 .clear {
 	clear: both;
 }
 
-.space{
-    clear: both;
-    padding-top: 20px;
+.space {
+	clear: both;
+	padding-top: 20px;
 }
 
 /*search_form*/
-#search_tool{
-	float:right;
-	margin-top:30px;
-	margin-right:10px;
+#search_tool {
+	float: right;
+	margin-top: 30px;
+	margin-right: 10px;
 }
 
 #search input[type="text"] {
-    background: url(../img/search-dark.png) no-repeat 10px 6px rgba(0, 0, 0, 0.08);
-    border: 0 none;
-    color: #000000;
-    width: 150px;
-    padding: 6px 15px 6px 35px;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    border-radius: 20px;
-    -webkit-transition: all 0.7s ease 0s;
-    -moz-transition: all 0.7s ease 0s;
-    -o-transition: all 0.7s ease 0s;
-    transition: all 0.7s ease 0s;
+	background: url(../img/search-dark.png) no-repeat 10px 6px
+		rgba(0, 0, 0, 0.08);
+	border: 0 none;
+	color: #000000;
+	width: 150px;
+	padding: 6px 15px 6px 35px;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+	-webkit-transition: all 0.7s ease 0s;
+	-moz-transition: all 0.7s ease 0s;
+	-o-transition: all 0.7s ease 0s;
+	transition: all 0.7s ease 0s;
 }
 
 #search input[type="text"]:focus {
-    background: url(../img/search-dark.png) no-repeat 10px 6px rgba(0, 0, 0, 0.08);
-    width: 200px;
-    color: black;
-    border: 0px solid #0B8CB8;
-    box-shadow: inset rgba(0,0,0,0.35) 2px 2px 12px, rgba(0, 0, 0, 0.08) 0 0 10px;
-    outline: 0;
+	background: url(../img/search-dark.png) no-repeat 10px 6px
+		rgba(0, 0, 0, 0.08);
+	width: 200px;
+	color: black;
+	border: 0px solid #0B8CB8;
+	box-shadow: inset rgba(0, 0, 0, 0.35) 2px 2px 12px, rgba(0, 0, 0, 0.08)
+		0 0 10px;
+	outline: 0;
 }
 
 /***********************************************************************************/
@@ -97,109 +106,107 @@ h2{
 #main_container {
 	width: 968px;
 	margin: 0 auto;
+	background-image: url(../img/colums.png);
+box-shadow: 1px 1px 12px #222;
 }
 
-#content { 
-	background-color: #ddd;
-	width: 630px; 
-	float: left; 
+#content {
+	width: 630px;
+	float: left;
 	padding: 10px 10px 10px 10px;
-	box-shadow: 1px 1px 12px #222;
+	
 }
 
 #content div {
-	margin-top:10px;
-	text-align:justify;
+	text-align: justify;
 }
 
 .description {
-    color: #000000;
-    float: left;
-    font-family: Georgia;
-    font-size: 17px;
-    font-style: italic;
-    margin: 10px 0 40px;
-    width: 600px;
+	color: #000000;
+	float: left;
+	font-family: Georgia;
+	font-size: 17px;
+	font-style: italic;
+	margin: 10px 0 40px;
+	width: 600px;
 }
 
 .form {
-    margin: 10px auto 0;
-    width: 500px;
+	margin: 10px auto 0;
+	width: 500px;
 }
 
-label
-{
-    display: block;
-    width: 150px;
+label {
+	display: block;
+	width: 150px;
 }
 
 .form label {
-    color: #000000;
-    font: italic 13px Georgia;
-    margin: 14px 10px 2px 0;
-    text-align: left;
-    vertical-align: top;
-    width: 170px;
+	color: #000000;
+	font: italic 13px Georgia;
+	margin: 14px 10px 2px 0;
+	text-align: left;
+	vertical-align: top;
+	width: 170px;
 }
 
-.form textarea, .form input {
-    width: 300px;
+.form textarea,.form input {
+	width: 300px;
 }
 
-.form select{
-    width: 300px;
-    color:#000;	
+.form select {
+	width: 300px;
+	color: #000;
 }
 
-.form input[type="radio"], .form input[type="checkbox"]{
+.form input[type="radio"],.form input[type="checkbox"] {
 	width: 40px;
-	margin-top:5px;
-	text-align:center
-}
-.form input, .form textarea, .form select {
-    border: 1px solid #AAAAAA;
-    color: #888888;
-    font: 0.9em Trebuchet MS,sans-serif;
-    padding: 3px;
-    vertical-align: top;
-	display:inline;
+	margin-top: 5px;
+	text-align: center
 }
 
-.form select{
+.form input,.form textarea,.form select {
+	border: 1px solid #AAAAAA;
+	color: #888888;
+	font: 0.9em Trebuchet MS, sans-serif;
+	padding: 3px;
+	vertical-align: top;
+	display: inline;
+}
+
+.form select {
 	border: 1px solid #AAAAAA;
 }
 
 p.validate {
-    margin-top: 20px;
-    padding: 0 3px 0 0 !important;
-    text-align: right;
+	margin-top: 20px;
+	padding: 0 3px 0 0 !important;
+	text-align: right;
 }
 
 .form input.validate_button {
-cursor:pointer;
-    background-image: url(../img/add_bdd.png);
-    background-repeat: no-repeat;
-    border: 0 solid #ADADAD !important;
-    color: #000000;
-    font: italic 13px Georgia,"Times New Roman",Times,serif;
-    height: 30px;
-    padding-right: 20px;
-    width: 120px;
+	cursor: pointer;
+	background-image: url(../img/add_bdd.png);
+	background-repeat: no-repeat;
+	border: 0 solid #ADADAD !important;
+	color: #000000;
+	font: italic 13px Georgia, "Times New Roman", Times, serif;
+	height: 30px;
+	padding-right: 20px;
+	width: 120px;
 }
 
 #sidebar {
 	width: 285px;
 	float: right;
 	padding: 15px 20px 0 0;
-	background-color: #ddd;
-	box-shadow: 1px 1px 12px #222;
 }
 
 h3 {
-	text-align:center;
+	text-align: center;
 	font-variant: small-caps;
-	text-decoration:underline;
-	margin-bottom:20px;
+	text-decoration: underline;
+	margin-bottom: 20px;
 }
 
 /***********************************************************************************/
@@ -218,42 +225,43 @@ h3 {
 /*HEADBAND*/
 #footer {
 	font-family: 'Cambria';
-	font-size:18px;
+	font-size: 18px;
 	height: 40px;
-    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.15);
-    bottom: 0px;
-    position: fixed;
-    width: 100%;
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.15);
+	bottom: 0px;
+	position: fixed;
+	width: 100%;
 }
 
 #footer-menu ul {
-	float:left;
-	position:relative;
-	height:2em;
+	float: left;
+	position: relative;
+	height: 2em;
 	padding: 7px 30px 0 0;
-	white-space:nowrap;
+	white-space: nowrap;
 }
 
 #footer-menu ul li {
-    display: inline;
-    margin-left: 25px;
+	display: inline;
+	margin-left: 25px;
 }
-	
+
 #footer-menu ul a {
-    color: #ccc;
-    font-size: 1.4em;
-    font-variant: small-caps;
-    font-weight: bold;
-    text-decoration: none;
+	color: #ccc;
+	font-size: 1.4em;
+	font-variant: small-caps;
+	font-weight: bold;
+	text-decoration: none;
 }
 
-#footer-menu ul a:hover, #footer-menu ul a:focus, #footer-menu ul a:active {
-    color: white;
+#footer-menu ul a:hover,#footer-menu ul a:focus,#footer-menu ul a:active
+	{
+	color: white;
 }
 
-#time{
-	float:right;
-	margin-right:10px;
-	font-size:30px;
+#time {
+	float: right;
+	margin-right: 10px;
+	font-size: 30px;
 	color: #ccc;
 }
