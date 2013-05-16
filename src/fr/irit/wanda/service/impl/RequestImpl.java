@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.apache.commons.fileupload.FileItem;
 
 import fr.irit.wanda.dao.ContainerAO;
+import fr.irit.wanda.dao.LinkedEntityAO;
 import fr.irit.wanda.dao.NamedEntityAO;
 import fr.irit.wanda.dao.UserAO;
 import fr.irit.wanda.dao.MetadataAO;
@@ -182,7 +183,7 @@ public class RequestImpl implements IRequest {
 	}
 
 	@Override
-	public boolean createVideo(NamedEntity video,NamedEntity father, PRIVACY privacy)
+	public int createVideo(NamedEntity video,NamedEntity father, PRIVACY privacy)
 			throws AlreadyRegistredException, NotAllowedToProceedException,
 			NotFoundInDatabaseException	{
 		video.setOwner(caller);
@@ -190,7 +191,7 @@ public class RequestImpl implements IRequest {
 	}
 	
 	@Override
-	public boolean createAnnotation(NamedEntity annotation,NamedEntity father, PRIVACY privacy)
+	public int createAnnotation(NamedEntity annotation,NamedEntity father, PRIVACY privacy)
 			throws AlreadyRegistredException, NotAllowedToProceedException,
 			NotFoundInDatabaseException	{
 		annotation.setOwner(caller);
@@ -313,11 +314,13 @@ public class RequestImpl implements IRequest {
 	}
 
 	private String displayEntity(NamedEntity entity) {
+		int eid = entity.getId();
+		String ename = entity.getEntityName();
 		String chaine = "";
 		chaine += "<li class=\"file\">";
-		chaine += "<span id=\"dynamicMenu\" onmouseover=\"quickMenu('"+ entity.getId() + "_" + entity.getEntityName() +"_icons"+"')\" onmouseout=\"quickMenu2('"+ entity.getId() + "_" + entity.getEntityName() +"_icons"+"')\" >";
+		chaine += "<span id=\"dynamicMenu\" onmouseover=\"quickMenu('"+ eid + "_" + ename +"_icons"+"')\" onmouseout=\"quickMenu2('"+ eid + "_" + ename +"_icons"+"')\" >";
 		chaine += printAJAXLink(entity, "view")+entity.getName()+"</a>&nbsp";
-		chaine += "<span id=\""+ entity.getId() + "_" + entity.getEntityName() +"_icons"+"\" class=\"hidden\"><img class=\"icon\" src=\"/SimpleWanda/img/download.png \"/></span>";
+		chaine += "<span id=\""+ eid + "_" + ename +"_icons"+"\" class=\"hidden\"><a href=\""+new LinkedEntityAO().getSingleLink(eid)+"\"><img class=\"icon\" src=\"/SimpleWanda/img/download.png \"/></span></a>";
 		chaine += "</span>";
 		chaine += "</li>";
 

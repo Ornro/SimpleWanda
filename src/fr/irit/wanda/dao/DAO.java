@@ -87,7 +87,7 @@ public abstract class DAO {
 				b = false;
 			}
 		} catch (SQLException ex) {
-			logger.severe("Unable to execute update.");
+			logger.severe("Unable to execute querry.");
 			logger.severe("Current Statement: " + stmt);
 			logger.severe("Returned error: " + ex);
 			b = false;

@@ -66,11 +66,11 @@ public interface IRequest {
 
 	String printHierarchy();
 
-	boolean createVideo(NamedEntity video, NamedEntity father, PRIVACY privacy)
+	int createVideo(NamedEntity video, NamedEntity father, PRIVACY privacy)
 			throws AlreadyRegistredException, NotAllowedToProceedException,
 			NotFoundInDatabaseException;
 
-	boolean createAnnotation(NamedEntity annotation, NamedEntity father,
+	int createAnnotation(NamedEntity annotation, NamedEntity father,
 			PRIVACY privacy) throws AlreadyRegistredException,
 			NotAllowedToProceedException, NotFoundInDatabaseException;
 
