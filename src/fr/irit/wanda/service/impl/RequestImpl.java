@@ -362,4 +362,23 @@ public class RequestImpl implements IRequest {
 			return adminRequest.createMetadata(m);
 		return 0;
 	}
+	
+	
+	public String getMetadataForm(Entity e){
+		String chaine = "";
+		chaine += "<h2>Liste des métadonnées</h2>";
+		Collection<Metadata> cm = getMetadata(e);
+		for (Metadata m : cm){
+			chaine += "<label for=\""+m.getName()+"\"><span>"+m.getName();
+			if (m.isObligation()) chaine += "*";
+			
+			chaine += "</span></label>";
+			chaine += "<input name=\""+m.getName()+"\" type=\"text\" placeholder=\""+m.getName()+"\" ";	
+			if (m.isObligation()) chaine += "required";
+			
+			chaine += "/>";
+		}
+		return chaine;
+		
+	}
 }

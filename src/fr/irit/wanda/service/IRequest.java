@@ -7,6 +7,7 @@ import org.apache.commons.fileupload.FileItem;
 import fr.irit.wanda.entities.A3;
 import fr.irit.wanda.entities.LinkedEntity;
 import fr.irit.wanda.entities.LinkedEntity.PRIVACY;
+import fr.irit.wanda.entities.Entity;
 import fr.irit.wanda.entities.Metadata;
 import fr.irit.wanda.entities.MetadataContent;
 import fr.irit.wanda.entities.Montage;
@@ -76,5 +77,7 @@ public interface IRequest {
 			NotAllowedToProceedException, NotFoundInDatabaseException;
 	
 	int createMetadata(Metadata m);
+	
+	String getMetadataForm(Entity e);
 
 }

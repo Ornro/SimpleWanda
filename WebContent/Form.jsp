@@ -2,12 +2,15 @@
 <%@ page import="fr.irit.wanda.dao.*"%>
 <%@ page import="java.util.Collection"%>
 <%@ page import="java.io.*"%>
+<%@ page import="fr.irit.wanda.service.IRequest" %>
+<%@ page import="fr.irit.wanda.service.impl.RequestImpl" %>
 
 <%
 	String rawId = (String)request.getParameter("id");
 	String fatherEntityName = rawId.split("_")[2];
 	String entityName = rawId.split("_")[1];
 	String fatherId = rawId.split("_")[0]; 
+	IRequest remoteRequest = new RequestImpl("benjamin.babic@hotmail.fr");
 %>
 
 <% if (entityName.equals("site")){ %>
@@ -111,6 +114,7 @@
 		  <option value="1">Restricted</option>
 		  <option value="2">Public</option>
 		</select>
+		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
 		</p>
@@ -163,12 +167,12 @@
 		<label for="description_meta"><span>Description</span></label>
 		<input name="description_meta" type="text" placeholder="Description" required/><br>
 		<label for="obligation"><span>Obligation</span></label>
-		<select name="obligation">
+		<select name="obligation_meta">
 		  <option value="True">Obligation</option>
 		  <option value="False">Facultatif</option>
 		</select>
 		<label for="privacy"><span>Privacy</span></label>
-		<select name="privacy" style="margin-bottom:15px;">
+		<select name="privacy_meta" style="margin-bottom:15px;">
 		  <option value="True">Private</option>
 		  <option value="False">Public</option>
 		</select>

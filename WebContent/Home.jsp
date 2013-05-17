@@ -64,7 +64,7 @@
 			<a href="Home.jsp"><img src="img/logo_app.png" alt="Wanda" title="Wanda" width="350" height="100" style="margin-left: 29px; float: left;"></a>
 			<div id="search_tool">
 				<form method="get" action="/search" id="search">
-					<input id="search_barre" name="search_barre" type="text" size="40" placeholder="Search..." />
+					<input id="search_barre" name="search_barre" type="text" size="40" placeholder="Recherche" />
 				</form>
 			</div>
 		</div>
@@ -110,9 +110,9 @@
 		<div id="footer">
 			<div id="footer-menu">
 				<ul>
-					<li><a title="Home" href="Home.jsp" class="color1">Home</a></li>
-					<li><a id="about" name="About.jsp" style="cursor:pointer" title="About us" class="color1" onclick="change_div(this.name, this.id)">About us</a></li>
-					<li><a title="Top page" href="#top" class="color1">Top page</a></li>
+					<li><a title="Home" href="Home.jsp" class="color1">Accueil</a></li>
+					<li><a id="about" name="About.jsp" style="cursor:pointer" title="About us" class="color1" onclick="change_div(this.name, this.id)">Contact</a></li>
+					<li><a title="Top page" href="#top" class="color1">Top</a></li>
 				</ul>
 			</div>
 			<div id="time">

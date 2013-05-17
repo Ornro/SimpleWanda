@@ -160,7 +160,7 @@ public class MetadataAO extends DAO {
 
 		set("SELECT metadata.* FROM metaconcerns, metadata "
 				+ "WHERE metaconcerns.concerns=? "
-				+ "AND metaconcerns.idmetadata = metadata.idmetadata;");
+				+ "AND metaconcerns.idmetadata = metadata.idmetadata ORDER BY obligation DESC;");
 		setString(1, e.getEntityName());
 		if (!executeQuery())
 			throw new NotFoundInDatabaseException(e.getEntityName()
