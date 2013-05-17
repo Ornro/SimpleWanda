@@ -155,6 +155,9 @@ public class Create extends Servlet {
 		if (getString(request, "Session_meta") != null) {
 			ear.add(new Entity("session"));
 		}
+		if (getString(request, "Fichier video_meta") != null) {
+			ear.add(new Entity("links"));
+		}
 		Metadata m = new Metadata(getString(request, "name_meta"), getBoolean(
 				request, "obligation_meta"), getBoolean(request, "private_meta"),
 				getString(request, "description_meta"));

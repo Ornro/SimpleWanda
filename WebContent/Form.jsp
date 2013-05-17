@@ -160,8 +160,6 @@
 	<div class="space"></div>
 	<form class="form" method="post" action="Create" id="add_metadata" name="metadata">
 		<input type="hidden"  name="entity"  value="metadata">
-		<input type="hidden"  name="fatherId"  value="<%=fatherId%>">
-		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
 		<label for="name_meta"><span>Name</span></label>
 		<input name="name_meta" type="text" placeholder="Name" autofocus required/>
 		<label for="description_meta"><span>Description</span></label>
@@ -171,8 +169,8 @@
 		  <option value="True">Obligation</option>
 		  <option value="False">Facultatif</option>
 		</select>
-		<label for="privacy"><span>Privacy</span></label>
-		<select name="privacy_meta" style="margin-bottom:15px;">
+		<label for="private"><span>Privacy</span></label>
+		<select name="private_meta" style="margin-bottom:15px;">
 		  <option value="True">Private</option>
 		  <option value="False">Public</option>
 		</select>
