@@ -3,6 +3,7 @@ package fr.irit.wanda.servlet;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -25,6 +26,7 @@ import fr.irit.wanda.dao.NamedEntityAO;
 import fr.irit.wanda.entities.Entity;
 import fr.irit.wanda.entities.LinkedEntity.PRIVACY;
 import fr.irit.wanda.entities.Metadata;
+import fr.irit.wanda.entities.MetadataContent;
 import fr.irit.wanda.entities.NamedEntity;
 import fr.irit.wanda.exception.AlreadyRegistredException;
 import fr.irit.wanda.exception.NotAllowedToProceedException;
@@ -102,7 +104,9 @@ public class Create extends Servlet {
 
 			default:
 			}
-		}else message = upload(request);		
+		}else message = upload(request);
+		
+		saveMetadata(request);
 		
 		response.sendRedirect("");
 	}
@@ -363,4 +367,18 @@ public class Create extends Servlet {
 		} 
     	return "Uploaded";
     }
+	
+	private String saveMetadata(HttpServletRequest request){
+		String entity = getString(request,"entity");
+		Entity e = new Entity (entity);
+		Collection<Metadata> cm = remoteRequest.getMetadata(e);
+		for (Metadata m : cm){
+			try {
+				remoteRequest.createMetaContent(new MetadataContent (m, e, getString(request, m.getName())));
+			} catch (AlreadyRegistredException e1) {
+				e1.printStackTrace();
+			}
+		}
+		return "Les métadonnées ont bien été renseignées";
+	}
 }

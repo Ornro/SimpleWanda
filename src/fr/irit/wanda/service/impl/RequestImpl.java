@@ -378,10 +378,10 @@ public class RequestImpl implements IRequest {
 			
 			chaine += "/>";
 		}
-		return chaine;
-		
-		
-		
-		
+		return chaine;	
+	}
+	
+	public boolean createMetaContent(MetadataContent mc) throws AlreadyRegistredException{
+		return new MetadataAO().addContent(mc);
 	}
 }

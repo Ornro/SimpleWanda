@@ -79,5 +79,8 @@ public interface IRequest {
 	int createMetadata(Metadata m);
 	
 	String getMetadataForm(Entity e);
+	
+	Collection<Metadata> getMetadata(Entity e);
 
+	boolean createMetaContent (MetadataContent mc) throws AlreadyRegistredException;
 }
