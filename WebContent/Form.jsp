@@ -163,19 +163,23 @@
 		<label for="description_meta"><span>Description</span></label>
 		<input name="description_meta" type="text" placeholder="Description" required/><br>
 		<label for="obligation"><span>Obligation</span></label>
-		<select name="obligation" style="margin-bottom:15px;">
+		<select name="obligation">
 		  <option value="True">Obligation</option>
-		  <option value="False">Falcutatif</option>
+		  <option value="False">Facultatif</option>
 		</select>
-		<div id="conteneur_box">
+		<label for="privacy"><span>Privacy</span></label>
+		<select name="privacy" style="margin-bottom:15px;">
+		  <option value="True">Private</option>
+		  <option value="False">Public</option>
+		</select>
+		<label for="entities"><span>Select entities :</span></label>
+		<div id="conteneur_box" name="entities">
 		<%
-			String ts[] = {"Video","Annotation","Vue","Session","Corpus","Site"};
-			for (String s : ts){
-				%>
-				<input type="checkbox" name="<% out.print(s+"_meta");%>" value="<%out.print(s);%>"><% out.print(s);%>
-				<%
-			}
-		%>
+			String ts[] = {"Video","Fichier video","Annotation","Vue","Session","Corpus","Site"};
+			for (String s : ts){ %>
+					<input id="check_entities" type="checkbox" name="<% out.print(s+"_meta");%>" value="<%out.print(s);%>"/>
+					<% out.print(s);if (!s.equals("Video")){ %> <br> <% }
+			} %>
 		</div>
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>

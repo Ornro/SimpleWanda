@@ -8,7 +8,6 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		
 		<link rel="stylesheet" media="screen" type="text/css" title="Design" href="css/home_style.css" />
-		<link rel="stylesheet" media="screen" type="text/css" title="Design" href="css/menu_style.css" />
 		<link rel="stylesheet" media="screen" type="text/css" title="Design" href="css/arborescence_style.css" />
 		
 		<script type="text/javascript" src="js/script.js"></script>
