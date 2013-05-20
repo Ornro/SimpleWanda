@@ -390,10 +390,17 @@ public class RequestImpl implements IRequest {
 		MetadataAO metaAO = new MetadataAO();
 		Entity e = new Entity (id,entityName);
 		chaine += "<h3>Détail "+e.getEntityName()+"</h3>";
-		Collection<MetadataContent> cmc = metaAO.getMetadatas(e);
-		for (MetadataContent mc : cmc){
-			chaine += mc.getName()+": "+mc.getContent()+"<br>";
+		try{
+			Collection<MetadataContent> cmc = metaAO.getMetadatas(e);
+			chaine += "<table class=\"displayMeta\"><tr><td>Metadata name</td><td>Content</td></tr>";
+			for (MetadataContent mc : cmc){
+				chaine += "<tr><td>"+mc.getName()+"</td><td>"+mc.getContent()+"</td></tr>";
+			}
+			chaine+="</table>";
+		} catch (NotFoundInDatabaseException ex) {
+			chaine += "Aucune metadonnée n'a été renseignée";
 		}
+		
 		return chaine;
 	}
 }
