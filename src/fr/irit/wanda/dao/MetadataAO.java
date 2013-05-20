@@ -262,7 +262,7 @@ public class MetadataAO extends DAO {
 			throw new NotFoundInDatabaseException(
 					"The entity does not seems to have any metadata content filled.");
 		do {
-			lmc.add(new MetadataContent(extract(), e));
+			lmc.add(new MetadataContent(extract(), e,getString("content")));
 		} while (next());
 
 		return lmc;

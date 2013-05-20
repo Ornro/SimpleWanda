@@ -69,7 +69,7 @@ public class Create extends Servlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		String message = null;
+		String message = "";
 		if (!ServletFileUpload.isMultipartContent(request)){
 			ENTITIES ent = ENTITIES.valueOf(getString(request,"entity").toUpperCase());
 
@@ -105,8 +105,6 @@ public class Create extends Servlet {
 			default:
 			}
 		}else message = upload(request);
-		
-		saveMetadata(request);
 		
 		response.sendRedirect("");
 	}
@@ -186,7 +184,8 @@ public class Create extends Servlet {
 	private String handlerVideo(HttpServletRequest request) {
 		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"fatherId"), getString(request,"fatherEntityName"));
 		try {
-			remoteRequest.createVideo(new NamedEntity("video",getString(request,"name")),ne,PRIVACY.fromInt(getInt(request,"privacy")));
+			int id = remoteRequest.createVideo(new NamedEntity("video",getString(request,"name")),ne,PRIVACY.fromInt(getInt(request,"privacy")));
+			saveMetadata(request, id);
 		} catch (NotAllowedToProceedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -209,7 +208,8 @@ public class Create extends Servlet {
 	
 	private String handlerSite(HttpServletRequest request) {
 		try {
-			remoteRequest.createSite(new NamedEntity("site",getString(request,"name")));
+			int id = remoteRequest.createSite(new NamedEntity("site",getString(request,"name")));
+			saveMetadata(request, id);
 		} catch (NotAllowedToProceedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -221,13 +221,15 @@ public class Create extends Servlet {
 			e.printStackTrace();
 		}
 
+		
 		return "Votre site a bien été ajoutée";
 	}
 	
 	private String handlerSession(HttpServletRequest request) {
 		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"fatherId"), getString(request,"fatherEntityName"));
 		try {
-			remoteRequest.createSession(new NamedEntity("session",getString(request,"name")),ne);
+			int id = remoteRequest.createSession(new NamedEntity("session",getString(request,"name")),ne);
+			saveMetadata(request, id);
 		} catch (AlreadyRegistredException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -245,7 +247,8 @@ public class Create extends Servlet {
 	private String handleCorpus(HttpServletRequest request) {
 		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"fatherId"), getString(request,"fatherEntityName"));
 		try {
-			remoteRequest.createCorpus(new NamedEntity("corpus",getString(request,"name")),ne);
+			int id = remoteRequest.createCorpus(new NamedEntity("corpus",getString(request,"name")),ne);
+			saveMetadata(request, id);
 		} catch (AlreadyRegistredException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -263,7 +266,8 @@ public class Create extends Servlet {
 	private String handleView(HttpServletRequest request) {
 		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"fatherId"), getString(request,"fatherEntityName"));
 		try {
-			remoteRequest.createView(new NamedEntity("view",getString(request,"name")),ne);
+			int id = remoteRequest.createView(new NamedEntity("view",getString(request,"name")),ne);
+			saveMetadata(request, id);
 		} catch (AlreadyRegistredException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -368,9 +372,9 @@ public class Create extends Servlet {
     	return "Uploaded";
     }
 	
-	private String saveMetadata(HttpServletRequest request){
+	private String saveMetadata(HttpServletRequest request, int id){
 		String entity = getString(request,"entity");
-		Entity e = new Entity (entity);
+		Entity e = new Entity (id,entity);
 		Collection<Metadata> cm = remoteRequest.getMetadata(e);
 		for (Metadata m : cm){
 			try {

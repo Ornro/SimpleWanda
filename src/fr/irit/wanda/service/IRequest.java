@@ -21,7 +21,7 @@ public interface IRequest {
 
 	int addA3(A3 a3) throws NotAllowedToProceedException;
 
-	boolean createSite(NamedEntity site) throws NotAllowedToProceedException,
+	int createSite(NamedEntity site) throws NotAllowedToProceedException,
 			AlreadyRegistredException, NotFoundInDatabaseException;
 
 	boolean addSiteManager(NamedEntity site, User manager)
@@ -33,11 +33,11 @@ public interface IRequest {
 	int createUser(User user) throws AlreadyRegistredException,
 			NotAllowedToProceedException;
 
-	boolean createSession(NamedEntity session, NamedEntity father)
+	int createSession(NamedEntity session, NamedEntity father)
 			throws AlreadyRegistredException, NotFoundInDatabaseException,
 			NotAllowedToProceedException;
 
-	boolean createView(NamedEntity view, NamedEntity father)
+	int createView(NamedEntity view, NamedEntity father)
 			throws AlreadyRegistredException, NotFoundInDatabaseException,
 			NotAllowedToProceedException;
 
@@ -56,7 +56,7 @@ public interface IRequest {
 
 	FileItem getVideo(String videoName);
 
-	boolean createCorpus(NamedEntity corpus, NamedEntity father)
+	int createCorpus(NamedEntity corpus, NamedEntity father)
 			throws AlreadyRegistredException, NotAllowedToProceedException,
 			NotFoundInDatabaseException;
 
@@ -83,4 +83,6 @@ public interface IRequest {
 	Collection<Metadata> getMetadata(Entity e);
 
 	boolean createMetaContent (MetadataContent mc) throws AlreadyRegistredException;
+	
+	String getMetadatasContent(int id, String entityName) throws NotFoundInDatabaseException;
 }

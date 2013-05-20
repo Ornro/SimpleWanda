@@ -71,7 +71,7 @@
 		<div id="main_container">
 			<div id="content">
 					<div id="home_page">
-					<h3>Page d'acceuil</h3>
+					<h3>Page d'accueil</h3>
 						Ex his quidam aeternitati
 						se commendari posse per statuas aestimantes eas ardenter adfectant
 						quasi plus praemii de figmentis aereis sensu carentibus adepturi,

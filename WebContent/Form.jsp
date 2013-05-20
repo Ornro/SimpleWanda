@@ -26,6 +26,7 @@
 		<input type="hidden" name="entity" value="site"> 
 		<label for="name"><span>Name</span></label> 
 		<input type="text" name="name" placeholder="Name" autofocus required /> 
+		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Validate" />
 		</p>
@@ -47,6 +48,7 @@
 		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
 		<label for="name"><span>Name</span></label>
 		<input name="name" type="text" size="40" placeholder="Name" autofocus required/>
+		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
 		</p>
@@ -67,6 +69,7 @@
 		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
 		<label for="name"><span>Name</span></label>
 		<input name="name" type="text" size="40" placeholder="Name" autofocus required/>
+		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
 		</p>
@@ -87,6 +90,7 @@
 		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
 		<label for="name"><span>Name</span></label>
 		<input name="name" type="text" size="40" placeholder="Name" autofocus required/>
+		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
 		</p>
@@ -144,6 +148,7 @@
 		</select>
 		<label for="annotationfile"><span>File</span></label>
 		<input name="annotationfile" type="file" />
+		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
 		</p>

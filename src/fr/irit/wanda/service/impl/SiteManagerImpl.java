@@ -16,7 +16,7 @@ public class SiteManagerImpl {
 	protected SiteManagerImpl() {
 	}
 
-	protected boolean createCorpus(NamedEntity corpus, NamedEntity father)
+	protected int createCorpus(NamedEntity corpus, NamedEntity father)
 			throws AlreadyRegistredException, NotFoundInDatabaseException {
 		return new ContainerAO().createContainer(corpus, father);
 	}
