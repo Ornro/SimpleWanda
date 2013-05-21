@@ -84,7 +84,7 @@
 </div>
 <%}else if (entityName.equals("view")){%>
 <div id="createForm" class="">
-	<h3>Création de vues</h3>
+	<h3>Création de vue</h3>
 	<div style="margin-bottom: 5px" class="description">
 		<p>
 			Dans cette partie vous avez la possibilité de créer des vues. 
@@ -107,7 +107,7 @@
 </div>
 <%} else if (entityName.equals("video")){%>
 <div id="createForm" class="">
-	<h3>Création de vidéos</h3>
+	<h3>Création de vidéo</h3>
 	<div style="margin-bottom: 5px" class="description">
 		<p>
 			Dans cette partie vous avez la possibilité de créer des vidéos. 
@@ -137,7 +137,7 @@
 </div>
 <%} else if (entityName.equals("annotation")){%>
 <div id="createForm" class="">
-	<h3>Création d'annotations</h3>
+	<h3>Création d'annotation</h3>
 	<div style="margin-bottom: 5px" class="description">
 		<p>
 			This section allows you to upload an annotation for a video.
@@ -167,7 +167,7 @@
 </div>
 <%} else if (entityName.equals("metadata")){%>
 <div id="createForm" class="">
-	<h3>Création de métadonnées</h3>
+	<h3>Création de métadonnée</h3>
 	<div style="margin-bottom: 5px" class="description">
 		<p>
 			Dans cette partie vous avez la possibilité de créer des métadonnées. 
