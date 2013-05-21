@@ -298,7 +298,7 @@ public class RequestImpl implements IRequest {
 		String chaine = "";
 		try {
 			if (isAllowedToProceed(container)) {
-				chaine += printAJAXLink(container, "edit")
+				chaine += printAJAXLink(container, "Edit.jsp")
 						+ "&nbsp<img style=\"margin-right:2px;\" title=\"Edit\" src=\"/SimpleWanda/img/edit.png\" class=\"icon\" \\></a>";				
 			}
 		} catch (NotAllowedToProceedException e) {
@@ -344,7 +344,7 @@ public class RequestImpl implements IRequest {
 		return chaine;
 	}
 	
-	public Collection<Metadata> getMetadata(Entity e){
+	public Collection<Metadata> getMetadata(Entity e) throws NotFoundInDatabaseException{
 		MetadataAO metaAO = new MetadataAO();
 		try {
 			return metaAO.getConcernedMetadata(e);
@@ -364,19 +364,56 @@ public class RequestImpl implements IRequest {
 	}
 	
 	
-	public String getMetadataForm(Entity e){
+	public String getMetadataForm(Entity e) throws NotFoundInDatabaseException{
 		String chaine = "";
-		chaine += "<h2>Liste des métadonnées</h2>";
-		Collection<Metadata> cm = getMetadata(e);
-		for (Metadata m : cm){
-			chaine += "<label for=\""+m.getName()+"\"><span>"+m.getName();
-			if (m.isObligation()) chaine += "*";
-			
-			chaine += "</span></label>";
-			chaine += "<input name=\""+m.getName()+"\" type=\"text\" placeholder=\""+m.getName()+"\" ";	
-			if (m.isObligation()) chaine += "required";
-			
-			chaine += "/>";
+		try{
+			Collection<Metadata> cm = getMetadata(e);
+			if (cm != null){
+				chaine += "<p style=\"margin-top:20px;\">Voici la liste des métadonnées à renseigner pour un(e) "+e.getEntityName()+". Celles précisées " +
+						"d'une étoile sont <strong>OBLIGATOIRES</strong>.</p>";
+				for (Metadata m : cm){
+					chaine += "<label for=\""+m.getName()+"\"><span>"+m.getName();
+					if (m.isObligation()) chaine += "*";
+					
+					chaine += "</span></label>";
+					chaine += "<input name=\""+m.getName()+"\" type=\"text\" placeholder=\""+m.getDescription()+"\" ";	
+					if (m.isObligation()) chaine += "required";
+					
+					chaine += "/>";
+				}				
+			}else{
+				chaine += "<br><br>Il n'y a pas de métadonnées à renseigner";
+			}
+		}catch (NotFoundInDatabaseException e1){
+			chaine += "<br><br>Il n'y as pas de métadonnées à renseigner";
+		}
+		return chaine;	
+	}
+	
+	public String getMetadataFormEdit(Entity e) throws NotFoundInDatabaseException{
+		String chaine = "";
+		try{
+			Collection<Metadata> cm = getMetadata(e);
+			if (cm != null){
+				for (Metadata m : cm){
+					
+					MetadataAO metaAO = new MetadataAO();
+					MetadataContent mc = metaAO.getMetadataContent(e, m);
+					
+					chaine += "<label for=\""+m.getName()+"\"><span>"+m.getName();
+					if (m.isObligation()) chaine += "*";
+					
+					chaine += "</span></label>";
+					chaine += "<input name=\""+m.getName()+"\" type=\"text\" value=\""+mc.getContent()+"\" ";	
+					if (m.isObligation()) chaine += "required";
+					
+					chaine += "/>";
+				}				
+			}else{
+				chaine += "<br><br>Il n'y a pas de métadonnées à renseigner";
+			}
+		}catch (NotFoundInDatabaseException e1){
+			chaine += "<br><br>Il n'y a pas de métadonnées à renseigner";
 		}
 		return chaine;	
 	}
@@ -389,14 +426,18 @@ public class RequestImpl implements IRequest {
 		String chaine = "";
 		MetadataAO metaAO = new MetadataAO();
 		Entity e = new Entity (id,entityName);
-		chaine += "<h3>Détail "+e.getEntityName()+"</h3>";
+		NamedEntity ne = new NamedEntityAO().getName(id, entityName);
+		chaine += "<h3>Détails</h3>";
+		chaine += "<div style=\"margin-bottom: 5px\" class=\"description\">" +
+				"Vous venez de cliquer sur <strong>"+ne.getName()+"</strong> ("+e.getEntityName()+")." +
+				"Voici la liste des informations auxquelles vous avez accès.</p></div><br><br>";
 		try{
 			Collection<MetadataContent> cmc = metaAO.getMetadatas(e);
-			chaine += "<table class=\"displayMeta\"><tr><td>Metadata name</td><td>Content</td></tr>";
+			chaine += "<div id=\"list2\"><ol>";
 			for (MetadataContent mc : cmc){
-				chaine += "<tr><td>"+mc.getName()+"</td><td>"+mc.getContent()+"</td></tr>";
+				chaine += "<li><p><em>"+mc.getName()+" : "+mc.getContent()+"</p></li>";
 			}
-			chaine+="</table>";
+			chaine+="</ol></div>";
 		} catch (NotFoundInDatabaseException ex) {
 			chaine += "Aucune metadonnée n'a été renseignée";
 		}

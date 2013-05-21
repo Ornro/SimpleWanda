@@ -16,7 +16,7 @@ public class MetadataContent extends Metadata {
 	}
 	
 	public MetadataContent(Metadata m, Entity Concerned) {
-		super(m.name, m.obligation, m.privacy, m.description);
+		super(m.id, m.name, m.obligation, m.privacy, m.description);
 		this.concerned = Concerned;
 	}
 

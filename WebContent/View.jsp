@@ -10,7 +10,6 @@
 	String entityName = rawId.split("_")[1];
 	String entityId = rawId.split("_")[0];
 	IRequest remoteRequest = new RequestImpl("benjamin.babic@hotmail.fr");
-	
 	out.print(remoteRequest.getMetadatasContent(Integer.parseInt(entityId), entityName));
 %>	
 
