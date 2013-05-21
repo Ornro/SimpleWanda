@@ -27,17 +27,7 @@ public class RegisteredUserImpl {
 		// TODO submitAnnotation
 		return false;
 	}
-
-	protected FileItem getAnnotation(String annotationName) {
-		// TODO getAnnotation
-		return null;
-	}
-
-	protected FileItem getVideo(String videoName) {
-		// TODO getVideo
-		return null;
-	}
-
+	
 	protected boolean editPrivacy(NamedEntity entity, PRIVACY privacy)
 			throws NotFoundInDatabaseException {
 		LinkedEntityAO nao = new LinkedEntityAO();

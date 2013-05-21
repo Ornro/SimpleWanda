@@ -100,10 +100,23 @@ public class LinkedEntityAO extends NamedEntityAO {
 		return -1;
 	}
 	
-	public int addLink(int entity_id, String entity_table_name){
+	private int addLink(int entity_id, String entity_table_name){
 		set("INSERT INTO links(entity_id,entity_table_name) VALUES (?,?);",Statement.RETURN_GENERATED_KEYS);
 		setInt(1,entity_id);
 		setString(2,entity_table_name);
+		
+		if (executeUpdate()){
+			getGeneratedKeys();
+			return getInt("idlinks");
+		}
+		return -1;
+	}
+	
+	public int addVideoLink(int videoId, String link){
+		set("INSERT INTO links(entity_id,entity_table_name,link) VALUES (?,?,?);",Statement.RETURN_GENERATED_KEYS);
+		setInt(1,videoId);
+		setString(2,"video");
+		setString(3,link);
 		
 		if (executeUpdate()){
 			getGeneratedKeys();

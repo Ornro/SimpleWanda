@@ -1,10 +1,13 @@
 package fr.irit.wanda.service.impl;
 
 import fr.irit.wanda.dao.ContainerAO;
+import fr.irit.wanda.dao.LinkedEntityAO;
 import fr.irit.wanda.dao.MetadataAO;
+import fr.irit.wanda.entities.LinkedEntity;
 import fr.irit.wanda.entities.MetadataContent;
-import fr.irit.wanda.entities.Montage;
 import fr.irit.wanda.entities.NamedEntity;
+import fr.irit.wanda.entities.LinkedEntity.PRIVACY;
+import fr.irit.wanda.entities.LinkedEntity.WORKFLOW;
 import fr.irit.wanda.exception.AlreadyRegistredException;
 import fr.irit.wanda.exception.NotFoundInDatabaseException;
 
@@ -33,9 +36,10 @@ public class CorpusManagerImpl {
 		return new ContainerAO().createContainer(view, father);
 	}
 
-	protected boolean createMontage(Montage montage) {
-		// TODO createMontage
-		return false;
+	protected int createMontage(NamedEntity montage, NamedEntity father, PRIVACY privacy) throws AlreadyRegistredException, NotFoundInDatabaseException {
+		LinkedEntity linkedMontage = new LinkedEntity(montage,privacy,WORKFLOW.WAITING);
+		
+		return new LinkedEntityAO().createLinkedEntity(linkedMontage, father);
 	}
 
 	protected boolean validate(NamedEntity entity) {

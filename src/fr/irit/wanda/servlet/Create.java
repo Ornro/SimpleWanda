@@ -289,8 +289,6 @@ public class Create extends Servlet {
 		return "Votre type a bien été ajouté";
 	}*/
 	
-	
-
 	public String upload(HttpServletRequest request){
     	String name = "";
     	String entity = "";
@@ -334,23 +332,10 @@ public class Create extends Servlet {
                 	}
                 }else { // should be last because iterator conserves sending order
                 	NamedEntity ne = new NamedEntityAO().getName(fatherId, father);
+                	
         	    	int id = remoteRequest.createAnnotation(new NamedEntity(entity,name),ne,PRIVACY.fromInt(privacy));
-        	    	String contentType = item.getContentType();
-        	    	String givenName = item.getName();
-        	        String path = servletContext.getRealPath("/");
-        	        
-        	    	String givenExt = givenName.substring(givenName.lastIndexOf("."));
-        	    	String destination = "Wanda"+File.separator+entity+File.separator+id+givenExt;
         	    	
-                	System.out.println(destination);
-                	new LinkedEntityAO().setLink(id, destination);
-                	File destinationFile = new File(path+destination);
-
-            		destinationFile.getParentFile().mkdirs();
-        			if (!destinationFile.exists()) {
-        				destinationFile.createNewFile();
-        			}
-                	item.write(destinationFile);
+        	    	save(item,entity,id);
                 }
 	    	}
 		} catch (FileUploadException e) {
@@ -360,4 +345,25 @@ public class Create extends Servlet {
 		} 
     	return "Uploaded";
     }
+	
+	private void save (FileItem item, String entity, int id){
+    	String givenName = item.getName();
+    	String path = this.getServletConfig().getServletContext().getRealPath("/");
+    	
+    	String givenExt = givenName.substring(givenName.lastIndexOf("."));
+    	String destination = "Wanda"+File.separator+entity+File.separator+id+givenExt;
+    	
+    	new LinkedEntityAO().setLink(id, destination);
+    	File destinationFile = new File(path+destination);
+    	
+    	destinationFile.getParentFile().mkdirs();
+    	try {
+			if (!destinationFile.exists()) {
+				destinationFile.createNewFile();
+			}
+	    	item.write(destinationFile);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+	}
 }
