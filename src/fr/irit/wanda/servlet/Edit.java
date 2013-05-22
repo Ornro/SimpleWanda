@@ -295,7 +295,7 @@ public class Edit extends Servlet {
 		Entity e = new Entity (id,entity);
 		Collection<Metadata> cm;
 		try {
-			cm = remoteRequest.getMetadata(e);
+			cm = remoteRequest.getMetadatas(e);
 			for (Metadata m : cm){
 				try {
 					remoteRequest.createMetaContent(new MetadataContent (m, e, getString(request, m.getName())));

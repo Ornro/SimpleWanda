@@ -11,6 +11,8 @@
 	String entityName = rawId.split("_")[1];
 	String fatherId = rawId.split("_")[0]; 
 	IRequest remoteRequest = new RequestImpl("benjamin.babic@hotmail.fr");
+	Entity e = new Entity(entityName);
+
 %>
 
 <% if (entityName.equals("site")){ %>
@@ -29,7 +31,18 @@
 		<input type="hidden" name="entity" value="site"> 
 		<label for="name"><span>Nom</span></label> 
 		<input type="text" name="name" placeholder="Nom du site" autofocus required /> 
-		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
+		 <% 
+		try {
+			for (Metadata m : remoteRequest.getMetadatas(e)){
+				%>
+				<label for="<%=m.getName()%>"><span><%=m.getName()%><% if(m.isObligation()){%>*<% }%></span></label>
+				<input name="<%=m.getName()%>" type="text" placeholder="<%=m.getDescription()%>" <% if(m.isObligation()){%>required<% }%>/>
+				<%
+			}
+		}catch(Exception e1){
+		%><br><div>Il n'y a pas de métadonnées auxquelles vous avez accès.</div><%
+		}
+		%>
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Valider" />
 		</p>
@@ -53,7 +66,18 @@
 		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
 		<label for="name"><span>Nom</span></label>
 		<input name="name" type="text" size="40" placeholder="Nom du corpus" autofocus required/>
-		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
+		 <% 
+		try {
+			for (Metadata m : remoteRequest.getMetadatas(e)){
+				%>
+				<label for="<%=m.getName()%>"><span><%=m.getName()%><% if(m.isObligation()){%>*<% }%></span></label>
+				<input name="<%=m.getName()%>" type="text" placeholder="<%=m.getDescription()%>" <% if(m.isObligation()){%>required<% }%>/>
+				<%
+			}
+		}catch(Exception e1){
+		%><br><div>Il n'y a pas de métadonnées auxquelles vous avez accès.</div><%
+		}
+		%>
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Valider"/>
 		</p>
@@ -76,7 +100,18 @@
 		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
 		<label for="name"><span>Nom</span></label>
 		<input name="name" type="text" size="40" placeholder="Nom de la session" autofocus required/>
-		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
+		 <% 
+		try {
+			for (Metadata m : remoteRequest.getMetadatas(e)){
+				%>
+				<label for="<%=m.getName()%>"><span><%=m.getName()%><% if(m.isObligation()){%>*<% }%></span></label>
+				<input name="<%=m.getName()%>" type="text" placeholder="<%=m.getDescription()%>" <% if(m.isObligation()){%>required<% }%>/>
+				<%
+			}
+		}catch(Exception e1){
+		%><br><div>Il n'y a pas de métadonnées auxquelles vous avez accès.</div><%
+		}
+		%>
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Valider"/>
 		</p>
@@ -99,7 +134,18 @@
 		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
 		<label for="name"><span>Nom</span></label>
 		<input name="name" type="text" size="40" placeholder="Nom de la vue" autofocus required/>
-		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
+		 <% 
+		try {
+			for (Metadata m : remoteRequest.getMetadatas(e)){
+				%>
+				<label for="<%=m.getName()%>"><span><%=m.getName()%><% if(m.isObligation()){%>*<% }%></span></label>
+				<input name="<%=m.getName()%>" type="text" placeholder="<%=m.getDescription()%>" <% if(m.isObligation()){%>required<% }%>/>
+				<%
+			}
+		}catch(Exception e1){
+		%><br><div>Il n'y a pas de métadonnées auxquelles vous avez accès.</div><%
+		}
+		%>
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Valider"/>
 		</p>
@@ -135,7 +181,18 @@
 			<input class="video_file" name="format_video" type="text" placeholder="Format" title="Format" required/>
 			<input class="video_file" name="resolution_video" type="text" placeholder="Qualité" title="Résolution" required/>
 		</div>
-		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
+		 <% 
+		try {
+			for (Metadata m : remoteRequest.getMetadatas(e)){
+				%>
+				<label for="<%=m.getName()%>"><span><%=m.getName()%><% if(m.isObligation()){%>*<% }%></span></label>
+				<input name="<%=m.getName()%>" type="text" placeholder="<%=m.getDescription()%>" <% if(m.isObligation()){%>required<% }%>/>
+				<%
+			}
+		}catch(Exception e1){
+		%><br><div>Il n'y a pas de métadonnées auxquelles vous avez accès.</div><%
+		}
+		%>
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Valider"/>
 		</p>
@@ -165,11 +222,82 @@
 		</select>
 		<label for="annotationfile"><span>Fichier</span></label>
 		<input name="annotationfile" type="file" />
-		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
+		 <% 
+		try {
+			for (Metadata m : remoteRequest.getMetadatas(e)){
+				%>
+				<label for="<%=m.getName()%>"><span><%=m.getName()%><% if(m.isObligation()){%>*<% }%></span></label>
+				<input name="<%=m.getName()%>" type="text" placeholder="<%=m.getDescription()%>" <% if(m.isObligation()){%>required<% }%>/>
+				<%
+			}
+		}catch(Exception e1){
+		%><br><div>Il n'y a pas de métadonnées auxquelles vous avez accès.</div><%
+		}
+		%>
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Valider"/>
 		</p>
 	</form>
+</div>
+<%} else if (entityName.equals("links")){%>
+<div id="createForm" class="">
+    <h3>Création de liens vidéo</h3>
+    <div style="margin-bottom: 5px" class="description">
+        <p>
+            Dans cette partie vous avez la possibilité de rajouter des liens vers les vidéos. 
+        </p>
+    </div>
+    <div class="space"></div>
+    <form class="form" method="post" action="Create" id="add_video" name="video" enctype="multipart/form-data"><br>
+        <input type="hidden"  name="entity"  value="video">
+        <input type="hidden"  name="fatherId"  value="<%=fatherId%>">
+        <input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
+        <label for="videofile"><span>Fichier</span></label>
+        <input name="videofile" type="file" />
+		<% 
+		try {
+			for (Metadata m : remoteRequest.getMetadatas(e)){
+				%>
+				<label for="<%=m.getName()%>"><span><%=m.getName()%><% if(m.isObligation()){%>*<% }%></span></label>
+				<input name="<%=m.getName()%>" type="text" placeholder="<%=m.getDescription()%>" <% if(m.isObligation()){%>required<% }%>/>
+				<%
+			}
+		}catch(Exception e1){
+		%><br><div>Il n'y a pas de métadonnées auxquelles vous avez accès.</div><%
+		}
+		%>
+        <p class="validate">
+            <input class="validate_button" name="validate" type="submit" size="40" value="Valider"/>
+        </p>
+    </form>
+</div>
+
+<%} else if (entityName.equals("user")){%>
+<div id="createForm" class="">
+    <h3>Création d'utilisateur</h3>
+    <div style="margin-bottom: 5px" class="description">
+        <p>
+            Création d'utilisateur. 
+        </p>
+    </div>
+    <div class="space"></div>
+    <form class="form" method="post" action="Create" id="add_user" name="user"><br>
+        <label for="name"><span>Nom</span></label>
+        <input name="name" type="text" placeholder="Nom" autofocus required/>
+        <label for="forename"><span>Prénom</span></label>
+        <input name="forename" type="text" placeholder="Prénom" required/>
+        <label for="mail"><span>Prénom</span></label>
+        <input name="mail" type="email" placeholder="Martin@irit.fr" required/>
+        <label for="role"><span>Droits</span></label>
+        <select name="role">
+          <option value="1">Gestionnaire de site</option>
+          <option value="2">Gestionnaire de corpus</option>
+          <option value="3">Utilisateur</option>
+        </select>
+        <p class="validate">
+            <input class="validate_button" name="validate" type="submit" size="40" value="Valider"/>
+        </p>
+    </form>
 </div>
 <%} else if (entityName.equals("metadata")){%>
 <div id="createForm" class="">

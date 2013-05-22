@@ -40,7 +40,7 @@ import fr.irit.wanda.service.impl.RequestImpl;
 @WebServlet("/Create")
 public class Create extends Servlet {
 	enum ENTITIES {
-		METADATA, USER, RULE, ROLE, SITE, SESSION, WORKFLOW, TYPE, CORPUS, VIDEO, VIEW, ANNOTATION, MONTAGE
+		METADATA, USER, LINKS, SITE, SESSION, CORPUS, VIDEO, VIEW, ANNOTATION, MONTAGE
 	}
 
 	private static final long MaxMemorySize = 1073741824; // 1go
@@ -91,6 +91,9 @@ public class Create extends Servlet {
 				break;
 			case VIEW:
 				message = handleView(request);
+				break;
+			case LINKS:
+				message = handleLink(request);
 				break;
 			/*case MONTAGE:
 				message = handlerMontage(request);
@@ -275,23 +278,11 @@ public class Create extends Servlet {
 		return "Votre vue a bien été ajoutée";
 	}
 	
-	/*private String handlerWorkflow(HttpServletRequest request) {
-		Workflow w = new Workflow(getString(request, "name_workflow"),
-				getString(request, "desc_worflow"));
-
-		ccfg.remoteRequest.addWorkflow(w);
-
-		return "Votre workflow a bien été ajouté";
-	}*/
-
-	/*private String handlerType(HttpServletRequest request) {
-		Type w = new Type(getString(request, "name_type"), getString(request,
-				"desc_typew"));
-
-		ccfg.remoteRequest.addType(w);
-
-		return "Votre type a bien été ajouté";
-	}*/
+	private String handleLink(HttpServletRequest request){
+		
+		
+		return "Votre lien a bien été ajouté";
+	}
 	
 	public String upload(HttpServletRequest request){
     	String name = "";
@@ -383,7 +374,7 @@ public class Create extends Servlet {
 		Entity e = new Entity (id,entity);
 		Collection<Metadata> cm;
 		try {
-			cm = remoteRequest.getMetadata(e);
+			cm = remoteRequest.getMetadatas(e);
 			for (Metadata m : cm){
 				try {
 					remoteRequest.createMetaContent(new MetadataContent (m, e, getString(request, m.getName())));
