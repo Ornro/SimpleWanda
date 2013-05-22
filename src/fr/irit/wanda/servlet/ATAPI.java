@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,7 +39,7 @@ import fr.irit.wanda.entities.User;
 import fr.irit.wanda.exception.NotFoundInDatabaseException;
 import fr.irit.wanda.service.impl.ActionStatus;
 
-
+@WebServlet("/ATAPI")
 public class ATAPI extends HttpServlet {
 	
 	/**
