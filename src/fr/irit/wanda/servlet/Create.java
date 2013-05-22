@@ -89,14 +89,8 @@ public class Create extends Servlet {
 			case CORPUS:
 				message = handleCorpus(request);
 				break;
-			case VIDEO:
-				message = handlerVideo(request);
-				break;
 			case VIEW:
 				message = handleView(request);
-				break;
-			case ANNOTATION:
-				message = handlerAnnotation(request);
 				break;
 			/*case MONTAGE:
 				message = handlerMontage(request);
@@ -303,8 +297,11 @@ public class Create extends Servlet {
     	String name = "";
     	String entity = "";
     	String father = "";
+    	String res = "";
+    	String fmt = "";
     	int fatherId = -1;
     	int privacy = -1;
+    	int id = -1;
     	
     	FileItemFactory factory = new DiskFileItemFactory();
 
@@ -339,15 +336,19 @@ public class Create extends Servlet {
                 		father = item.getString(); 
                 	}else if (currentField.equals("privacy")){
                 		privacy = Integer.parseInt(item.getString());
-                	}
+                	}else if (currentField.equals("format_video")){
+                		res = item.getString();
+                	}else if (currentField.equals("resolution_video")){
+                    	fmt = item.getString();
+                    	}
                 }else { // should be last because iterator conserves sending order
                 	NamedEntity ne = new NamedEntityAO().getName(fatherId, father);
                 	
-        	    	int id = remoteRequest.createAnnotation(new NamedEntity(entity,name),ne,PRIVACY.fromInt(privacy));
-        	    	
+        	    	id = remoteRequest.createAnnotation(new NamedEntity(entity,name),ne,PRIVACY.fromInt(privacy));
         	    	save(item,entity,id);
                 }
 	    	}
+	    	new LinkedEntityAO().tempFileMeta(res,fmt,id);
 		} catch (FileUploadException e) {
 			e.printStackTrace();
 		} catch (Exception e) {

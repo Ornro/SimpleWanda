@@ -201,6 +201,11 @@ p.validate {
 	width: 120px;
 }
 
+input.video_file{
+	width:50px;
+	margin-right:5px;
+}
+
 #sidebar {
 	width: 285px;
 	float: right;

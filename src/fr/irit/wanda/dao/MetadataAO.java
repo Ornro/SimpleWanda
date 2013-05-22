@@ -257,7 +257,6 @@ public class MetadataAO extends DAO {
 				+ "AND metaconcerns.idmetadata=metadata.idmetadata " + "AND "
 				+ linkingTable + ".metadata=metaconcerns.idmetadata " + "AND "
 				+ linkingTable + "." + entityName + "=?;");
-
 		setString(1, entityName);
 		setInt(2, e.getId());
 		if (!executeQuery())

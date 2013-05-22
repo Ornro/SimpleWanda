@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 
 import javax.servlet.ServletContext;
@@ -70,8 +72,7 @@ public class Edit extends Servlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String message = "";
-		if (!ServletFileUpload.isMultipartContent(request)){
-			ENTITIES ent = ENTITIES.valueOf(getString(request,"entity").toUpperCase());
+		ENTITIES ent = ENTITIES.valueOf(getString(request,"entity").toUpperCase());
 
 			switch (ent) {
 			/*case METADATA:
@@ -81,19 +82,13 @@ public class Edit extends Servlet {
 				message = handlerUser(request);
 				break;*/
 			case SITE:
-				message = handlerSite(request);
-				break;
 			case SESSION:
-				message = handlerSession(request);
-				break;
 			case CORPUS:
-				message = handleCorpus(request);
+			case VIEW:
+				message = handlerContainer(request);
 				break;
 			case VIDEO:
 				message = handlerVideo(request);
-				break;
-			case VIEW:
-				message = handleView(request);
 				break;
 			case ANNOTATION:
 				message = handlerAnnotation(request);
@@ -103,8 +98,7 @@ public class Edit extends Servlet {
 				break;*/
 
 			default:
-			}
-		}else message = upload(request);
+		}
 		
 		response.sendRedirect("");
 	}
@@ -134,8 +128,18 @@ public class Edit extends Servlet {
 		return "Votre annotation a bien été ajoutée";
 	}
 	
-	private String handlerSite(HttpServletRequest request) {
-		remoteRequest.editNamedEntity(null, null);		
+	private String handlerContainer(HttpServletRequest request) {
+		Entity e = new Entity(getInt(request,"entityId"), getString(request,"entityName"));
+		String valeurColonne = getString(request,"name");
+		String nomColonne = "name";
+		String typeColonne = "string";
+		
+		Map <String,String> subMap = new HashMap<String, String>();
+		subMap.put(valeurColonne, typeColonne);
+		Map<String,Map<String,String>> map = new HashMap<String, Map<String,String>>();
+		map.put(nomColonne, subMap);
+		
+		remoteRequest.editNamedEntity(map, e);		
 		return "Votre site a bien été mis à jour";
 	}
 	

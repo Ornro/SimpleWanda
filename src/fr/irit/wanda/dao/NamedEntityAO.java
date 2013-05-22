@@ -198,6 +198,8 @@ public class NamedEntityAO extends DAO {
 				}
 			}
 		}
+		count ++;
+		setInt(count,e.getId());
 		return executeUpdate();
 	}
 }

@@ -300,7 +300,7 @@ public class RequestImpl implements IRequest {
 		try {
 			if (isAllowedToProceed(container)) {
 				chaine += printAJAXLink(container, "Edit.jsp")
-						+ "&nbsp<img style=\"margin-right:2px;\" title=\"Edit\" src=\"/SimpleWanda/img/edit.png\" class=\"icon\" \\></a>";				
+						+ "&nbsp<img title=\"Edit\" src=\"/SimpleWanda/img/edit.png\" class=\"icon\" \\></a>&nbsp;";				
 			}
 		} catch (NotAllowedToProceedException e) {
 		}
@@ -309,6 +309,19 @@ public class RequestImpl implements IRequest {
 
 	private String endContainer(NamedEntity container) {
 		String chaine = "";
+		if (container.getEntityName().equals("video")){
+			try {
+				for (VideoFile vf : new LinkedEntityAO().getLinks(container.getId())){
+					chaine += "<li class=\"file\">";
+					chaine += "<span>";
+					chaine += "<a href=\""+vf.getLink()+"\" target=\"_blank\"  download>"+vf.getDisplayName()+"</a>";
+					chaine += "</span>";
+					chaine += "</li>";
+				}
+			} catch (NotFoundInDatabaseException e) {
+				e.printStackTrace();
+			}
+		}
 		chaine += "</ol>"; // on ferme la liste des fils
 		chaine += "</li>"; // on clos cet élément
 
@@ -335,7 +348,7 @@ public class RequestImpl implements IRequest {
 			if (isAllowedToProceed(container)) {
 				for (String son:new ContainerAO().getSonsNames(container)){
 					chaine += printAJAXCreateLink(container.getId()+"_"+son+"_"+container.getEntityName())+ "<img title=\"Add "+son+"\" src=\"/SimpleWanda/img/add.png \" class=\"icon\"/\\></a>";
-					//chaine += "&nbsp;";
+					chaine += "&nbsp;";
 				}
 			}
 		} catch (NotAllowedToProceedException e) {
@@ -444,8 +457,10 @@ public class RequestImpl implements IRequest {
 		return chaine;
 	}
 	
-	public boolean editNamedEntity(Map<String, Map<String, String>> args, Entity e){
-		return false;
-	}
+        public boolean editNamedEntity(Map<String, Map<String, String>> args, Entity e){
+            NamedEntityAO ne = new NamedEntityAO();
+            return ne.edit(args, e);
+        }
+
 
 }
