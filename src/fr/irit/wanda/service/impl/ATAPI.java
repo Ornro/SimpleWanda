@@ -100,7 +100,6 @@ public class ATAPI extends HttpServlet {
 			try {
 				user = uao.getUser("benjamin.babic@hotmail.fr");
 			} catch (NotFoundInDatabaseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return user;
@@ -117,7 +116,7 @@ public class ATAPI extends HttpServlet {
 				return;
 			}
 			if (action.equals("ungrant")) {
-				//doUnGrant(request, response);
+				doUnGrant(request, response);
 				return;
 			}
 			if (action.equals("list")) {
@@ -150,7 +149,6 @@ public class ATAPI extends HttpServlet {
 	
 	private static Element getContainerHierarchy(NamedEntity container) {
 		
-		//TODO Ajout attribut URL si video
 		Element elt = new Element(container.getEntityName());
 		Attribute att = new Attribute("name", container.getName());
 		elt.setAttribute(att);
@@ -178,7 +176,6 @@ public class ATAPI extends HttpServlet {
 	private void doList(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		String status = "ko";
-		User user;
 		Collection<ActionStatus> results = new ArrayList<ActionStatus>();
 		Collection<String> errors = new ArrayList<String>();
 
@@ -211,6 +208,7 @@ public class ATAPI extends HttpServlet {
 		User user = null;
 		String a3uri = "";
 		String videoUri = "";
+		String videoName = "";
 		Collection<ActionStatus> results = new ArrayList<ActionStatus>();
 		Collection<String> errors = new ArrayList<String>();
 
@@ -247,11 +245,10 @@ public class ATAPI extends HttpServlet {
 			try {
 				Job job;
 
-				//TODO récupérer le nom de la vidéo à partir de l'uri(videoUri) dans videoName
-				LinkedEntityAO lao = new LinkedEntityAO();
-				idvideo = 0;	
-				//TODO méthode pour récupérer l'id d'une video à partir de son nom
-				//idvideo = lao.getID(videoName);
+				String[] tab = videoUri.split("/");
+				videoName = tab[tab.length];
+				LinkedEntityAO lao = new LinkedEntityAO();	
+				idvideo = lao.getVideoID(videoName);
 
 				if (a3id != -1)
 					job = newJob(user, a3id, idvideo);
@@ -275,15 +272,55 @@ public class ATAPI extends HttpServlet {
 				.forward(request, response);
 	}
 	
-	private void doGetVideo(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		ActionStatus actionStatus = new ActionStatus("grant", "ko");
-		LinkedEntity vid = null;
+	private void doUnGrant(HttpServletRequest request,
+			HttpServletResponse response) throws IOException, ServletException {
+		ActionStatus actionStatus = new ActionStatus("ungrant", "ko");
+		int jobid = -1;
 		User user = null;
-		String a3uri = "";
+		Collection<String> errors = new ArrayList<String>();
+
+		// read parameters
+		try {
+			jobid = getIntParam("jobid", request);
+		} catch (Exception e) {
+			errors.add(super.getServletName()
+					+ ": jobid parameter is missing. (" + e.getMessage() + ")");
+		}
+		try {
+			user = getUser(request);
+		} catch (Exception e) {
+			errors.add(super.getServletName()
+					+ ": Authentication problem occured. (" + e.getMessage()
+					+ ")");
+		}
+
+		// call service
+		if (errors.isEmpty()) {
+			try {
+				deleteJob(user, jobid);
+				actionStatus.setStatus("ok");
+				actionStatus.setTarget(jobid);
+			} catch (Exception e) {
+				errors.add(super.getServletName() + ": Exception occured. ("
+						+ e.getMessage() + ")");
+			}
+		}
+
+		// give feedback
+		Collection<ActionStatus> results = new ArrayList<ActionStatus>();
+		results.add(actionStatus);
+		request.setAttribute("results", results);
+		request.setAttribute("errors", errors);
+		super.getServletContext().getRequestDispatcher(atapiXmlUrl)
+				.forward(request, response);
+
+	}
+	
+	private void doGetVideo(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		User user = null;
 		String videoUri = "";
 		String videoPath = "";
 		String videoName = "";
-		Collection<ActionStatus> results = new ArrayList<ActionStatus>();
 		Collection<String> errors = new ArrayList<String>();
 
 		// read parameters
@@ -302,11 +339,10 @@ public class ATAPI extends HttpServlet {
 		// call service
 		if (errors.isEmpty()) {
 			try {
-				//TODO récupérer le nom de la vidéo à partir de l'uri(videoUri) dans videoName
+				String[] tab = videoUri.split("/");
+				videoName = tab[tab.length];
 				LinkedEntityAO lao = new LinkedEntityAO();
-				int idvideo = 0;	
-				//TODO méthode pour récupérer l'id d'une video à partir de son nom
-				//idvideo = lao.getID(videoName);
+				int idvideo = lao.getVideoID(videoName);
 				videoPath = lao.getSingleLink(idvideo);
 				
 			} catch (Exception e) {
@@ -393,9 +429,6 @@ public class ATAPI extends HttpServlet {
 		User user = puser;
 		A3AO a3ao = new A3AO();
 		A3 a3 = a3ao.getA3(aid);
-		//TODO méthode pour récupérer une vidéo à partir de son id
-		LinkedEntityAO lao = new LinkedEntityAO();
-		//LinkedEntity video = lao.getLinkedEntity(vid);
 
 		// check right to access A3
 		//TODO méthode hasUserAccessTOA3
@@ -423,7 +456,7 @@ public class ATAPI extends HttpServlet {
 	}
 
 	public Job newJob(User user, String a3_uri, int vid) throws Exception {
-		//TODO méthode pour récupérer un A3 à partir de son uri
+		//TODO méthode pour récupérer un A3 à partir de son uri (getA3fromURI)
 		A3AO a3ao = new A3AO();
 		A3 a3 = a3ao.getA3fromURI(a3_uri);
 		if (a3 == null)
@@ -436,6 +469,23 @@ public class ATAPI extends HttpServlet {
 	public static void main(String [] args) {
 		org.jdom2.Document document = new Document(getHierarchyXML());
 		affiche(document);
+	}
+	
+	public void deleteJob(User u, int jid) throws Exception {
+		//TODO méthode (dans JobAO) pour récupérer le job à partir de son id
+		//JobAO jao = new JobAO();
+		Job job = null;
+		//job = jao.getJob(jid);
+		int oid = job.getUserID();
+
+		if (!(oid == u.getId())) //Ajouté également un test pour savoir si le user a les droits de supprimer le job 
+								//(il a les droits si c'est le manager du site)
+			throw new Exception(
+					"Insufficient rights to delete this Job. ");
+		
+		//TODO méthode (dans JobAO) pour supprimer le job dans la table 
+		//JobAO jao = new JobAO();
+		//jao.deleteJob(job);
 	}
 
 }
