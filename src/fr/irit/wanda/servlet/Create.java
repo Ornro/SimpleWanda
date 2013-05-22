@@ -28,6 +28,7 @@ import fr.irit.wanda.entities.LinkedEntity.PRIVACY;
 import fr.irit.wanda.entities.Metadata;
 import fr.irit.wanda.entities.MetadataContent;
 import fr.irit.wanda.entities.NamedEntity;
+import fr.irit.wanda.entities.User;
 import fr.irit.wanda.exception.AlreadyRegistredException;
 import fr.irit.wanda.exception.NotAllowedToProceedException;
 import fr.irit.wanda.exception.NotFoundInDatabaseException;
@@ -77,9 +78,9 @@ public class Create extends Servlet {
 			case METADATA:
 				message = handlerMetadata(request);
 				break;
-			/*case USER:
+			case USER:
 				message = handlerUser(request);
-				break;*/
+				break;
 			case SITE:
 				message = handlerSite(request);
 				break;
@@ -104,17 +105,6 @@ public class Create extends Servlet {
 		}else message = upload(request);
 		response.sendRedirect("Home.jsp");
 	}
-
-	/*private String handlerAnnotation(HttpServletRequest request) {
-	    Workflow w = instanciator.workflow(getString(request, "workflow_annotation"));
-	    Video e = instanciator.video(getString(request, "video_annotation"));
-	    View v = instanciator.view(getString(request, "view_annotation"));
-		Annotation a = new Annotation(w, e, v, getString(request, "name_annotation"));
-
-
-		ccfg.remoteRequest.addAnnotation(a);
-		return "Votre annotation a bien été ajoutée";
-	}*/
 
 	/*private String handlerMontage(HttpServletRequest request) {
 
@@ -166,15 +156,17 @@ public class Create extends Servlet {
 		return "Votre metadonnee a bien été ajoutée";
 	}
 
-	/*private String handlerUser(HttpServletRequest request) {
-		Role r = instanciator.role(getString(request, "role_user"));
-
-		User u = new User(getString(request, "name_user"), getString(request,
-				"prenom_user"), r, getString(request, "mail_user"));
-		ccfg.remoteRequest.addUser(u);
+	private String handlerUser(HttpServletRequest request) {
+		User.ROLE role = User.ROLE.valueOf(getString(request,"role").toUpperCase());
+		try {
+			remoteRequest.createUser(new User(getString(request,"name"), getString(request,"forename"), role , getString(request,"mail")));
+		} catch (AlreadyRegistredException | NotAllowedToProceedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		return "Votre user a bien été ajouté";
-	}*/
+	}
 
 
 	private String handlerVideo(HttpServletRequest request) {

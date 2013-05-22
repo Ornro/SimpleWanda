@@ -282,6 +282,7 @@
     </div>
     <div class="space"></div>
     <form class="form" method="post" action="Create" id="add_user" name="user"><br>
+		<input type="hidden"  name="entity"  value="user">
         <label for="name"><span>Nom</span></label>
         <input name="name" type="text" placeholder="Nom" autofocus required/>
         <label for="forename"><span>Prénom</span></label>
@@ -290,9 +291,7 @@
         <input name="mail" type="email" placeholder="Martin@irit.fr" required/>
         <label for="role"><span>Droits</span></label>
         <select name="role">
-          <option value="1">Gestionnaire de site</option>
-          <option value="2">Gestionnaire de corpus</option>
-          <option value="3">Utilisateur</option>
+          <option value="user">User</option>
         </select>
         <p class="validate">
             <input class="validate_button" name="validate" type="submit" size="40" value="Valider"/>

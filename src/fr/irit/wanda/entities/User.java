@@ -49,7 +49,7 @@ public class User extends Entity {
 	}
 	
 	public enum ROLE{
-		ADMIN(0), UNREGISTRED(10);
+		ADMIN(0), USER(5), UNREGISTRED(10);
 		private int value;
 
         private ROLE(int value) {
@@ -80,6 +80,7 @@ public class User extends Entity {
 			String mail) {
 		super(certificate, "wuser");
 		this.name = name;
+		this.forename = forename;
 		this.mail = mail;
 		this.role = role;
 	}
@@ -88,6 +89,7 @@ public class User extends Entity {
 			String mail, User creator) {
 		super(certificate, "wuser");
 		this.name = name;
+		this.forename = forename;
 		this.mail = mail;
 		this.role = role;
 		this.creator = creator;
@@ -96,6 +98,7 @@ public class User extends Entity {
 	public User(String name, String forename, ROLE role, String mail) {
 		super(-1, "wuser");
 		this.name = name;
+		this.forename = forename;
 		this.mail = mail;
 		this.role = role;
 	}
