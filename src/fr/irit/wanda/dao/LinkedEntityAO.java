@@ -170,6 +170,14 @@ public class LinkedEntityAO extends NamedEntityAO {
 		
 		return new File(getString("link"));
 	}
+	
+	public int getVideoID(String videoName) {
+		set("SELECT idvideo FROM Video WHERE name=?;");
+		setString(1,videoName);
+		executeQuery();
+		
+		return getInt("idvideo");
+	}
 
 	/**
 	 * Tells if an entity is a container
