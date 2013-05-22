@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import fr.irit.wanda.entities.A3;
 import fr.irit.wanda.exception.AlreadyRegistredException;
@@ -184,5 +185,22 @@ public class A3AO extends DAO {
 		set("DELETE FROM a3 WHERE certificate=?;");
 		setInt(1, id);
 		return executeUpdate();
+	}
+	
+	public A3 getA3fromURI(String uri) throws NotFoundInDatabaseException {
+		A3 result=null; 
+		Iterator<A3> i = getAllA3().iterator();
+		
+		while(result==null && i.hasNext()){
+			A3 a3=i.next();
+			if(a3.getUri().equals(uri)){
+				result = a3;
+			}
+		}
+		
+		if(result==null)
+			throw new NotFoundInDatabaseException("No A3 with URI "+uri+" has been found in database. ");
+		
+		return result;
 	}
 }

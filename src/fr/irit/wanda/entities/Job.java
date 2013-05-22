@@ -21,6 +21,11 @@ public class Job {
 		creation = new Date();
 	}
 	
+	public Job(int pid, int userId){
+		id = pid; 
+		userID = userId;
+	}
+	
 	public Job clone(){
 		Job clone = new Job();
 		

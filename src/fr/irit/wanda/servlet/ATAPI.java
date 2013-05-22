@@ -1,4 +1,4 @@
-package fr.irit.wanda.service.impl;
+package fr.irit.wanda.servlet;
 
 import java.io.DataInputStream;
 import java.io.File;
@@ -26,6 +26,7 @@ import org.jdom2.output.XMLOutputter;
 
 import fr.irit.wanda.dao.A3AO;
 import fr.irit.wanda.dao.ContainerAO;
+import fr.irit.wanda.dao.JobAO;
 import fr.irit.wanda.dao.LinkedEntityAO;
 import fr.irit.wanda.dao.NamedEntityAO;
 import fr.irit.wanda.dao.UserAO;
@@ -35,6 +36,8 @@ import fr.irit.wanda.entities.LinkedEntity;
 import fr.irit.wanda.entities.NamedEntity;
 import fr.irit.wanda.entities.User;
 import fr.irit.wanda.exception.NotFoundInDatabaseException;
+import fr.irit.wanda.service.impl.ActionStatus;
+
 
 public class ATAPI extends HttpServlet {
 	
@@ -425,19 +428,12 @@ public class ATAPI extends HttpServlet {
 	}
     
     
-    public Job newJob(User puser, int aid, int vid) {
-		User user = puser;
-		A3AO a3ao = new A3AO();
-		A3 a3 = a3ao.getA3(aid);
-
-		// check right to access A3
-		//TODO méthode hasUserAccessTOA3
-		if (!hasUserAccessToA3(user, a3))
-			throw new Exception(user.getName()
-					+ " cannot access to A3 " + a3.getName());
-
-		// check right to access video
-		//TODO méthode pour tester si l'utilisateur a le droit d'accéder à la vidéo
+    public Job newJob(User user, int aid, int vid) throws NotFoundInDatabaseException, Exception {
+		LinkedEntityAO lao = new LinkedEntityAO();
+		NamedEntity ne = lao.getName(vid, "video");
+		UserAO uao = new UserAO();
+		if(!uao.isAuthorized(user, ne)) throw new Exception(user.getName()
+				+ " cannot access to video " + ne.getName() + ". ");
 
 		Job job = new Job();
 		job.setId(-1);
@@ -446,17 +442,15 @@ public class ATAPI extends HttpServlet {
 		job.setUserID(user.getId());
 		job.setVideo(vid);
 		job.setCreation(new Date());
-		//TODO méthode (dans JobAO) pour insérer le job dans sa table 
-		//JobAO jao = new JobAO();
-		//jao.saveJob(job);
+		JobAO jao = new JobAO();
+		jao.addJob(job);
 
-		// System.out.println(this.getClass().getName()+".newJob(): A job linking A3 "+aid+" to video "+vid+" has been created. ");
+		System.out.println(this.getClass().getName()+".newJob(): A job linking A3 "+aid+" to video "+vid+" has been created. ");
 
 		return job;
 	}
 
 	public Job newJob(User user, String a3_uri, int vid) throws Exception {
-		//TODO méthode pour récupérer un A3 à partir de son uri (getA3fromURI)
 		A3AO a3ao = new A3AO();
 		A3 a3 = a3ao.getA3fromURI(a3_uri);
 		if (a3 == null)
@@ -472,20 +466,15 @@ public class ATAPI extends HttpServlet {
 	}
 	
 	public void deleteJob(User u, int jid) throws Exception {
-		//TODO méthode (dans JobAO) pour récupérer le job à partir de son id
-		//JobAO jao = new JobAO();
-		Job job = null;
-		//job = jao.getJob(jid);
+		JobAO jao = new JobAO();
+		Job job = jao.getJob(jid);
 		int oid = job.getUserID();
 
-		if (!(oid == u.getId())) //Ajouté également un test pour savoir si le user a les droits de supprimer le job 
-								//(il a les droits si c'est le manager du site)
+		if (!(oid == u.getId()) || !(u.getId() == oid)) 
 			throw new Exception(
 					"Insufficient rights to delete this Job. ");
 		
-		//TODO méthode (dans JobAO) pour supprimer le job dans la table 
-		//JobAO jao = new JobAO();
-		//jao.deleteJob(job);
+		jao.deleteJob(job);
 	}
 
 }
