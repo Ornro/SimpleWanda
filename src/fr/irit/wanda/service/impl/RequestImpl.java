@@ -131,7 +131,7 @@ public class RequestImpl implements IRequest {
 	}
 
 	@Override
-	public boolean createMontage(Montage montage)
+	public boolean createMontage(LinkedEntity montage)
 			throws NotAllowedToProceedException {
 		// TODO Auto-generated method stub
 		return false;
@@ -325,7 +325,6 @@ public class RequestImpl implements IRequest {
 		chaine += "<span id=\""+ eid + "_" + ename +"_icons"+"\" class=\"hidden\"><a href=\""+new LinkedEntityAO().getSingleLink(eid)+"\" target=\"_blank\"  download><img class=\"icon\" src=\"/SimpleWanda/img/download.png \"/></span></a>";
 		chaine += "</span>";
 		chaine += "</li>";
-
 		return chaine;
 	}
 	
@@ -354,7 +353,6 @@ public class RequestImpl implements IRequest {
 			e1.printStackTrace();
 			return null;
 		}
-	
 	}
 
 	@Override

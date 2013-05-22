@@ -11,7 +11,6 @@ import fr.irit.wanda.entities.LinkedEntity.PRIVACY;
 import fr.irit.wanda.entities.Entity;
 import fr.irit.wanda.entities.Metadata;
 import fr.irit.wanda.entities.MetadataContent;
-import fr.irit.wanda.entities.Montage;
 import fr.irit.wanda.entities.NamedEntity;
 import fr.irit.wanda.entities.User;
 import fr.irit.wanda.exception.AlreadyRegistredException;
@@ -42,7 +41,7 @@ public interface IRequest {
 			throws AlreadyRegistredException, NotFoundInDatabaseException,
 			NotAllowedToProceedException;
 
-	boolean createMontage(Montage montage) throws NotAllowedToProceedException;
+	boolean createMontage(LinkedEntity montage) throws NotAllowedToProceedException;
 
 	boolean validate(NamedEntity entity) throws NotAllowedToProceedException;
 

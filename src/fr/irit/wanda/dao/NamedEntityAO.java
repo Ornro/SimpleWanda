@@ -72,10 +72,9 @@ public class NamedEntityAO extends DAO {
 	public boolean exists(NamedEntity ne, NamedEntity father) {
 		if (ne.getId() != -1)
 			return exists(ne.getId(), ne.getEntityName());
-		if (father == null){
+		if (father == null) {
 			return exists(ne.getName(), ne.getEntityName());
-		}
-		else
+		} else
 			return exists(ne.getName(), ne.getEntityName(), father);
 	}
 
@@ -83,8 +82,10 @@ public class NamedEntityAO extends DAO {
 	 * Tells if the entity named by the given parameter exists
 	 */
 	private boolean exists(String name, String tableName, NamedEntity father) {
-		if (father.getId()<1) System.out.println("ERROR");
-		set("SELECT * FROM " + tableName + " WHERE name=? AND _"+father.getEntityName()+"="+father.getId()+";");
+		if (father.getId() < 1)
+			System.out.println("ERROR");
+		set("SELECT * FROM " + tableName + " WHERE name=? AND _"
+				+ father.getEntityName() + "=" + father.getId() + ";");
 		setString(1, name);
 		return executeQuery();
 	}
@@ -162,15 +163,15 @@ public class NamedEntityAO extends DAO {
 		} while (father != null);
 		return result;
 	}
-	
+
 	/**
-	*
-	* @param args
-	* Map<colomn_name,Map<new_value,type>> can be changed to mime
-	* type
-	* @param e
-	* @return
-	*/
+	 * 
+	 * @param args
+	 *            Map<colomn_name,Map<new_value,type>> can be changed to mime
+	 *            type
+	 * @param e
+	 * @return
+	 */
 	public boolean edit(Map<String, Map<String, String>> args, Entity e) {
 		String req = "UPDATE " + e.getEntityName() + " SET ";
 		int size = args.size();
