@@ -228,10 +228,12 @@ public class MetadataAO extends DAO {
 		set("SELECT * FROM " + e.getMetaTable() + " WHERE metadata = ?;");
 		setInt(1, lm.getId());
 
-		if (!executeQuery())
+		if (!executeQuery()){
 			throw new NotFoundInDatabaseException(
 					"There is no metadata called " + m.getName() + " in table "
 							+ e.getEntityName());
+		
+		}
 		lm.setContent(getString("content"));
 		return lm;
 	}
@@ -255,14 +257,13 @@ public class MetadataAO extends DAO {
 				+ "AND metaconcerns.idmetadata=metadata.idmetadata " + "AND "
 				+ linkingTable + ".metadata=metaconcerns.idmetadata " + "AND "
 				+ linkingTable + "." + entityName + "=?;");
-
 		setString(1, entityName);
 		setInt(2, e.getId());
 		if (!executeQuery())
 			throw new NotFoundInDatabaseException(
 					"The entity does not seems to have any metadata content filled.");
 		do {
-			lmc.add(new MetadataContent(extract(), e));
+			lmc.add(new MetadataContent(extract(), e,getString("content")));
 		} while (next());
 
 		return lmc;

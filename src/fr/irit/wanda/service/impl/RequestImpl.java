@@ -1,6 +1,7 @@
 package fr.irit.wanda.service.impl;
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.apache.commons.fileupload.FileItem;
 
@@ -63,7 +64,7 @@ public class RequestImpl implements IRequest {
 	}
 
 	@Override
-	public boolean createSite(NamedEntity site)
+	public int createSite(NamedEntity site)
 			throws NotAllowedToProceedException, AlreadyRegistredException,
 			NotFoundInDatabaseException {
 		if (caller.getRole() == ROLE.ADMIN)
@@ -106,7 +107,7 @@ public class RequestImpl implements IRequest {
 	}
 
 	@Override
-	public boolean createSession(NamedEntity session, NamedEntity father)
+	public int createSession(NamedEntity session, NamedEntity father)
 			throws AlreadyRegistredException, NotFoundInDatabaseException,
 			NotAllowedToProceedException {
 		if (isAllowedToProceed(father)) {
@@ -114,11 +115,11 @@ public class RequestImpl implements IRequest {
 				return corpusManagerRequest.createSession(session, father);
 			}
 		}
-		return false;
+		return -1;
 	}
 
 	@Override
-	public boolean createView(NamedEntity view, NamedEntity father)
+	public int createView(NamedEntity view, NamedEntity father)
 			throws AlreadyRegistredException, NotFoundInDatabaseException,
 			NotAllowedToProceedException {
 		if (isAllowedToProceed(father)) {
@@ -126,11 +127,11 @@ public class RequestImpl implements IRequest {
 				return corpusManagerRequest.createView(view, father);
 			}
 		}
-		return false;
+		return -1;
 	}
 
 	@Override
-	public boolean createMontage(Montage montage)
+	public boolean createMontage(LinkedEntity montage)
 			throws NotAllowedToProceedException {
 		// TODO Auto-generated method stub
 		return false;
@@ -199,7 +200,7 @@ public class RequestImpl implements IRequest {
 	}
 
 	@Override
-	public boolean createCorpus(NamedEntity corpus, NamedEntity father)
+	public int createCorpus(NamedEntity corpus, NamedEntity father)
 			throws AlreadyRegistredException, NotFoundInDatabaseException,
 			NotAllowedToProceedException {
 		if (isAllowedToProceed(father)) {
@@ -207,7 +208,7 @@ public class RequestImpl implements IRequest {
 				return siteManagerRequest.createCorpus(corpus, father);
 			}
 		}
-		return false;
+		return -1;
 	}
 
 	@Override
@@ -236,7 +237,7 @@ public class RequestImpl implements IRequest {
 		chaine += "</ol>";
 		if (caller != null) {
 			if (caller.getRole() == ROLE.ADMIN){
-				chaine += "<br><span style=\"float:left\">"+ printAJAXCreateLink("-1_metadata_metadata")+"<img title=\"Add Metadata\" src=\"/SimpleWanda/img/add.png \" class=\"icon\"/><small> Add metadata </small></a></span>";
+				chaine += "<br><span style=\"float:left; margin-left:10px;\">"+ printAJAXCreateLink("-1_metadata_metadata")+"<img title=\"Add Metadata\" src=\"/SimpleWanda/img/add.png \" class=\"icon\"/><small> Add metadata </small></a></span>";
 				chaine += "<span style=\"float:right\">"+ printAJAXCreateLink("-1_site_site")+"<img title=\"Add Site\" src=\"/SimpleWanda/img/add.png \" class=\"icon\"/><small> Add site </small></a></span><br>";
 			}
 		}
@@ -273,7 +274,7 @@ public class RequestImpl implements IRequest {
 		chaine += "&nbsp; &nbsp;"; // on l'identifie
 		chaine += "<img class=\"icon\" src=\"/SimpleWanda/img/folder-horizontal.png\"/>&nbsp;";
 		chaine += "<span id=\"dynamicMenu\" onmouseover=\"quickMenu('"+ container.getId() + "_" + container.getEntityName() +"_icons"+"')\" onmouseout=\"quickMenu2('"+ container.getId() + "_" + container.getEntityName() +"_icons"+"')\" >";
-		chaine += printAJAXLink(container, "view")+container.getName()+"</a>";
+		chaine += printAJAXLink(container, "View.jsp")+container.getName()+"</a>";
 		chaine += "<span id=\""+ container.getId() + "_" + container.getEntityName() +"_icons"+"\" class=\"hidden\">"+addIcons(container)+addSons(container)+"</span>";
 		chaine += "</span>";
 
@@ -298,8 +299,8 @@ public class RequestImpl implements IRequest {
 		String chaine = "";
 		try {
 			if (isAllowedToProceed(container)) {
-				chaine += printAJAXLink(container, "edit")
-						+ " &nbsp<img title=\"Edit\" src=\"/SimpleWanda/img/edit.png\" class=\"icon\" \\> </a>";				
+				chaine += printAJAXLink(container, "Edit.jsp")
+						+ "&nbsp<img title=\"Edit\" src=\"/SimpleWanda/img/edit.png\" class=\"icon\" \\></a>&nbsp;";				
 			}
 		} catch (NotAllowedToProceedException e) {
 		}
@@ -308,6 +309,19 @@ public class RequestImpl implements IRequest {
 
 	private String endContainer(NamedEntity container) {
 		String chaine = "";
+		if (container.getEntityName().equals("video")){
+			try {
+				for (VideoFile vf : new LinkedEntityAO().getLinks(container.getId())){
+					chaine += "<li class=\"file\">";
+					chaine += "<span>";
+					chaine += "<a href=\""+vf.getLink()+"\" target=\"_blank\"  download>"+vf.getDisplayName()+"</a>";
+					chaine += "</span>";
+					chaine += "</li>";
+				}
+			} catch (NotFoundInDatabaseException e) {
+				e.printStackTrace();
+			}
+		}
 		chaine += "</ol>"; // on ferme la liste des fils
 		chaine += "</li>"; // on clos cet élément
 
@@ -320,11 +334,10 @@ public class RequestImpl implements IRequest {
 		String chaine = "";
 		chaine += "<li class=\"file\">";
 		chaine += "<span id=\"dynamicMenu\" onmouseover=\"quickMenu('"+ eid + "_" + ename +"_icons"+"')\" onmouseout=\"quickMenu2('"+ eid + "_" + ename +"_icons"+"')\" >";
-		chaine += printAJAXLink(entity, "view")+entity.getName()+"</a>&nbsp";
-		chaine += "<span id=\""+ eid + "_" + ename +"_icons"+"\" class=\"hidden\"><a href=\""+new LinkedEntityAO().getSingleLink(eid)+"\"><img class=\"icon\" src=\"/SimpleWanda/img/download.png \"/></span></a>";
+		chaine += printAJAXLink(entity, "View.jsp")+entity.getName()+"</a>&nbsp";
+		chaine += "<span id=\""+ eid + "_" + ename +"_icons"+"\" class=\"hidden\"><a href=\""+new LinkedEntityAO().getSingleLink(eid)+"\" target=\"_blank\"  download><img class=\"icon\" src=\"/SimpleWanda/img/download.png \"/></span></a>";
 		chaine += "</span>";
 		chaine += "</li>";
-
 		return chaine;
 	}
 	
@@ -344,7 +357,7 @@ public class RequestImpl implements IRequest {
 		return chaine;
 	}
 	
-	public Collection<Metadata> getMetadata(Entity e){
+	public Collection<Metadata> getMetadata(Entity e) throws NotFoundInDatabaseException{
 		MetadataAO metaAO = new MetadataAO();
 		try {
 			return metaAO.getConcernedMetadata(e);
@@ -353,7 +366,6 @@ public class RequestImpl implements IRequest {
 			e1.printStackTrace();
 			return null;
 		}
-	
 	}
 
 	@Override
@@ -364,19 +376,56 @@ public class RequestImpl implements IRequest {
 	}
 	
 	
-	public String getMetadataForm(Entity e){
+	public String getMetadataForm(Entity e) throws NotFoundInDatabaseException{
 		String chaine = "";
-		chaine += "<h2>Liste des métadonnées</h2>";
-		Collection<Metadata> cm = getMetadata(e);
-		for (Metadata m : cm){
-			chaine += "<label for=\""+m.getName()+"\"><span>"+m.getName();
-			if (m.isObligation()) chaine += "*";
-			
-			chaine += "</span></label>";
-			chaine += "<input name=\""+m.getName()+"\" type=\"text\" placeholder=\""+m.getName()+"\" ";	
-			if (m.isObligation()) chaine += "required";
-			
-			chaine += "/>";
+		try{
+			Collection<Metadata> cm = getMetadata(e);
+			if (cm != null){
+				chaine += "<p style=\"margin-top:20px;\">Voici la liste des métadonnées à renseigner pour un(e) "+e.getEntityName()+". Celles précisées " +
+						"d'une étoile sont <strong>OBLIGATOIRES</strong>.</p>";
+				for (Metadata m : cm){
+					chaine += "<label for=\""+m.getName()+"\"><span>"+m.getName();
+					if (m.isObligation()) chaine += "*";
+					
+					chaine += "</span></label>";
+					chaine += "<input name=\""+m.getName()+"\" type=\"text\" placeholder=\""+m.getDescription()+"\" ";	
+					if (m.isObligation()) chaine += "required";
+					
+					chaine += "/>";
+				}				
+			}else{
+				chaine += "<br><br>Il n'y a pas de métadonnées à renseigner";
+			}
+		}catch (NotFoundInDatabaseException e1){
+			chaine += "<br><br>Il n'y as pas de métadonnées à renseigner";
+		}
+		return chaine;	
+	}
+	
+	public String getMetadataFormEdit(Entity e) throws NotFoundInDatabaseException{
+		String chaine = "";
+		try{
+			Collection<Metadata> cm = getMetadata(e);
+			if (cm != null){
+				for (Metadata m : cm){
+					
+					MetadataAO metaAO = new MetadataAO();
+					MetadataContent mc = metaAO.getMetadataContent(e, m);
+					
+					chaine += "<label for=\""+m.getName()+"\"><span>"+m.getName();
+					if (m.isObligation()) chaine += "*";
+					
+					chaine += "</span></label>";
+					chaine += "<input name=\""+m.getName()+"\" type=\"text\" value=\""+mc.getContent()+"\" ";	
+					if (m.isObligation()) chaine += "required";
+					
+					chaine += "/>";
+				}				
+			}else{
+				chaine += "<br><br>Il n'y a pas de métadonnées à renseigner";
+			}
+		}catch (NotFoundInDatabaseException e1){
+			chaine += "<br><br>Il n'y a pas de métadonnées à renseigner";
 		}
 		return chaine;	
 	}
@@ -384,4 +433,34 @@ public class RequestImpl implements IRequest {
 	public boolean createMetaContent(MetadataContent mc) throws AlreadyRegistredException{
 		return new MetadataAO().addContent(mc);
 	}
+	
+	public String getMetadatasContent(int id, String entityName) throws NotFoundInDatabaseException{
+		String chaine = "";
+		MetadataAO metaAO = new MetadataAO();
+		Entity e = new Entity (id,entityName);
+		NamedEntity ne = new NamedEntityAO().getName(id, entityName);
+		chaine += "<h3>Détails</h3>";
+		chaine += "<div style=\"margin-bottom: 5px\" class=\"description\">" +
+				"Vous venez de cliquer sur <strong>"+ne.getName()+"</strong> ("+e.getEntityName()+")." +
+				"Voici la liste des informations auxquelles vous avez accès.</p></div><br><br>";
+		try{
+			Collection<MetadataContent> cmc = metaAO.getMetadatas(e);
+			chaine += "<div id=\"list2\"><ol>";
+			for (MetadataContent mc : cmc){
+				chaine += "<li><p><em>"+mc.getName()+" : "+mc.getContent()+"</p></li>";
+			}
+			chaine+="</ol></div>";
+		} catch (NotFoundInDatabaseException ex) {
+			chaine += "Aucune metadonnée n'a été renseignée";
+		}
+		
+		return chaine;
+	}
+	
+        public boolean editNamedEntity(Map<String, Map<String, String>> args, Entity e){
+            NamedEntityAO ne = new NamedEntityAO();
+            return ne.edit(args, e);
+        }
+
+
 }

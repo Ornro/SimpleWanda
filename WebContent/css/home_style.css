@@ -134,8 +134,6 @@ box-shadow: 1px 1px 12px #222;
 	font-family: Georgia;
 	font-size: 17px;
 	font-style: italic;
-	margin: 10px 0 40px;
-	width: 600px;
 }
 
 .form {
@@ -203,13 +201,26 @@ p.validate {
 	width: 120px;
 }
 
+input.video_file{
+	width:50px;
+	margin-right:5px;
+}
+
 #sidebar {
 	width: 285px;
 	float: right;
 	padding: 15px 20px 0 0;
 }
 
-#conteneur_box{
+#list2 ol li p {
+	margin-left:20px;
+	padding: 10px;
+	font-style: normal;
+	color: #000;
+	border-left: 2px solid #999;
+}
+
+#list2 ol li p em {
 }
 
 /***********************************************************************************/

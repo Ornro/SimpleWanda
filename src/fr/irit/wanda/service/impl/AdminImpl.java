@@ -37,11 +37,11 @@ public class AdminImpl{
 		return new UserAO().add(user);
 	}
 
-	protected boolean createSite(NamedEntity site)
+	protected int createSite(NamedEntity site)
 			throws AlreadyRegistredException, NotFoundInDatabaseException {
 
 		if (!site.getEntityName().equals("site"))
-			return false;// is not a site
+			return -1;// is not a site
 
 		return new ContainerAO().createContainer(site, null);
 	}

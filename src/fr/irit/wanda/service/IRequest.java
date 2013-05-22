@@ -1,6 +1,7 @@
 package fr.irit.wanda.service;
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.apache.commons.fileupload.FileItem;
 
@@ -10,7 +11,6 @@ import fr.irit.wanda.entities.LinkedEntity.PRIVACY;
 import fr.irit.wanda.entities.Entity;
 import fr.irit.wanda.entities.Metadata;
 import fr.irit.wanda.entities.MetadataContent;
-import fr.irit.wanda.entities.Montage;
 import fr.irit.wanda.entities.NamedEntity;
 import fr.irit.wanda.entities.User;
 import fr.irit.wanda.exception.AlreadyRegistredException;
@@ -21,7 +21,7 @@ public interface IRequest {
 
 	int addA3(A3 a3) throws NotAllowedToProceedException;
 
-	boolean createSite(NamedEntity site) throws NotAllowedToProceedException,
+	int createSite(NamedEntity site) throws NotAllowedToProceedException,
 			AlreadyRegistredException, NotFoundInDatabaseException;
 
 	boolean addSiteManager(NamedEntity site, User manager)
@@ -33,15 +33,15 @@ public interface IRequest {
 	int createUser(User user) throws AlreadyRegistredException,
 			NotAllowedToProceedException;
 
-	boolean createSession(NamedEntity session, NamedEntity father)
+	int createSession(NamedEntity session, NamedEntity father)
 			throws AlreadyRegistredException, NotFoundInDatabaseException,
 			NotAllowedToProceedException;
 
-	boolean createView(NamedEntity view, NamedEntity father)
+	int createView(NamedEntity view, NamedEntity father)
 			throws AlreadyRegistredException, NotFoundInDatabaseException,
 			NotAllowedToProceedException;
 
-	boolean createMontage(Montage montage) throws NotAllowedToProceedException;
+	boolean createMontage(LinkedEntity montage) throws NotAllowedToProceedException;
 
 	boolean validate(NamedEntity entity) throws NotAllowedToProceedException;
 
@@ -56,7 +56,7 @@ public interface IRequest {
 
 	FileItem getVideo(String videoName);
 
-	boolean createCorpus(NamedEntity corpus, NamedEntity father)
+	int createCorpus(NamedEntity corpus, NamedEntity father)
 			throws AlreadyRegistredException, NotAllowedToProceedException,
 			NotFoundInDatabaseException;
 
@@ -78,9 +78,15 @@ public interface IRequest {
 	
 	int createMetadata(Metadata m);
 	
-	String getMetadataForm(Entity e);
+	String getMetadataForm(Entity e) throws NotFoundInDatabaseException;
 	
-	Collection<Metadata> getMetadata(Entity e);
+	String getMetadataFormEdit(Entity e) throws NotFoundInDatabaseException;
+	
+	Collection<Metadata> getMetadata(Entity e) throws NotFoundInDatabaseException;
 
 	boolean createMetaContent (MetadataContent mc) throws AlreadyRegistredException;
+	
+	String getMetadatasContent(int id, String entityName) throws NotFoundInDatabaseException;
+	
+	boolean editNamedEntity (Map<String, Map<String, String>> args, Entity e);
 }
