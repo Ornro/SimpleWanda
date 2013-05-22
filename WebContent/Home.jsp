@@ -42,7 +42,7 @@
 				document.getElementById('home_page').innerHTML = xhr.responseText;
 			}
 		};
-		//alert(name+"?id="+id);
+		alert(name+"?id="+id);
 		xhr.open("GET", name+"?id="+id, true);
 		xhr.send(null);
 	}
@@ -64,7 +64,7 @@
 			<a href="Home.jsp"><img src="img/logo_app.png" alt="Wanda" title="Wanda" width="350" height="100" style="margin-left: 29px; float: left;"></a>
 			<div id="search_tool">
 				<form method="get" action="/search" id="search">
-					<input id="search_barre" name="search_barre" type="text" size="40" placeholder="Recherche" />
+					<input id="search_barre" name="search_barre" type="text" size="40" value="Recherche.."/>
 				</form>
 			</div>
 		</div>

@@ -381,14 +381,20 @@ public class Create extends Servlet {
 	private String saveMetadata(HttpServletRequest request, int id){
 		String entity = getString(request,"entity");
 		Entity e = new Entity (id,entity);
-		Collection<Metadata> cm = remoteRequest.getMetadata(e);
-		for (Metadata m : cm){
-			try {
-				remoteRequest.createMetaContent(new MetadataContent (m, e, getString(request, m.getName())));
-			} catch (AlreadyRegistredException e1) {
-				e1.printStackTrace();
+		Collection<Metadata> cm;
+		try {
+			cm = remoteRequest.getMetadata(e);
+			for (Metadata m : cm){
+				try {
+					remoteRequest.createMetaContent(new MetadataContent (m, e, getString(request, m.getName())));
+					return "Les métadonnées ont bien été renseignées";
+				} catch (AlreadyRegistredException e1) {
+					e1.printStackTrace();
+				}
 			}
+		} catch (NotFoundInDatabaseException e2) {
+			return "Il n'y a pas de métadonnées à renseigner";
 		}
-		return "Les métadonnées ont bien été renseignées";
+		return "Il n'y a pas de métadonnées à renseigner";
 	}
 }

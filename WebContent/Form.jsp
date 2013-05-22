@@ -15,30 +15,35 @@
 
 <% if (entityName.equals("site")){ %>
 <div id="createForm" class="">
-	<h2>Create a site</h2>
+	<h3>Création de site</h3>
 	<div style="margin-bottom: 5px" class="description">
 		<p>
-			This section allows you to create a site.
+			Dans cette partie vous avez la possibilité de créer des sites. Seul l'administrateur du 
+			logiciel peut en créer. Pour rappel, un site est un lieu de travail, une communauté, 
+			regroupement de personnes dans un lieux géographique.<br><br> 
+			Vous devez simplement renseigner le nom du site et les métadonnées qui lui sont rattachées.	
 		</p>
 	</div>
 	<div class="space"></div>
 	<form class="form" method="post" action="Create" id="add_site" name="site">
 		<input type="hidden" name="entity" value="site"> 
-		<label for="name"><span>Name</span></label> 
-		<input type="text" name="name" placeholder="Name" autofocus required /> 
+		<label for="name"><span>Nom</span></label> 
+		<input type="text" name="name" placeholder="Nom du site" autofocus required /> 
 		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
 		<p class="validate">
-			<input class="validate_button" name="validate" type="submit" size="40" value="Validate" />
+			<input class="validate_button" name="validate" type="submit" size="40" value="Valider" />
 		</p>
 	</form>
 </div>
 
 <% }else if (entityName.equals("corpus")){ %>
 <div id="createForm" class="">
-	<h2>Create a corpus</h2>
+	<h3>Création de corpus</h3>
 	<div style="margin-bottom: 5px" class="description">
 		<p>
-			This section allows you to create a corpus.
+			Dans cette partie vous avez la possibilité de créer des corpus. 
+			Pour rappel, un corpus est un thème abordé par un site.<br><br> 
+			Vous devez simplement renseigner le nom du corpus et les métadonnées qui lui sont rattachées.	
 		</p>
 	</div>
 	<div class="space"></div>
@@ -46,20 +51,22 @@
 		<input type="hidden"  name="entity"  value="corpus">
 		<input type="hidden"  name="fatherId"  value="<%=fatherId%>">
 		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
-		<label for="name"><span>Name</span></label>
-		<input name="name" type="text" size="40" placeholder="Name" autofocus required/>
+		<label for="name"><span>Nom</span></label>
+		<input name="name" type="text" size="40" placeholder="Nom du corpus" autofocus required/>
 		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
 		<p class="validate">
-			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
+			<input class="validate_button" name="validate" type="submit" size="40" value="Valider"/>
 		</p>
 	</form>
 </div>
 <%}else if (entityName.equals("session")){%>
 <div id="createForm" class="">
-	<h2>Create a session</h2>
+	<h3>Création de session</h3>
 	<div style="margin-bottom: 5px" class="description">
 		<p>
-			This section allows you to create a session.
+			Dans cette partie vous avez la possibilité de créer des session. 
+			Pour rappel, une session correspond à un tournage.<br><br> 
+			Vous devez simplement renseigner le nom de la session et les métadonnées qui lui sont rattachées.	
 		</p>
 	</div>
 	<div class="space"></div>
@@ -67,20 +74,22 @@
 		<input type="hidden"  name="entity"  value="session">
 		<input type="hidden"  name="fatherId"  value="<%=fatherId%>">
 		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
-		<label for="name"><span>Name</span></label>
-		<input name="name" type="text" size="40" placeholder="Name" autofocus required/>
+		<label for="name"><span>Nom</span></label>
+		<input name="name" type="text" size="40" placeholder="Nom de la session" autofocus required/>
 		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
 		<p class="validate">
-			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
+			<input class="validate_button" name="validate" type="submit" size="40" value="Valider"/>
 		</p>
 	</form><br>
 </div>
 <%}else if (entityName.equals("view")){%>
 <div id="createForm" class="">
-	<h2>Create a view</h2>
+	<h3>Création de vue</h3>
 	<div style="margin-bottom: 5px" class="description">
 		<p>
-			This section allows you to create a view.
+			Dans cette partie vous avez la possibilité de créer des vues. 
+			Pour rappel, une vue est une prise de vue, l'angle d'une caméra(Par exemple : de face, de coté, de profil)<br><br> 
+			Vous devez simplement renseigner le nom de la vue et les métadonnées qui lui sont rattachées.	
 		</p>
 	</div>
 	<div class="space"></div>
@@ -88,20 +97,22 @@
 		<input type="hidden"  name="entity"  value="view">
 		<input type="hidden"  name="fatherId"  value="<%=fatherId%>">
 		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
-		<label for="name"><span>Name</span></label>
-		<input name="name" type="text" size="40" placeholder="Name" autofocus required/>
+		<label for="name"><span>Nom</span></label>
+		<input name="name" type="text" size="40" placeholder="Nom de la vue" autofocus required/>
 		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
 		<p class="validate">
-			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
+			<input class="validate_button" name="validate" type="submit" size="40" value="Valider"/>
 		</p>
 	</form><br>
 </div>
 <%} else if (entityName.equals("video")){%>
 <div id="createForm" class="">
-	<h2>Create a video</h2>
+	<h3>Création de vidéo</h3>
 	<div style="margin-bottom: 5px" class="description">
 		<p>
-			This section allows you to create a video in which you can upload several files.
+			Dans cette partie vous avez la possibilité de créer des vidéos. 
+			Pour rappel, une vidéo peut avoir différentes résolutions et différents formats.
+			Elle possède un accès publique, restreint ou privé<br><br> 
 		</p>
 	</div>
 	<div class="space"></div>
@@ -109,24 +120,24 @@
 		<input type="hidden"  name="entity"  value="video">
 		<input type="hidden"  name="fatherId"  value="<%=fatherId%>">
 		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
-		<label for="name_video"><span>Name</span></label>
-		<input name="name" type="text" placeholder="Name" autofocus required/>
+		<label for="name_video"><span>Nom</span></label>
+		<input name="name" type="text" placeholder="Name de la vidéo" autofocus required/>
 		<br>
-		<label for="privacy"><span>Privacy</span></label>
+		<label for="privacy"><span>Privauté</span></label>
 		<select name="privacy">
-		  <option value="0">Private</option>
-		  <option value="1">Restricted</option>
-		  <option value="2">Public</option>
+		  <option value="0">Privée</option>
+		  <option value="1">Restreinte</option>
+		  <option value="2">Publique</option>
 		</select>
 		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
 		<p class="validate">
-			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
+			<input class="validate_button" name="validate" type="submit" size="40" value="Valider"/>
 		</p>
 	</form>
 </div>
 <%} else if (entityName.equals("annotation")){%>
 <div id="createForm" class="">
-	<h2>Create an annotation</h2>
+	<h3>Création d'annotation</h3>
 	<div style="margin-bottom: 5px" class="description">
 		<p>
 			This section allows you to upload an annotation for a video.
@@ -137,49 +148,55 @@
 		<input type="hidden"  name="entity"  value="annotation">
 		<input type="hidden"  name="fatherId"  value="<%=fatherId%>">
 		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
-		<label for="name_video"><span>Name</span></label>
-		<input name="name" type="text" placeholder="Name" autofocus required/>
+		<label for="name_video"><span>Nom</span></label>
+		<input name="name" type="text" placeholder="Nom de l'annotation" autofocus required/>
 		<br>
-		<label for="privacy"><span>Privacy</span></label>
+		<label for="privacy"><span>Privauté</span></label>
 		<select name="privacy">
-		  <option value="0">Private</option>
-		  <option value="1">Restricted</option>
-		  <option value="2">Public</option>
+		  <option value="0">Privée</option>
+		  <option value="1">Restrainte</option>
+		  <option value="2">Publique</option>
 		</select>
 		<label for="annotationfile"><span>File</span></label>
 		<input name="annotationfile" type="file" />
 		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
 		<p class="validate">
-			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
+			<input class="validate_button" name="validate" type="submit" size="40" value="Valider"/>
 		</p>
 	</form>
 </div>
 <%} else if (entityName.equals("metadata")){%>
 <div id="createForm" class="">
-	<h2>Create a metadata</h2>
+	<h3>Création de métadonnée</h3>
 	<div style="margin-bottom: 5px" class="description">
 		<p>
-			This section allows you to upload an annotation for a metadata.
+			Dans cette partie vous avez la possibilité de créer des métadonnées. 
+			Seul l'administrateur possède les droits pour créer des métadonnées. 
+			Une métadonnée permet de renseigner une entité, par exemple l'auteur,
+			l'importance, la durée d'une video..<br><br> 
+			Vous devez simplement renseigner le nom de la métadonnée, sa description,
+			si elle est obligatoire ou non ainsi que sa privauté. Enfin vous devez cocher
+			les entités auxquelles elle est rattachée.	
 		</p>
 	</div>
 	<div class="space"></div>
 	<form class="form" method="post" action="Create" id="add_metadata" name="metadata">
 		<input type="hidden"  name="entity"  value="metadata">
-		<label for="name_meta"><span>Name</span></label>
-		<input name="name_meta" type="text" placeholder="Name" autofocus required/>
+		<label for="name_meta"><span>Nom</span></label>
+		<input name="name_meta" type="text" placeholder="Nom de la métadonnée" autofocus required/>
 		<label for="description_meta"><span>Description</span></label>
-		<input name="description_meta" type="text" placeholder="Description" required/><br>
+		<input name="description_meta" type="text" placeholder="A quoi elle sert" required/><br>
 		<label for="obligation"><span>Obligation</span></label>
 		<select name="obligation_meta">
-		  <option value="True">Obligation</option>
-		  <option value="False">Facultatif</option>
+		  <option value="True">Obligatoire</option>
+		  <option value="False">Facultative</option>
 		</select>
-		<label for="private"><span>Privacy</span></label>
+		<label for="private"><span>Privauté</span></label>
 		<select name="private_meta" style="margin-bottom:15px;">
-		  <option value="True">Private</option>
-		  <option value="False">Public</option>
+		  <option value="True">Privée</option>
+		  <option value="False">Publique</option>
 		</select>
-		<label for="entities"><span>Select entities :</span></label>
+		<label for="entities"><span>Choisir les entités :</span></label>
 		<div id="conteneur_box" name="entities">
 		<%
 			String ts[] = {"Video","Fichier video","Annotation","Vue","Session","Corpus","Site"};
@@ -189,7 +206,7 @@
 			} %>
 		</div>
 		<p class="validate">
-			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
+			<input class="validate_button" name="validate" type="submit" size="40" value="Valider"/>
 		</p>
 	</form>
 </div>

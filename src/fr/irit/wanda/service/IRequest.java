@@ -77,9 +77,11 @@ public interface IRequest {
 	
 	int createMetadata(Metadata m);
 	
-	String getMetadataForm(Entity e);
+	String getMetadataForm(Entity e) throws NotFoundInDatabaseException;
 	
-	Collection<Metadata> getMetadata(Entity e);
+	String getMetadataFormEdit(Entity e) throws NotFoundInDatabaseException;
+	
+	Collection<Metadata> getMetadata(Entity e) throws NotFoundInDatabaseException;
 
 	boolean createMetaContent (MetadataContent mc) throws AlreadyRegistredException;
 	

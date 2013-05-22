@@ -228,10 +228,12 @@ public class MetadataAO extends DAO {
 		set("SELECT * FROM " + e.getMetaTable() + " WHERE metadata = ?;");
 		setInt(1, lm.getId());
 
-		if (!executeQuery())
+		if (!executeQuery()){
 			throw new NotFoundInDatabaseException(
 					"There is no metadata called " + m.getName() + " in table "
 							+ e.getEntityName());
+		
+		}
 		lm.setContent(getString("content"));
 		return lm;
 	}
