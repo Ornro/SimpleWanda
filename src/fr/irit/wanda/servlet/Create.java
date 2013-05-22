@@ -3,6 +3,7 @@ package fr.irit.wanda.servlet;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -25,6 +26,7 @@ import fr.irit.wanda.dao.NamedEntityAO;
 import fr.irit.wanda.entities.Entity;
 import fr.irit.wanda.entities.LinkedEntity.PRIVACY;
 import fr.irit.wanda.entities.Metadata;
+import fr.irit.wanda.entities.MetadataContent;
 import fr.irit.wanda.entities.NamedEntity;
 import fr.irit.wanda.exception.AlreadyRegistredException;
 import fr.irit.wanda.exception.NotAllowedToProceedException;
@@ -67,7 +69,7 @@ public class Create extends Servlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		String message = null;
+		String message = "";
 		if (!ServletFileUpload.isMultipartContent(request)){
 			ENTITIES ent = ENTITIES.valueOf(getString(request,"entity").toUpperCase());
 
@@ -102,7 +104,7 @@ public class Create extends Servlet {
 
 			default:
 			}
-		}else message = upload(request);		
+		}else message = upload(request);
 		
 		response.sendRedirect("");
 	}
@@ -155,6 +157,9 @@ public class Create extends Servlet {
 		if (getString(request, "Session_meta") != null) {
 			ear.add(new Entity("session"));
 		}
+		if (getString(request, "Fichier video_meta") != null) {
+			ear.add(new Entity("links"));
+		}
 		Metadata m = new Metadata(getString(request, "name_meta"), getBoolean(
 				request, "obligation_meta"), getBoolean(request, "private_meta"),
 				getString(request, "description_meta"));
@@ -179,7 +184,8 @@ public class Create extends Servlet {
 	private String handlerVideo(HttpServletRequest request) {
 		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"fatherId"), getString(request,"fatherEntityName"));
 		try {
-			remoteRequest.createVideo(new NamedEntity("video",getString(request,"name")),ne,PRIVACY.fromInt(getInt(request,"privacy")));
+			int id = remoteRequest.createVideo(new NamedEntity("video",getString(request,"name")),ne,PRIVACY.fromInt(getInt(request,"privacy")));
+			saveMetadata(request, id);
 		} catch (NotAllowedToProceedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -202,7 +208,8 @@ public class Create extends Servlet {
 	
 	private String handlerSite(HttpServletRequest request) {
 		try {
-			remoteRequest.createSite(new NamedEntity("site",getString(request,"name")));
+			int id = remoteRequest.createSite(new NamedEntity("site",getString(request,"name")));
+			saveMetadata(request, id);
 		} catch (NotAllowedToProceedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -214,13 +221,15 @@ public class Create extends Servlet {
 			e.printStackTrace();
 		}
 
+		
 		return "Votre site a bien été ajoutée";
 	}
 	
 	private String handlerSession(HttpServletRequest request) {
 		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"fatherId"), getString(request,"fatherEntityName"));
 		try {
-			remoteRequest.createSession(new NamedEntity("session",getString(request,"name")),ne);
+			int id = remoteRequest.createSession(new NamedEntity("session",getString(request,"name")),ne);
+			saveMetadata(request, id);
 		} catch (AlreadyRegistredException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -238,7 +247,8 @@ public class Create extends Servlet {
 	private String handleCorpus(HttpServletRequest request) {
 		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"fatherId"), getString(request,"fatherEntityName"));
 		try {
-			remoteRequest.createCorpus(new NamedEntity("corpus",getString(request,"name")),ne);
+			int id = remoteRequest.createCorpus(new NamedEntity("corpus",getString(request,"name")),ne);
+			saveMetadata(request, id);
 		} catch (AlreadyRegistredException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -256,7 +266,8 @@ public class Create extends Servlet {
 	private String handleView(HttpServletRequest request) {
 		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"fatherId"), getString(request,"fatherEntityName"));
 		try {
-			remoteRequest.createView(new NamedEntity("view",getString(request,"name")),ne);
+			int id = remoteRequest.createView(new NamedEntity("view",getString(request,"name")),ne);
+			saveMetadata(request, id);
 		} catch (AlreadyRegistredException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -365,5 +376,19 @@ public class Create extends Servlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
+	}
+    	
+	private String saveMetadata(HttpServletRequest request, int id){
+		String entity = getString(request,"entity");
+		Entity e = new Entity (id,entity);
+		Collection<Metadata> cm = remoteRequest.getMetadata(e);
+		for (Metadata m : cm){
+			try {
+				remoteRequest.createMetaContent(new MetadataContent (m, e, getString(request, m.getName())));
+			} catch (AlreadyRegistredException e1) {
+				e1.printStackTrace();
+			}
+		}
+		return "Les métadonnées ont bien été renseignées";
 	}
 }

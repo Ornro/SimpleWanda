@@ -1,5 +1,6 @@
 package fr.irit.wanda.dao;
 
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -86,12 +87,12 @@ public class ContainerAO extends DAO {
 	 * @throws AlreadyRegistredException
 	 * @throws NotFoundInDatabaseException
 	 */
-	public final boolean createContainer(NamedEntity container,
+	public final int createContainer(NamedEntity container,
 			NamedEntity father) throws AlreadyRegistredException,
 			NotFoundInDatabaseException {
 
 		if (!isContainer(container))
-			return false; // if that is not a container
+			return -1; // if that is not a container
 
 		NamedEntityAO nao = new NamedEntityAO();
 		
@@ -99,7 +100,7 @@ public class ContainerAO extends DAO {
 			if (nao.exists(container,null)) // if the entity already exists
 				throw new AlreadyRegistredException(
 						"The container to create already exists");
-			set("INSERT INTO site(name) VALUES (?);");
+			set("INSERT INTO site(name) VALUES (?);",Statement.RETURN_GENERATED_KEYS);
 			setString(1, container.getName());
 		} else {
 			if (nao.exists(container,null)) // if the entity already exists
@@ -107,7 +108,7 @@ public class ContainerAO extends DAO {
 						"The container to create already exists");
 			
 			if (!isContainer(father))
-				return false; // if that is not a container
+				return -1; // if that is not a container
 
 			if (!nao.exists(father,null)) // id must be declared in father
 				throw new AlreadyRegistredException("The father does not exist");
@@ -117,13 +118,13 @@ public class ContainerAO extends DAO {
 
 			if (container.getOwner() != null) {
 				set("INSERT INTO " + containerTable + "(name," + fatherTable
-						+ ",owner) VALUES (?,?,?);");
+						+ ",owner) VALUES (?,?,?);",Statement.RETURN_GENERATED_KEYS);
 				setString(1, container.getName());
 				setInt(2, father.getId());
 				setInt(3, container.getOwner().getId());
 			} else {
 				set("INSERT INTO " + containerTable + "(name," + fatherTable
-						+ ") VALUES (?,?);");
+						+ ") VALUES (?,?);",Statement.RETURN_GENERATED_KEYS);
 				setString(1, container.getName());
 				setInt(2, father.getId());
 			}
@@ -134,6 +135,10 @@ public class ContainerAO extends DAO {
 					+ container.getEntityName() + ":" + container.getName()
 					+ " and " + father.getEntityName() + ":" + father.getName()
 					+ " doesn't seem to exist");
-		return true;
+		else{
+				getGeneratedKeys();
+				int id = getInt("id"+container.getEntityName());
+				return id;
+		}
 	}
 }

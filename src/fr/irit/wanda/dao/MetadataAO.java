@@ -160,7 +160,7 @@ public class MetadataAO extends DAO {
 
 		set("SELECT metadata.* FROM metaconcerns, metadata "
 				+ "WHERE metaconcerns.concerns=? "
-				+ "AND metaconcerns.idmetadata = metadata.idmetadata;");
+				+ "AND metaconcerns.idmetadata = metadata.idmetadata ORDER BY obligation DESC;");
 		setString(1, e.getEntityName());
 		if (!executeQuery())
 			throw new NotFoundInDatabaseException(e.getEntityName()
@@ -262,7 +262,7 @@ public class MetadataAO extends DAO {
 			throw new NotFoundInDatabaseException(
 					"The entity does not seems to have any metadata content filled.");
 		do {
-			lmc.add(new MetadataContent(extract(), e));
+			lmc.add(new MetadataContent(extract(), e,getString("content")));
 		} while (next());
 
 		return lmc;

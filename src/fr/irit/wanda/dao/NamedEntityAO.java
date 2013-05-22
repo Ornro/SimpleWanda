@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import fr.irit.wanda.configuration.HirarchyConfiguration;
 import fr.irit.wanda.entities.Entity;
@@ -70,10 +72,9 @@ public class NamedEntityAO extends DAO {
 	public boolean exists(NamedEntity ne, NamedEntity father) {
 		if (ne.getId() != -1)
 			return exists(ne.getId(), ne.getEntityName());
-		if (father == null){
+		if (father == null) {
 			return exists(ne.getName(), ne.getEntityName());
-		}
-		else
+		} else
 			return exists(ne.getName(), ne.getEntityName(), father);
 	}
 
@@ -81,8 +82,10 @@ public class NamedEntityAO extends DAO {
 	 * Tells if the entity named by the given parameter exists
 	 */
 	private boolean exists(String name, String tableName, NamedEntity father) {
-		if (father.getId()<1) System.out.println("ERROR");
-		set("SELECT * FROM " + tableName + " WHERE name=? AND _"+father.getEntityName()+"="+father.getId()+";");
+		if (father.getId() < 1)
+			System.out.println("ERROR");
+		set("SELECT * FROM " + tableName + " WHERE name=? AND _"
+				+ father.getEntityName() + "=" + father.getId() + ";");
 		setString(1, name);
 		return executeQuery();
 	}
@@ -159,5 +162,42 @@ public class NamedEntityAO extends DAO {
 			result.add(father);
 		} while (father != null);
 		return result;
+	}
+
+	/**
+	 * 
+	 * @param args
+	 *            Map<colomn_name,Map<new_value,type>> can be changed to mime
+	 *            type
+	 * @param e
+	 * @return
+	 */
+	public boolean edit(Map<String, Map<String, String>> args, Entity e) {
+		String req = "UPDATE " + e.getEntityName() + " SET ";
+		int size = args.size();
+		int count = 0;
+		for (Entry<String, Map<String, String>> arg : args.entrySet()) {
+			count++;
+			if (count<size)	req += arg.getKey()+"=?, ";
+			else req += arg.getKey()+"=? ";
+		}
+		req += "WHERE id" + e.getEntityName() + "=?;";
+		set(req);
+		count = 0;
+		for (Entry<String, Map<String, String>> arg : args.entrySet()) {
+			count ++;
+			for (Entry<String, String> subarg : arg.getValue().entrySet()) {
+				if (subarg.getValue().equals("int")){
+					setInt(count,Integer.parseInt(subarg.getKey()));
+				}
+				else if (subarg.getValue().equals("bool")){
+					setBoolean(count,Boolean.parseBoolean(subarg.getKey()));
+				}
+				else if (subarg.getValue().equals("string")){
+					setString(count,subarg.getKey());
+				}
+			}
+		}
+		return executeUpdate();
 	}
 }

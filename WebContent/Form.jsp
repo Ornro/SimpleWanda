@@ -2,12 +2,15 @@
 <%@ page import="fr.irit.wanda.dao.*"%>
 <%@ page import="java.util.Collection"%>
 <%@ page import="java.io.*"%>
+<%@ page import="fr.irit.wanda.service.IRequest" %>
+<%@ page import="fr.irit.wanda.service.impl.RequestImpl" %>
 
 <%
 	String rawId = (String)request.getParameter("id");
 	String fatherEntityName = rawId.split("_")[2];
 	String entityName = rawId.split("_")[1];
 	String fatherId = rawId.split("_")[0]; 
+	IRequest remoteRequest = new RequestImpl("benjamin.babic@hotmail.fr");
 %>
 
 <% if (entityName.equals("site")){ %>
@@ -23,6 +26,7 @@
 		<input type="hidden" name="entity" value="site"> 
 		<label for="name"><span>Name</span></label> 
 		<input type="text" name="name" placeholder="Name" autofocus required /> 
+		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Validate" />
 		</p>
@@ -44,6 +48,7 @@
 		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
 		<label for="name"><span>Name</span></label>
 		<input name="name" type="text" size="40" placeholder="Name" autofocus required/>
+		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
 		</p>
@@ -64,6 +69,7 @@
 		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
 		<label for="name"><span>Name</span></label>
 		<input name="name" type="text" size="40" placeholder="Name" autofocus required/>
+		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
 		</p>
@@ -84,6 +90,7 @@
 		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
 		<label for="name"><span>Name</span></label>
 		<input name="name" type="text" size="40" placeholder="Name" autofocus required/>
+		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
 		</p>
@@ -111,6 +118,7 @@
 		  <option value="1">Restricted</option>
 		  <option value="2">Public</option>
 		</select>
+		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
 		</p>
@@ -140,6 +148,7 @@
 		</select>
 		<label for="annotationfile"><span>File</span></label>
 		<input name="annotationfile" type="file" />
+		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>
 		</p>
@@ -156,26 +165,28 @@
 	<div class="space"></div>
 	<form class="form" method="post" action="Create" id="add_metadata" name="metadata">
 		<input type="hidden"  name="entity"  value="metadata">
-		<input type="hidden"  name="fatherId"  value="<%=fatherId%>">
-		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
 		<label for="name_meta"><span>Name</span></label>
 		<input name="name_meta" type="text" placeholder="Name" autofocus required/>
 		<label for="description_meta"><span>Description</span></label>
 		<input name="description_meta" type="text" placeholder="Description" required/><br>
 		<label for="obligation"><span>Obligation</span></label>
-		<select name="obligation" style="margin-bottom:15px;">
+		<select name="obligation_meta">
 		  <option value="True">Obligation</option>
-		  <option value="False">Falcutatif</option>
+		  <option value="False">Facultatif</option>
 		</select>
-		<div id="conteneur_box">
+		<label for="private"><span>Privacy</span></label>
+		<select name="private_meta" style="margin-bottom:15px;">
+		  <option value="True">Private</option>
+		  <option value="False">Public</option>
+		</select>
+		<label for="entities"><span>Select entities :</span></label>
+		<div id="conteneur_box" name="entities">
 		<%
-			String ts[] = {"Video","Annotation","Vue","Session","Corpus","Site"};
-			for (String s : ts){
-				%>
-				<input type="checkbox" name="<% out.print(s+"_meta");%>" value="<%out.print(s);%>"><% out.print(s);%>
-				<%
-			}
-		%>
+			String ts[] = {"Video","Fichier video","Annotation","Vue","Session","Corpus","Site"};
+			for (String s : ts){ %>
+					<input id="check_entities" type="checkbox" name="<% out.print(s+"_meta");%>" value="<%out.print(s);%>"/>
+					<% out.print(s);if (!s.equals("Video")){ %> <br> <% }
+			} %>
 		</div>
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Validate"/>

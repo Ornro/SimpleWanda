@@ -25,13 +25,13 @@ public class CorpusManagerImpl {
 	
 	// TODO addUser to a corpus
 	// TODO create subcorpus
-	protected boolean createSession(NamedEntity session, NamedEntity father)
+	protected int createSession(NamedEntity session, NamedEntity father)
 			throws AlreadyRegistredException, NotFoundInDatabaseException {
 		return new ContainerAO().createContainer(session, father);
 	}
 
 	// TODO correct corpus != session
-	protected boolean createView(NamedEntity view, NamedEntity father)
+	protected int createView(NamedEntity view, NamedEntity father)
 			throws AlreadyRegistredException, NotFoundInDatabaseException {
 		return new ContainerAO().createContainer(view, father);
 	}
