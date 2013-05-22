@@ -286,7 +286,7 @@
         <input name="name" type="text" placeholder="Nom" autofocus required/>
         <label for="forename"><span>Prénom</span></label>
         <input name="forename" type="text" placeholder="Prénom" required/>
-        <label for="mail"><span>Prénom</span></label>
+        <label for="mail"><span>Adresse mail</span></label>
         <input name="mail" type="email" placeholder="Martin@irit.fr" required/>
         <label for="role"><span>Droits</span></label>
         <select name="role">

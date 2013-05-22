@@ -237,8 +237,9 @@ public class RequestImpl implements IRequest {
 		chaine += "</ol>";
 		if (caller != null) {
 			if (caller.getRole() == ROLE.ADMIN){
-				chaine += "<br><span style=\"float:left; margin-left:10px;\">"+ printAJAXCreateLink("-1_metadata_metadata")+"<img title=\"Add Metadata\" src=\"/SimpleWanda/img/add.png \" class=\"icon\"/><small> Add metadata </small></a></span>";
-				chaine += "<span style=\"float:right\">"+ printAJAXCreateLink("-1_site_site")+"<img title=\"Add Site\" src=\"/SimpleWanda/img/add.png \" class=\"icon\"/><small> Add site </small></a></span><br>";
+				chaine += "<br><span style=\"margin-left:10px;\">"+ printAJAXCreateLink("-1_metadata_metadata")+"<img title=\"Add Metadata\" src=\"/SimpleWanda/img/add.png \" class=\"icon\"/><small> Add metadata </small></a></span><br>";
+				chaine += "<span style=\"margin-left:10px;\">"+ printAJAXCreateLink("-1_site_site")+"<img title=\"Add Site\" src=\"/SimpleWanda/img/add.png \" class=\"icon\"/><small> Add site </small></a></span><br>";
+				chaine += "<span style=\"margin-left:10px;\">"+ printAJAXCreateLink("-1_user_user")+"<img title=\"Add Site\" src=\"/SimpleWanda/img/add.png \" class=\"icon\"/><small> Add user </small></a></span><br>";
 			}
 		}
 		
