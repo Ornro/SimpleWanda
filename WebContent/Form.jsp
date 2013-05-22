@@ -12,7 +12,6 @@
 	String fatherId = rawId.split("_")[0]; 
 	IRequest remoteRequest = new RequestImpl("benjamin.babic@hotmail.fr");
 	Entity e = new Entity(entityName);
-
 %>
 
 <% if (entityName.equals("site")){ %>
@@ -271,6 +270,28 @@
         </p>
     </form>
 </div>
+<%} else if (entityName.equals("addRight")){
+	NamedEntity nameEntity = new NamedEntityAO().getName(Integer.parseInt(fatherId), fatherEntityName);
+	%>
+<div id="createForm" class="">
+    <h3>Ajouter un manager à <%= nameEntity.getName() %></h3>
+    <div style="margin-bottom: 5px" class="description">
+    </div>
+    <form class="form" method="post" action="Create" id="add_right" name="right"><br>
+        <input type="hidden"  name="entity"  value="addright">
+        <label for="user"><span>User</span></label>
+        <input name="user" type="text" placeholder="Entrer l'adresse email de l'utilisateur" required/>
+        <label for="droits"><span>Droits</span></label>
+         <select name="droits"><%
+          	for (User.ACCESS_RIGHT droits : User.ACCESS_RIGHT.values()){
+        		 %><option value="<%= droits %>"><%= droits %></option>
+       		<%} %>
+        </select>
+        <p class="validate">
+            <input class="validate_button" name="validate" type="submit" size="40" value="Valider"/>
+        </p>
+    </form>
+</div>
 
 <%} else if (entityName.equals("user")){%>
 <div id="createForm" class="">
@@ -289,7 +310,7 @@
         <input name="forename" type="text" placeholder="Prénom" required/>
         <label for="mail"><span>Adresse mail</span></label>
         <input name="mail" type="email" placeholder="Martin@irit.fr" required/>
-        <label for="role"><span>Droits</span></label>
+        <label for="role"><span>Rôle</span></label>
         <select name="role">
           <option value="user">User</option>
         </select>
