@@ -178,7 +178,7 @@ public class NamedEntityAO extends DAO {
 		int count = 0;
 		for (Entry<String, Map<String, String>> arg : args.entrySet()) {
 			count++;
-			if (count<size)	req += arg.getKey()+"=?, ";
+			if (count<size) req += arg.getKey()+"=?, ";
 			else req += arg.getKey()+"=? ";
 		}
 		req += "WHERE id" + e.getEntityName() + "=?;";

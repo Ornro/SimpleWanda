@@ -1,6 +1,7 @@
 package fr.irit.wanda.service.impl;
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.apache.commons.fileupload.FileItem;
 
@@ -321,7 +322,7 @@ public class RequestImpl implements IRequest {
 		chaine += "<li class=\"file\">";
 		chaine += "<span id=\"dynamicMenu\" onmouseover=\"quickMenu('"+ eid + "_" + ename +"_icons"+"')\" onmouseout=\"quickMenu2('"+ eid + "_" + ename +"_icons"+"')\" >";
 		chaine += printAJAXLink(entity, "View.jsp")+entity.getName()+"</a>&nbsp";
-		chaine += "<span id=\""+ eid + "_" + ename +"_icons"+"\" class=\"hidden\"><a href=\""+new LinkedEntityAO().getSingleLink(eid)+"\"><img class=\"icon\" src=\"/SimpleWanda/img/download.png \"/></span></a>";
+		chaine += "<span id=\""+ eid + "_" + ename +"_icons"+"\" class=\"hidden\"><a href=\""+new LinkedEntityAO().getSingleLink(eid)+"\" target=\"_blank\"  download><img class=\"icon\" src=\"/SimpleWanda/img/download.png \"/></span></a>";
 		chaine += "</span>";
 		chaine += "</li>";
 		return chaine;
@@ -442,4 +443,9 @@ public class RequestImpl implements IRequest {
 		
 		return chaine;
 	}
+	
+	public boolean editNamedEntity(Map<String, Map<String, String>> args, Entity e){
+		return false;
+	}
+
 }
