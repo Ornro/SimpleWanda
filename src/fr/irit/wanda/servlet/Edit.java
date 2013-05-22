@@ -37,8 +37,8 @@ import fr.irit.wanda.service.impl.RequestImpl;
 /**
  * Servlet implementation class New_entities
  */
-@WebServlet("/Create")
-public class Create extends Servlet {
+@WebServlet("/Edit")
+public class Edit extends Servlet {
 	enum ENTITIES {
 		METADATA, USER, RULE, ROLE, SITE, SESSION, WORKFLOW, TYPE, CORPUS, VIDEO, VIEW, ANNOTATION, MONTAGE
 	}
@@ -50,7 +50,7 @@ public class Create extends Servlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public Create() {
+	public Edit() {
 		super();
 		remoteRequest = new RequestImpl("benjamin.babic@hotmail.fr");
 	}
@@ -74,9 +74,9 @@ public class Create extends Servlet {
 			ENTITIES ent = ENTITIES.valueOf(getString(request,"entity").toUpperCase());
 
 			switch (ent) {
-			case METADATA:
+			/*case METADATA:
 				message = handlerMetadata(request);
-				break;
+				break;*/
 			/*case USER:
 				message = handlerUser(request);
 				break;*/
@@ -105,80 +105,9 @@ public class Create extends Servlet {
 			default:
 			}
 		}else message = upload(request);
-		response.sendRedirect("Home.jsp");
+		
+		response.sendRedirect("");
 	}
-
-	/*private String handlerAnnotation(HttpServletRequest request) {
-	    Workflow w = instanciator.workflow(getString(request, "workflow_annotation"));
-	    Video e = instanciator.video(getString(request, "video_annotation"));
-	    View v = instanciator.view(getString(request, "view_annotation"));
-		Annotation a = new Annotation(w, e, v, getString(request, "name_annotation"));
-
-
-		ccfg.remoteRequest.addAnnotation(a);
-		return "Votre annotation a bien été ajoutée";
-	}*/
-
-	/*private String handlerMontage(HttpServletRequest request) {
-
-		String[] list_view = request.getParameterValues("views_montage");
-		Collection<View> views = new ArrayList<View>();
-		
-		for (String s : list_view){
-			views.add(instanciator.view(s));
-		}
-		
-	    Session s = instanciator.session(getString(request, "session_montage"));
-		
-		Montage m = new Montage(views, s, getString(request, "link_montage"), getString(request, "name_montage"));
-		ccfg.remoteRequest.addMontage(m);
-		return "Votre montage a bien été ajouté";
-		
-	}*/
-
-	private String handlerMetadata(HttpServletRequest request) {
-		ArrayList<Entity> ear = new ArrayList<Entity>();
-		if (getString(request, "Video_meta") != null) {
-			ear.add(new Entity("video"));
-		}
-		if (getString(request, "Annotation_meta") != null) {
-			ear.add(new Entity("annotation"));
-		}
-		if (getString(request, "Corpus_meta") != null) {
-			ear.add(new Entity("corpus"));
-		}
-		if (getString(request, "Vue_meta") != null) {
-			ear.add(new Entity("view"));
-		}
-		if (getString(request, "Site_meta") != null) {
-			ear.add(new Entity("site"));
-		}
-		if (getString(request, "Session_meta") != null) {
-			ear.add(new Entity("session"));
-		}
-		if (getString(request, "Fichier video_meta") != null) {
-			ear.add(new Entity("links"));
-		}
-		Metadata m = new Metadata(getString(request, "name_meta"), getBoolean(
-				request, "obligation_meta"), getBoolean(request, "private_meta"),
-				getString(request, "description_meta"));
-		m.setConcerns(ear);
-
-		// Ajout de la metadata
-		remoteRequest.createMetadata(m);
-		return "Votre metadonnee a bien été ajoutée";
-	}
-
-	/*private String handlerUser(HttpServletRequest request) {
-		Role r = instanciator.role(getString(request, "role_user"));
-
-		User u = new User(getString(request, "name_user"), getString(request,
-				"prenom_user"), r, getString(request, "mail_user"));
-		ccfg.remoteRequest.addUser(u);
-
-		return "Votre user a bien été ajouté";
-	}*/
-
 
 	private String handlerVideo(HttpServletRequest request) {
 		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"fatherId"), getString(request,"fatherEntityName"));
@@ -206,22 +135,8 @@ public class Create extends Servlet {
 	}
 	
 	private String handlerSite(HttpServletRequest request) {
-		try {
-			int id = remoteRequest.createSite(new NamedEntity("site",getString(request,"name")));
-			saveMetadata(request, id);
-		} catch (NotAllowedToProceedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (AlreadyRegistredException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotFoundInDatabaseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		
-		return "Votre site a bien été ajoutée";
+		remoteRequest.editNamedEntity(null, null);		
+		return "Votre site a bien été mis à jour";
 	}
 	
 	private String handlerSession(HttpServletRequest request) {
@@ -348,9 +263,11 @@ public class Create extends Servlet {
         	    	String contentType = item.getContentType();
         	    	String givenName = item.getName();
         	        String path = servletContext.getRealPath("/");
+        	        
         	    	String givenExt = givenName.substring(givenName.lastIndexOf("."));
         	    	String destination = "Wanda"+File.separator+entity+File.separator+id+givenExt;
         	    	
+                	System.out.println(destination);
                 	new LinkedEntityAO().setLink(id, destination);
                 	File destinationFile = new File(path+destination);
 

@@ -1,6 +1,7 @@
 package fr.irit.wanda.service;
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.apache.commons.fileupload.FileItem;
 
@@ -87,4 +88,6 @@ public interface IRequest {
 	boolean createMetaContent (MetadataContent mc) throws AlreadyRegistredException;
 	
 	String getMetadatasContent(int id, String entityName) throws NotFoundInDatabaseException;
+	
+	boolean editNamedEntity (Map<String, Map<String, String>> args, Entity e);
 }

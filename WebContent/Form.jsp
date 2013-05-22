@@ -112,7 +112,7 @@
 		<p>
 			Dans cette partie vous avez la possibilité de créer des vidéos. 
 			Pour rappel, une vidéo peut avoir différentes résolutions et différents formats.
-			Elle possède un accès publique, restreint ou privé<br><br> 
+			Elle possède un accès publique, restreint ou privé.
 		</p>
 	</div>
 	<div class="space"></div>
@@ -121,7 +121,7 @@
 		<input type="hidden"  name="fatherId"  value="<%=fatherId%>">
 		<input type="hidden"  name="fatherEntityName"  value="<%=fatherEntityName%>">
 		<label for="name_video"><span>Nom</span></label>
-		<input name="name" type="text" placeholder="Name de la vidéo" autofocus required/>
+		<input name="name" type="text" placeholder="Nom de la vidéo" autofocus required/>
 		<br>
 		<label for="privacy"><span>Privauté</span></label>
 		<select name="privacy">
@@ -129,6 +129,8 @@
 		  <option value="1">Restreinte</option>
 		  <option value="2">Publique</option>
 		</select>
+		<label for="videofile"><span>Fichier</span></label>
+		<input name="videofile" type="file" />
 		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
 		<p class="validate">
 			<input class="validate_button" name="validate" type="submit" size="40" value="Valider"/>
@@ -157,7 +159,7 @@
 		  <option value="1">Restrainte</option>
 		  <option value="2">Publique</option>
 		</select>
-		<label for="annotationfile"><span>File</span></label>
+		<label for="annotationfile"><span>Fichier</span></label>
 		<input name="annotationfile" type="file" />
 		<% out.print(remoteRequest.getMetadataForm(new Entity (entityName))); %>
 		<p class="validate">
