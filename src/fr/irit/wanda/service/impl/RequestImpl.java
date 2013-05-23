@@ -311,7 +311,9 @@ public class RequestImpl implements IRequest {
 				chaine += printAJAXLink(container, "Edit.jsp")
 						+ "&nbsp<img title=\"Edit\" src=\"/SimpleWanda/img/edit.png\" class=\"icon\" \\></a>&nbsp;";	
 				if (container.getEntityName().equals("video")){
-					chaine += printAJAXCreateLink(container.getId()+"_links_"+container.getEntityName())+ "<img title=\"Add file\" src=\"/SimpleWanda/img/add.png \" class=\"icon\"/\\></a>&nbsp;";
+					chaine += printAJAXCreateLink(container.getId()+"_links_"+container.getEntityName())+ "<img title=\"Add file\" src=\"/SimpleWanda/img/add.png \" class=\"icon\"/\\> </a>";
+				}else if(container.getEntityName().equals("site")){
+					chaine += printAJAXCreateLink(container.getId()+"_addRight_"+container.getEntityName())+ "<img title=\"Add admin\" src=\"/SimpleWanda/img/info.png \" class=\"icon\"/\\> </a>";
 				}
 			}
 		} catch (NotAllowedToProceedException e) {

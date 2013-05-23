@@ -41,7 +41,7 @@ import fr.irit.wanda.service.impl.RequestImpl;
 @WebServlet("/Create")
 public class Create extends Servlet {
 	enum ENTITIES {
-		METADATA, USER, LINKS, SITE, SESSION, CORPUS, VIDEO, VIEW, ANNOTATION, MONTAGE
+		METADATA, USER, LINKS, SITE, SESSION, CORPUS, VIDEO, VIEW, ANNOTATION, MONTAGE, ADDRIGHT
 	}
 
 	private static final long MaxMemorySize = 1073741824; // 1go
@@ -96,6 +96,9 @@ public class Create extends Servlet {
 			case LINKS:
 				message = handleLink(request);
 				break;
+			case ADDRIGHT:
+				message = handleAddRight(request);
+				break;
 			/*case MONTAGE:
 				message = handlerMontage(request);
 				break;*/
@@ -122,6 +125,11 @@ public class Create extends Servlet {
 		return "Votre montage a bien été ajouté";
 		
 	}*/
+
+	private String handleAddRight(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	private String handlerMetadata(HttpServletRequest request) {
 		ArrayList<Entity> ear = new ArrayList<Entity>();
@@ -169,7 +177,7 @@ public class Create extends Servlet {
 	}
 
 
-	private String handlerVideo(HttpServletRequest request) {
+	/*private String handlerVideo(HttpServletRequest request) {
 		NamedEntity ne = new NamedEntityAO().getName(getInt(request,"fatherId"), getString(request,"fatherEntityName"));
 		try {
 			int id = remoteRequest.createVideo(new NamedEntity("video",getString(request,"name")),ne,PRIVACY.fromInt(getInt(request,"privacy")));
@@ -192,7 +200,7 @@ public class Create extends Servlet {
 		upload(request);
 			
 		return "Votre annotation a bien été ajoutée";
-	}
+	}*/
 	
 	private String handlerSite(HttpServletRequest request) {
 		try {

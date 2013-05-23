@@ -161,6 +161,13 @@ public class LinkedEntityAO extends NamedEntityAO {
 		return getString("link");
 	}
 	
+	public int getLinkId(int entity_id){
+		set("SELECT idlinks FROM links WHERE entity_id=?;");
+		setInt(1,entity_id);
+		executeQuery();
+		return getInt("idlinks");
+	}
+	
 	public File getVideoFile(int jobid, User caller){
 		set("SELECT link FROM job,links WHERE idjob=? AND wuser=? AND links.idlinks=job.idlink AND validity<=?;");
 		setInt(1,jobid);
@@ -169,6 +176,14 @@ public class LinkedEntityAO extends NamedEntityAO {
 		executeQuery();
 		
 		return new File(getString("link"));
+	}
+	
+	public int getVideoID(String videoName) {
+		set("SELECT idvideo FROM Video WHERE name=?;");
+		setString(1,videoName);
+		executeQuery();
+		
+		return getInt("idvideo");
 	}
 
 	/**

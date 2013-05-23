@@ -1,4 +1,4 @@
-package fr.irit.wanda.service.impl;
+package fr.irit.wanda.servlet;
 
 import java.io.DataInputStream;
 import java.io.File;
@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +27,7 @@ import org.jdom2.output.XMLOutputter;
 
 import fr.irit.wanda.dao.A3AO;
 import fr.irit.wanda.dao.ContainerAO;
+import fr.irit.wanda.dao.JobAO;
 import fr.irit.wanda.dao.LinkedEntityAO;
 import fr.irit.wanda.dao.NamedEntityAO;
 import fr.irit.wanda.dao.UserAO;
@@ -35,7 +37,9 @@ import fr.irit.wanda.entities.LinkedEntity;
 import fr.irit.wanda.entities.NamedEntity;
 import fr.irit.wanda.entities.User;
 import fr.irit.wanda.exception.NotFoundInDatabaseException;
+import fr.irit.wanda.service.impl.ActionStatus;
 
+@WebServlet("/ATAPI")
 public class ATAPI extends HttpServlet {
 	
 	/**
@@ -100,7 +104,6 @@ public class ATAPI extends HttpServlet {
 			try {
 				user = uao.getUser("benjamin.babic@hotmail.fr");
 			} catch (NotFoundInDatabaseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return user;
@@ -117,7 +120,7 @@ public class ATAPI extends HttpServlet {
 				return;
 			}
 			if (action.equals("ungrant")) {
-				//doUnGrant(request, response);
+				doUnGrant(request, response);
 				return;
 			}
 			if (action.equals("list")) {
@@ -150,7 +153,6 @@ public class ATAPI extends HttpServlet {
 	
 	private static Element getContainerHierarchy(NamedEntity container) {
 		
-		//TODO Ajout attribut URL si video
 		Element elt = new Element(container.getEntityName());
 		Attribute att = new Attribute("name", container.getName());
 		elt.setAttribute(att);
@@ -178,7 +180,6 @@ public class ATAPI extends HttpServlet {
 	private void doList(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		String status = "ko";
-		User user;
 		Collection<ActionStatus> results = new ArrayList<ActionStatus>();
 		Collection<String> errors = new ArrayList<String>();
 
@@ -211,6 +212,7 @@ public class ATAPI extends HttpServlet {
 		User user = null;
 		String a3uri = "";
 		String videoUri = "";
+		String videoName = "";
 		Collection<ActionStatus> results = new ArrayList<ActionStatus>();
 		Collection<String> errors = new ArrayList<String>();
 
@@ -247,11 +249,10 @@ public class ATAPI extends HttpServlet {
 			try {
 				Job job;
 
-				//TODO récupérer le nom de la vidéo à partir de l'uri(videoUri) dans videoName
-				LinkedEntityAO lao = new LinkedEntityAO();
-				idvideo = 0;	
-				//TODO méthode pour récupérer l'id d'une video à partir de son nom
-				//idvideo = lao.getID(videoName);
+				String[] tab = videoUri.split("/");
+				videoName = tab[tab.length];
+				LinkedEntityAO lao = new LinkedEntityAO();	
+				idvideo = lao.getVideoID(videoName);
 
 				if (a3id != -1)
 					job = newJob(user, a3id, idvideo);
@@ -275,15 +276,55 @@ public class ATAPI extends HttpServlet {
 				.forward(request, response);
 	}
 	
-	private void doGetVideo(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		ActionStatus actionStatus = new ActionStatus("grant", "ko");
-		LinkedEntity vid = null;
+	private void doUnGrant(HttpServletRequest request,
+			HttpServletResponse response) throws IOException, ServletException {
+		ActionStatus actionStatus = new ActionStatus("ungrant", "ko");
+		int jobid = -1;
 		User user = null;
-		String a3uri = "";
+		Collection<String> errors = new ArrayList<String>();
+
+		// read parameters
+		try {
+			jobid = getIntParam("jobid", request);
+		} catch (Exception e) {
+			errors.add(super.getServletName()
+					+ ": jobid parameter is missing. (" + e.getMessage() + ")");
+		}
+		try {
+			user = getUser(request);
+		} catch (Exception e) {
+			errors.add(super.getServletName()
+					+ ": Authentication problem occured. (" + e.getMessage()
+					+ ")");
+		}
+
+		// call service
+		if (errors.isEmpty()) {
+			try {
+				deleteJob(user, jobid);
+				actionStatus.setStatus("ok");
+				actionStatus.setTarget(jobid);
+			} catch (Exception e) {
+				errors.add(super.getServletName() + ": Exception occured. ("
+						+ e.getMessage() + ")");
+			}
+		}
+
+		// give feedback
+		Collection<ActionStatus> results = new ArrayList<ActionStatus>();
+		results.add(actionStatus);
+		request.setAttribute("results", results);
+		request.setAttribute("errors", errors);
+		super.getServletContext().getRequestDispatcher(atapiXmlUrl)
+				.forward(request, response);
+
+	}
+	
+	private void doGetVideo(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		User user = null;
 		String videoUri = "";
 		String videoPath = "";
 		String videoName = "";
-		Collection<ActionStatus> results = new ArrayList<ActionStatus>();
 		Collection<String> errors = new ArrayList<String>();
 
 		// read parameters
@@ -302,11 +343,10 @@ public class ATAPI extends HttpServlet {
 		// call service
 		if (errors.isEmpty()) {
 			try {
-				//TODO récupérer le nom de la vidéo à partir de l'uri(videoUri) dans videoName
+				String[] tab = videoUri.split("/");
+				videoName = tab[tab.length];
 				LinkedEntityAO lao = new LinkedEntityAO();
-				int idvideo = 0;	
-				//TODO méthode pour récupérer l'id d'une video à partir de son nom
-				//idvideo = lao.getID(videoName);
+				int idvideo = lao.getVideoID(videoName);
 				videoPath = lao.getSingleLink(idvideo);
 				
 			} catch (Exception e) {
@@ -389,22 +429,12 @@ public class ATAPI extends HttpServlet {
 	}
     
     
-    public Job newJob(User puser, int aid, int vid) {
-		User user = puser;
-		A3AO a3ao = new A3AO();
-		A3 a3 = a3ao.getA3(aid);
-		//TODO méthode pour récupérer une vidéo à partir de son id
+    public Job newJob(User user, int aid, int vid) throws NotFoundInDatabaseException, Exception {
 		LinkedEntityAO lao = new LinkedEntityAO();
-		//LinkedEntity video = lao.getLinkedEntity(vid);
-
-		// check right to access A3
-		//TODO méthode hasUserAccessTOA3
-		if (!hasUserAccessToA3(user, a3))
-			throw new Exception(user.getName()
-					+ " cannot access to A3 " + a3.getName());
-
-		// check right to access video
-		//TODO méthode pour tester si l'utilisateur a le droit d'accéder à la vidéo
+		NamedEntity ne = lao.getName(vid, "video");
+		UserAO uao = new UserAO();
+		if(!uao.isAuthorized(user, ne)) throw new Exception(user.getName()
+				+ " cannot access to video " + ne.getName() + ". ");
 
 		Job job = new Job();
 		job.setId(-1);
@@ -413,17 +443,15 @@ public class ATAPI extends HttpServlet {
 		job.setUserID(user.getId());
 		job.setVideo(vid);
 		job.setCreation(new Date());
-		//TODO méthode (dans JobAO) pour insérer le job dans sa table 
-		//JobAO jao = new JobAO();
-		//jao.saveJob(job);
+		JobAO jao = new JobAO();
+		jao.addJob(job);
 
-		// System.out.println(this.getClass().getName()+".newJob(): A job linking A3 "+aid+" to video "+vid+" has been created. ");
+		System.out.println(this.getClass().getName()+".newJob(): A job linking A3 "+aid+" to video "+vid+" has been created. ");
 
 		return job;
 	}
 
 	public Job newJob(User user, String a3_uri, int vid) throws Exception {
-		//TODO méthode pour récupérer un A3 à partir de son uri
 		A3AO a3ao = new A3AO();
 		A3 a3 = a3ao.getA3fromURI(a3_uri);
 		if (a3 == null)
@@ -436,6 +464,18 @@ public class ATAPI extends HttpServlet {
 	public static void main(String [] args) {
 		org.jdom2.Document document = new Document(getHierarchyXML());
 		affiche(document);
+	}
+	
+	public void deleteJob(User u, int jid) throws Exception {
+		JobAO jao = new JobAO();
+		Job job = jao.getJob(jid);
+		int oid = job.getUserID();
+
+		if (!(oid == u.getId()) || !(u.getId() == oid)) 
+			throw new Exception(
+					"Insufficient rights to delete this Job. ");
+		
+		jao.deleteJob(job);
 	}
 
 }

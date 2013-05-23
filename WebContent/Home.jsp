@@ -42,7 +42,7 @@
 				document.getElementById('home_page').innerHTML = xhr.responseText;
 			}
 		};
-		alert(name+"?id="+id);
+		//alert(name+"?id="+id);
 		xhr.open("GET", name+"?id="+id, true);
 		xhr.send(null);
 	}
