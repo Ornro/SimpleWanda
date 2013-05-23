@@ -10,7 +10,7 @@
 	String fatherEntityName = rawId.split("_")[2];
 	String entityName = rawId.split("_")[1];
 	String fatherId = rawId.split("_")[0]; 
-	IRequest remoteRequest = new RequestImpl("benjamin.babic@hotmail.fr");
+	IRequest remoteRequest = new RequestImpl(request);
 	Entity e = new Entity(entityName);
 
 %>

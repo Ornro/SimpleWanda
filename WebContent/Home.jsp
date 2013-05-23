@@ -58,7 +58,7 @@
 		<%@ page import="fr.irit.wanda.service.impl.RequestImpl" %>
 		<%@ page import="java.util.Collection"%>
 		<%@ page import="java.io.*"%>
-		<%  IRequest remoteRequest = new RequestImpl("benjamin.babic@hotmail.fr");%>
+		<%  IRequest remoteRequest = new RequestImpl(request);%>
 	
 		<div id="header_container">
 			<a href="Home.jsp"><img src="img/logo_app.png" alt="Wanda" title="Wanda" width="350" height="100" style="margin-left: 29px; float: left;"></a>

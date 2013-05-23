@@ -23,6 +23,7 @@ import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 import fr.irit.wanda.dao.LinkedEntityAO;
 import fr.irit.wanda.dao.UserAO;
 import fr.irit.wanda.entities.User;
+import fr.irit.wanda.service.impl.RequestImpl;
 import fr.irit.wanda.servlet.Servlet;
 
 
@@ -38,7 +39,7 @@ public class A3API extends Servlet{
 			
 		try {
 			// Auth
-			User caller = getCaller(request);
+			User caller = new RequestImpl(request).getCaller(request);
 			
 			// Param retrieval
 			int jobid = getInt(request, "jobid");
@@ -55,20 +56,6 @@ public class A3API extends Servlet{
 			request.setAttribute("errors", errors); // TODO change redirection
 			super.getServletContext().getRequestDispatcher("/WEB-INF/vues/atapi.jsp").forward(request, response);
 		}
-	}
-	
-	private User getCaller(HttpServletRequest request) throws Exception {
-        X509Certificate[] certChain = (X509Certificate[])request.getAttribute("javax.servlet.request.X509Certificate");
-        if (certChain != null) {
-        	
-        	X509Certificate cert = certChain[certChain.length-1];
-        	X500Name x500name = new JcaX509CertificateHolder(cert).getSubject();
-        	RDN cn = x500name.getRDNs(BCStyle.CN)[0];
-        	String email = IETFUtils.valueToString(cn.getFirst().getValue());
-        	
-        	return new UserAO().getUser(email);
-		}else
-			throw new Exception("You are not logged in. ");
 	}
 	
 	private void doDownload( HttpServletRequest req, HttpServletResponse resp,

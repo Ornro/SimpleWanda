@@ -54,7 +54,6 @@ public class Edit extends Servlet {
 	 */
 	public Edit() {
 		super();
-		remoteRequest = new RequestImpl("benjamin.babic@hotmail.fr");
 	}
 
 	/**
@@ -71,6 +70,7 @@ public class Edit extends Servlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		remoteRequest = new RequestImpl(request);
 		String message = "";
 		ENTITIES ent = ENTITIES.valueOf(getString(request,"entity").toUpperCase());
 

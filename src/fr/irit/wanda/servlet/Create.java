@@ -53,7 +53,6 @@ public class Create extends Servlet {
 	 */
 	public Create() {
 		super();
-		remoteRequest = new RequestImpl("benjamin.babic@hotmail.fr");
 	}
 
 	/**
@@ -70,6 +69,7 @@ public class Create extends Servlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		remoteRequest = new RequestImpl(request);
 		String message = "";
 		if (!ServletFileUpload.isMultipartContent(request)){
 			ENTITIES ent = ENTITIES.valueOf(getString(request,"entity").toUpperCase());

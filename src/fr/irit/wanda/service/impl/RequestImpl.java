@@ -1,9 +1,17 @@
 package fr.irit.wanda.service.impl;
 
+import java.security.cert.X509Certificate;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.fileupload.FileItem;
+import org.bouncycastle.asn1.x500.RDN;
+import org.bouncycastle.asn1.x500.X500Name;
+import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.bouncycastle.asn1.x500.style.IETFUtils;
+import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 
 import fr.irit.wanda.dao.ContainerAO;
 import fr.irit.wanda.dao.LinkedEntityAO;
@@ -29,12 +37,12 @@ public class RequestImpl implements IRequest {
 	SiteManagerImpl siteManagerRequest = new SiteManagerImpl();
 	CorpusManagerImpl corpusManagerRequest = new CorpusManagerImpl();
 
-	public RequestImpl(String userEmail) {
+	public RequestImpl(HttpServletRequest request) {
 		try {
-			this.caller = new UserAO().getUser(userEmail);
-		} catch (NotFoundInDatabaseException e) {
+			this.caller = getCaller(request);
+		} catch (Exception e) {
 			this.caller = null;
-			System.err.println("USER NOT FOUND WITH EMAIL "+userEmail);
+			System.err.println("USER NOT FOUND ");
 		}
 	}
 
@@ -394,5 +402,18 @@ public class RequestImpl implements IRequest {
 	
 	public MetadataContent getMetadataContent (Entity e, Metadata m) throws NotFoundInDatabaseException{
 		return new MetadataAO().getMetadataContent(e,m);
+	}
+	
+	public User getCaller(HttpServletRequest request) throws Exception {
+        X509Certificate[] certChain = (X509Certificate[])request.getAttribute("javax.servlet.request.X509Certificate");
+        if (certChain != null) {
+        	X509Certificate cert = certChain[certChain.length-1];
+        	X500Name x500name = new JcaX509CertificateHolder(cert).getSubject();
+        	RDN cn = x500name.getRDNs(BCStyle.CN)[0];
+        	String email = IETFUtils.valueToString(cn.getFirst().getValue());
+        	System.out.println(email);
+        	return new UserAO().getUser(email);
+		}else
+			throw new Exception("You are not logged in. ");
 	}
 }
