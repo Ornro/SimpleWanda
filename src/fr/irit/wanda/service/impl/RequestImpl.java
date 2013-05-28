@@ -407,7 +407,9 @@ public class RequestImpl implements IRequest {
 	}
 	
 	public User getCaller(HttpServletRequest request) throws Exception {
+		System.out.println("Called get caller");
         X509Certificate[] certChain = (X509Certificate[])request.getAttribute("javax.servlet.request.X509Certificate");
+        System.out.println(certChain);
         if (certChain != null) {
         	X509Certificate cert = certChain[certChain.length-1];
         	X500Name x500name = new JcaX509CertificateHolder(cert).getSubject();

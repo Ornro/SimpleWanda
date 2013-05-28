@@ -280,12 +280,18 @@
     <form class="form" method="post" action="Create" id="add_right" name="right"><br>
         <input type="hidden"  name="entity"  value="addright">
         <label for="user"><span>User</span></label>
-        <input name="user" type="text" placeholder="Entrer l'adresse email de l'utilisateur" required/>
+        <input name="user" type="email" placeholder="Entrer l'adresse email de l'utilisateur" required/>
         <label for="droits"><span>Droits</span></label>
          <select name="droits"><%
           	for (User.ACCESS_RIGHT droits : User.ACCESS_RIGHT.values()){
         		 %><option value="<%= droits %>"><%= droits %></option>
        		<%} %>
+			<% if(me.entityName.equals("site"){%>
+				<option value="manager">Site manager</option>
+			<%}%>
+			<% if(me.entityName.equals("corpus"){%>
+				 <option value="manager">Corpus manager</option>
+			<%}%>
         </select>
         <p class="validate">
             <input class="validate_button" name="validate" type="submit" size="40" value="Valider"/>

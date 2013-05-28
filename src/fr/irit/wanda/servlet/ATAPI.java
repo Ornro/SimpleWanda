@@ -461,11 +461,6 @@ public class ATAPI extends HttpServlet {
 		return newJob(user, a3.getId(), vid);
 	}
 	
-	public static void main(String [] args) {
-		org.jdom2.Document document = new Document(getHierarchyXML());
-		affiche(document);
-	}
-	
 	public void deleteJob(User u, int jid) throws Exception {
 		JobAO jao = new JobAO();
 		Job job = jao.getJob(jid);
